@@ -1,1 +1,5 @@
 .vscode/*
+
+# Front-end  
+front/app/node_modules/
+front/app/build
