@@ -12,8 +12,10 @@ We chose NodeJS + express because we are comfortable with this technology, it al
 
 ## Server/Proxy (NGINX)
 
-A reverse proxy will allow us to simply serve the static files and
-provide easily the HTTPS layer to secure our website.
-It could all have been configured in the Node server,
-but it would be both cleaner and easier to extend in a dedicated server
-that we are already familiar with.
+A reverse proxy will allow us to simply serve the static files and provide easily the HTTPS layer to secure our website. It could all have been configured in the Node server, but it would be both cleaner and easier to extend in a dedicated server that we are already familiar with.
+
+## Let's Encrypt
+
+[Let's Encrypt](https://letsencrypt.org/) is a certificate authority that provides free TLS certificates. Certificate management on UNIX-like OSs is further simplified by using the [certbot](https://certbot.eff.org/) tool.
+
+This will allow us to easily provide encrypted HTTPS connections to our service.
