@@ -28,7 +28,7 @@
    ...
    ..
    ```
-6. When several people are coding on the same branch, always use pull rebase to resolve merge conflicts (you can setup it to do autommatically)
+6. When several people are coding on the same branch, always use pull rebase to resolve merge conflicts (you can setup it to do automatically)
     ```
     git config --local pull.rebase true
     ```
