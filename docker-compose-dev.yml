@@ -5,10 +5,17 @@ services:
       context: ./front/
       dockerfile: Dockerfile-dev
     volumes:
-      - ./front/app:/usr/app
-      - /usr/app/node_modules
+      - ./front/:/usr/app
     ports:
       - "3000:3000"
+  back:
+    build:
+      context: ./back/
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./back/:/usr/app
+    ports:
+      - "3001:3001"
   db:
     image: postgres:latest
     restart: always
