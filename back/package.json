@@ -1,0 +1,25 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+
+  "scripts": {
+    "test": "echo 'Tests not implemented' && exit 0",
+    "test-format": "eslint \"src/**/*.js\"",
+    "format": "prettier-eslint \"src/**/*.js\""
+  },
+
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "prettier-eslint-cli": "^4.7.1"
+  },
+
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}

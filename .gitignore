@@ -3,3 +3,6 @@
 # Front-end  
 front/node_modules/
 front/build
+
+# Back-end
+back/src/node_modules/
