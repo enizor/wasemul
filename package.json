@@ -2,10 +2,9 @@
     "devDependencies": {
         "husky": "^1.2.0"
     },
-
     "husky": {
         "hooks": {
-          "pre-commit": "cd ./back && npm test && npm run test-format && cd ../front && CI=true npm test"
+            "pre-commit": "cd ./back && npm test && npm run test-format && cd ../front && CI=true npm test && npm run test-format"
         }
-      }
+    }
 }
