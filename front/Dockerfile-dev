@@ -5,7 +5,10 @@ WORKDIR /usr/app
 
 EXPOSE 3000
 
-CMD ["npm",  "start"]
+COPY package*.json ./
+RUN npm install
+
+CMD ["npm", "start"]
 
 # # stage: 2 — the production environment
 # FROM nginx:alpine

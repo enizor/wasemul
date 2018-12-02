@@ -1,11 +1,12 @@
 version: "3"
 services:
   front:
-    build: 
+    build:
       context: ./front/
       dockerfile: Dockerfile-dev
     volumes:
       - ./front/:/usr/app
+      - /usr/app/node_modules/
     ports:
       - "3000:3000"
   back:
@@ -14,6 +15,8 @@ services:
       dockerfile: Dockerfile-dev
     volumes:
       - ./back/:/usr/app
+      - /usr/app/node_modules/
+
     ports:
       - "3001:3001"
   db:
