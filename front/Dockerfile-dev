@@ -1,12 +1,10 @@
 # stage: 1
 
 FROM node:10 as react-build
-WORKDIR /app
-COPY . ./
+WORKDIR /usr/app
 
 EXPOSE 3000
 
-RUN npm install
 CMD ["npm",  "start"]
 
 # # stage: 2 — the production environment
