@@ -16,7 +16,6 @@ services:
     volumes:
       - ./back/:/usr/app
       - /usr/app/node_modules/
-
     ports:
       - "3001:3001"
   db:
