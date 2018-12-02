@@ -6,6 +6,7 @@
   "author": "",
   "license": "ISC",
   "scripts": {
+    "start": "node src/index.js",
     "test": "echo 'Tests not implemented' && exit 0",
     "test-format": "eslint \"src/**/*.js\"",
     "format": "prettier-eslint \"src/**/*.js\""
