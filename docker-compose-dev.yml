@@ -1,0 +1,29 @@
+version: "3"
+services:
+  front:
+    build:
+      context: ./front/
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./front/:/usr/app
+    ports:
+      - "3000:3000"
+  back:
+    build:
+      context: ./back/
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./back/:/usr/app
+    ports:
+      - "3001:3001"
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: changeme
+    volumes:
+      - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
+      - "dbdata:/var/lib/postgresql/data"
+
+volumes:
+  dbdata:
