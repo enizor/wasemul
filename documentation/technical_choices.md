@@ -1,4 +1,4 @@
-# Techincal Choices
+# Technical Choices
 
 ## Database (PosgreSQL)
 
