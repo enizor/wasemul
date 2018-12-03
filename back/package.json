@@ -24,6 +24,7 @@
     "prettier-eslint-cli": "^4.7.1"
   },
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "sequelize": "^4.41.2"
   }
 }
