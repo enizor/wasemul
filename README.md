@@ -7,6 +7,7 @@ Sharing everything about games!
 From scratch, use the following commands to build and up the docker-compose containers.
 
 ```bash
+./npm_install.sh # Installs node_modules for all projects
 docker-compose -f docker-compose-dev.yml build --no-cache  # no-cache is optional, only use when you change package*.json files
 docker-compose -f docker-compose-dev.yml up
 ```
