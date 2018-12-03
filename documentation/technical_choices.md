@@ -27,3 +27,13 @@ A reverse proxy will allow us to simply serve the static files and provide easil
 [Let's Encrypt](https://letsencrypt.org/) is a certificate authority that provides free TLS certificates. Certificate management on UNIX-like OSs is further simplified by using the [certbot](https://certbot.eff.org/) tool.
 
 This will allow us to easily provide encrypted HTTPS connections to our service.
+
+## ORM (Sequelize)
+
+Le débat pour le choix de l'ORM fut mouvementé. Après recherche, 4 ont été considérés:
+- sequelize: connu de certains d'entre nous, mais beaucoup de retours négatifs de la part de nos connaissances l'ayant utilisé amplement. 
+- loopback: Plus qu'un ORM, c'est un framework complet et nous tenons à Express.
+- node-postgres: Pas totalement un ORM, il faut écrire les requêtes à la main.
+- TypeORM : orienté Typescript, il possède très peu de documentation javascript.
+
+Nous nous sommes rabattu sur Sequelize, en déterminant que ses inconvénients seront peu rencontrés car notre base de données reste petite, avec peu de tables.
