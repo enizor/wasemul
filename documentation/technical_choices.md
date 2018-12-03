@@ -12,7 +12,7 @@ We chose NodeJS + express because we are comfortable with this technology, it al
 
 ## Frontend (React)
 
-React has proved its worth as simple yet powerful framework. Collaboration is made easy with the components, and some of us are already familiar with this technology.
+React has proved its worth as a simple yet powerful framework. Collaboration is made easy with the components, and some of us are already familiar with this technology.
 
 ## Containers (Docker)
 
