@@ -20,6 +20,9 @@ module.exports = {
                 extensions: ['.js', '.jsx'] 
             }
         ],
+        'max-len': [ 2, 80, 4, 
+            { "ignoreComments": true }
+        ],
     },
     settings: {
         react: {

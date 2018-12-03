@@ -1,6 +1,6 @@
 module.exports = {
     parserOptions: {
-        ecmaVersion: 6
+        ecmaVersion: 8,
     },
     parser: 'babel-eslint',
     extends: [
@@ -11,5 +11,10 @@ module.exports = {
     ],
     env: {
         node: true,
+    },
+    rules: {
+        'max-len': [ 2, 80, 4, 
+            { "ignoreComments": true }
+        ],
     }
 }
