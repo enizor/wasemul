@@ -8,3 +8,4 @@ front/build/
 # Back-end
 back/src/node_modules/
 back/dist/
+*.pem
