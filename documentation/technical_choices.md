@@ -37,3 +37,7 @@ Le débat pour le choix de l'ORM fut mouvementé. Après recherche, 4 ont été 
 - TypeORM : orienté Typescript, il possède très peu de documentation javascript.
 
 Nous nous sommes rabattu sur Sequelize, en déterminant que ses inconvénients seront peu rencontrés car notre base de données reste petite, avec peu de tables.
+
+## Testing framework (Jest)
+
+Jest is an extensive JS testing framework, that will be used by both the back and the front. It is already included in `create-react-app` and particurlarly convenient here.
