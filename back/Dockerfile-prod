@@ -1,0 +1,7 @@
+FROM node:10
+
+WORKDIR /usr/app
+
+EXPOSE 3001
+
+CMD [ "npm", "start"]
