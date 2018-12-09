@@ -17,13 +17,12 @@ services:
     ports:
       - "3001:3001"
   db:
-    image: postgres:latest
+    image: postgres:alpine
     restart: always
     environment:
-      POSTGRES_PASSWORD: changeme
-    volumes:
-      - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
-      - "dbdata:/var/lib/postgresql/data"
+      - POSTGRES_USER=
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=
+    ports:
+      - "5432:5432"
 
-volumes:
-  dbdata:
