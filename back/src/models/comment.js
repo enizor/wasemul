@@ -2,8 +2,11 @@ import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
   const Comment = sequelize.define('Comment', {
-    text: {
+    body: {
       type: DataTypes.TEXT,
+    },
+    enabled: {
+      type: DataTypes.BOOLEAN,
     },
   });
 

@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
   const User = sequelize.define('User', {
-    login: {
+    nickname: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -20,11 +20,14 @@ export default (sequelize) => {
     biography: {
       type: DataTypes.TEXT,
     },
-    profilePic: {
+    icon: {
       type: DataTypes.STRING,
       validate: {
         isUrl: true,
       },
+    },
+    enabled: {
+      type: DataTypes.BOOLEAN,
     },
   });
 

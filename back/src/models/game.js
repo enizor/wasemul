@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
   const Game = sequelize.define('Game', {
-    title: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -12,6 +12,12 @@ export default (sequelize) => {
     description: {
       type: DataTypes.TEXT,
     },
+    icon: {
+      type: DataTypes.STRING,
+      validate: {
+        isUrl: true,
+      },
+    },
     releaseDate: {
       type: DataTypes.DATEONLY,
     },
@@ -20,6 +26,9 @@ export default (sequelize) => {
     },
     version: {
       type: DataTypes.STRING,
+    },
+    enabled: {
+      type: DataTypes.BOOLEAN,
     },
   });
 
