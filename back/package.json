@@ -1,0 +1,36 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "build": "babel src -d dist",
+    "start": "npm run build && node dist/index.js",
+    "start-dev": "nodemon src/index.js --exec babel-node --presets env",
+    "test": "jest",
+    "test-format": "eslint \"src/**/*.js\"",
+    "format": "prettier-eslint \"src/**/*.js\""
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^10.0.1",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.7",
+    "prettier-eslint-cli": "^4.7.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.2.0",
+    "errorhandler": "^1.5.0",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "pg": "^7.7.1",
+    "sequelize": "^4.41.2"
+  }
+}
