@@ -9,7 +9,7 @@
     "build": "babel src -d dist",
     "start": "npm run build && node dist/index.js",
     "start-dev": "nodemon src/index.js --exec babel-node --presets env",
-    "test": "echo 'Tests not implemented' && exit 0",
+    "test": "jest",
     "test-format": "eslint \"src/**/*.js\"",
     "format": "prettier-eslint \"src/**/*.js\""
   },
