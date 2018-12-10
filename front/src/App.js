@@ -1,26 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Game from './Game';
 
-const App = () => (
-  <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit
-        <code> src/App.js </code>
-        and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
-  </div>
-);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      games: [],
+    };
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:3001/games')
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({ games: result });
+        },
+      );
+  }
+
+  renderGames() {
+    const { games } = this.state;
+    return games.map(e => <Game key={e.id} id={e.id} name={e.name} />);
+  }
+
+  render() {
+    return (
+      <div className="App pure-g center">
+        <h1 className="pure-u-3-5 text-left">Featured Games</h1>
+        {this.renderGames()}
+      </div>
+    );
+  }
+}
 
 export default App;
