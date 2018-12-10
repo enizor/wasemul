@@ -2,6 +2,7 @@
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import errorHandler from 'errorhandler';
 import morgan from 'morgan';
@@ -16,6 +17,8 @@ app.use(cors());
 
 // Parse application/json
 app.use(bodyParser.json());
+
+app.use(cors());
 
 dotenv.load();
 
