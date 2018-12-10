@@ -32,11 +32,11 @@ This will allow us to easily provide encrypted HTTPS connections to our service.
 
 After a long discussion to choose the ORM, we listed 4 possibilities
 - sequelize: Known by some of us, but we got a lot of negative feedback from some friends.
-- loopback: Very heavy framework that exceed our scope.
+- loopback: Very heavy framework that exceeds our scope.
 - node-postgres: Not a full-fledged ORM, we need to create the SQL queries by hand.
 - TypeORM : Typescript-oriented, has almost no Javascript documentation.
 
-We chose to fall back on Sequelize, by determining that its drawback will be seldom encountered.
+We chose to fall back on Sequelize, determining that its drawbacks will be rarely encountered.
 
 ## Testing framework (Jest)
 
