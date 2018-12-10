@@ -147,7 +147,20 @@ REQUEST BODY
 
 ### Forgot Password
 
+The user wants to retreive his password, or get a magic link.
+The back should expose the following route `/auth/reset`.
+
+- `/auth/reset` [POST]
+```JSON
+REQUEST BODY
+    {
+        email
+    }
+```
+
 ## Authenticated experience
+
+For all those user stories, the authentication token should be given with all POST requests.
 
 ### The user wants to log in
 
@@ -175,9 +188,9 @@ RESPONSE DATA
 
 The user wants to edit his profile
 Once the changes are done, he saves them.
-The back should expose the following route `/user/:id/update`.
+The back should expose the following route `/user/:id/update/profile`.
 
-- `/user/:id/update` [POST]
+- `/user/:id/update/profile` [POST]
 ```JSON
 REQUEST BODY
     {
@@ -189,9 +202,62 @@ REQUEST BODY
 
 ### Delete account
 
+The user wants to delete his account, to do so, he has to provide his mail and password.
+The back should expose the following route.`/user/:id/delete`.
+
+- `/user/:id/delete` [POST]
+```JSON
+REQUEST BODY
+    {
+        email,
+        password
+    }
+```
+
 ### Update Password
 
+The user wants to change his password.
+To do so he has to provide his mail, old password and new password. The back should expose the following route `/user/:id/update/password`.
+
+- `/user/:id/update/password` [POST]
+```JSON
+REQUEST BODY
+    {
+        email,
+        old_password,
+        new_password
+    }
+```
+
 ### Post Comment
+
+The user wants to post a comment on a game. To do so he writes it and hist post.
+The back should expose the following route `/game/:id/comments`.
+
+- `/game/:id/comments` [POST]
+```JSON
+REQUEST BODY
+    {
+        body,
+        author_id 
+    }
+```
+
+### Upload a save
+
+The user wants to upload a save.
+The back should expose the following route `/users/:id/saves`.
+
+- `/user/:id/saves` [POST]
+```JSON
+REQUEST DATA
+    {
+        game,
+        description,
+        completion,
+        data (base64)
+    }
+```
 
 ### Rate a game
 
