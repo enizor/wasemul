@@ -1,47 +1,50 @@
 import React from 'react';
-import './App.css';
-import Game from './components/Game';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      games: [],
-    };
-  }
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-  componentDidMount() {
-    fetch('http://localhost:3001/games/featured')
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({ games: result });
-        },
-      );
-  }
-
-  renderGames() {
-    const { games } = this.state;
-    return games.map(e => (
-      <Game
-        key={e.id}
-        id={e.id}
-        name={e.name}
-        publisher={e.publisher}
-        releaseDate={e.releaseDate}
-        icon={e.icon}
-      />
-    ));
-  }
-
-  render() {
-    return (
-      <div className="App pure-g center">
-        <h1 className="pure-u-3-5 text-left">Featured Games</h1>
-        {this.renderGames()}
-      </div>
-    );
-  }
-}
-
+const Home = () => <h2>Home</h2>;
+const About = () => <h2>About</h2>;
+const Topic = ({ match }) => (
+  <h3>
+    Requested Param:
+    {match.params.id}
+  </h3>
+);
+const Topics = ({ match }) => (
+  <div>
+    <h2>Topics</h2>
+    <ul>
+      <li>
+        <Link to={`${match.url}/components`}>Components</Link>
+      </li>
+      <li>
+        <Link to={`${match.url}/props-v-state`}>Props v. State</Link>
+      </li>
+    </ul>
+    <Route path={`${match.path}/:id`} component={Topic} />
+  </div>
+);
+const Header = () => (
+  <ul>
+    <li>
+      <Link to="/">Home</Link>
+    </li>
+    <li>
+      <Link to="/about">About</Link>
+    </li>
+    <li>
+      <Link to="/topics">Topics</Link>
+    </li>
+  </ul>
+);
+const App = () => (
+  <Router>
+    <div>
+      <Header />
+      <Route exact path="/" component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/topics" component={Topics} />
+    </div>
+  </Router>
+);
 export default App;
