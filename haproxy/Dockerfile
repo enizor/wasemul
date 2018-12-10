@@ -1,6 +1,6 @@
 
 # Use the offical haproxy base image
-FROM haproxy:1.7
+FROM haproxy:1.7-alpine
 
 # Copy our haproxy configuration into the docker container
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
