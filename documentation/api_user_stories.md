@@ -179,7 +179,7 @@ REQUEST BODY
 ```
 
 ```JSON
-RESPONSE DATA
+RESPONSE BODY
 
     TOKEN
 ```
@@ -250,7 +250,7 @@ The back should expose the following route `/users/:id/saves`.
 
 - `/user/:id/saves` [POST]
 ```JSON
-REQUEST DATA
+REQUEST BODY
     {
         game,
         description,
@@ -261,8 +261,44 @@ REQUEST DATA
 
 ### Rate a game
 
+The user wants to rate a game.
+The back should expose the following route `/games/:id/ratings`.
+
+- `/games/:id/ratings` [POST]
+```JSON
+REQUEST BODY
+    {
+        author_id,
+        rating
+    }
+```
+
 ### Rate a save
+
+The user wants to rate a save.
+The back should expose the following route `/saves/:id/ratings`.
+
+- `/saves/:id/ratings` [POST]
+```JSON
+REQUEST BODY
+    {
+        author_id,
+        rating
+    }
+```
 
 ### Delete a save
 
+
+The user wants to delete a save.
+The back should expose the following route `/saves/:id/delete`.
+
+- `/saves/:id/delete` [GET]
+
+
 ### Delete a comment
+
+The user wants to delete a save.
+The back should expose the following route `/comments/:id/delete`.
+
+- `/comments/:id/delete` [GET]
