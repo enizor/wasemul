@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/Home';
 import User from './components/User';
 
-
 export default function App() {
   return (
     <Router>
@@ -20,4 +19,3 @@ export default function App() {
     </Router>
   );
 }
-
