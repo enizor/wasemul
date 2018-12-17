@@ -14,6 +14,8 @@ import seedDb from './models/seedDb';
 const app = express();
 const port = 3001;
 
+app.use(cors());
+
 // Parse application/json
 app.use(bodyParser.json());
 
