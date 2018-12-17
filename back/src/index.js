@@ -5,11 +5,14 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import errorHandler from 'errorhandler';
 import morgan from 'morgan';
+import cors from 'cors';
 import dbController from './models/dbController';
 import seedDb from './models/seedDb';
 
 const app = express();
 const port = 3001;
+
+app.use(cors());
 
 // Parse application/json
 app.use(bodyParser.json());
