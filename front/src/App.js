@@ -15,6 +15,7 @@ class App extends React.Component {
       .then(res => res.json())
       .then(
         (result) => {
+          console.log(result);
           this.setState({ games: result });
         },
       );
@@ -22,7 +23,7 @@ class App extends React.Component {
 
   renderGames() {
     const { games } = this.state;
-    return games.map(e => <Game key={e.id} id={e.id} name={e.name} />);
+    return games.map(e => <Game key={e.id} id={e.id} name={e.name} publisher={e.publisher} releaseDate={e.releaseDate}/>);
   }
 
   render() {
