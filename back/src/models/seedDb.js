@@ -24,14 +24,14 @@ export default async (db, sequelize) => {
       platform: 'Game Boy',
       description: 'A 10-year old is kicked out of his house, and must organize pet battles to fuel his casino addiction',
       icon: 'pkmngreen.jpeg',
-      releaseDate: Date(1996, 2, 27, 0, 0, 0, 0),
+      releaseDate: '1996-01-01',
       publisher: 'Nintendo',
     });
     const zelda = await db.Game.create({
       name: 'The Legend Of Zelda: The Minish Cap',
       platform: 'Game Boy Advance',
       description: 'Wearing a green suit apparently forces you to save the world...',
-      releaseDate: Date(2004, 11, 4, 0, 0, 0, 0),
+      releaseDate: '2004-11-04',
       publisher: 'Nintendo',
     });
     db.Comment.create({
