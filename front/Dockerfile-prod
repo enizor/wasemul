@@ -1,0 +1,6 @@
+FROM node:10 as react-build
+WORKDIR /usr/app
+
+EXPOSE 3000
+
+CMD ["npm", "start"]

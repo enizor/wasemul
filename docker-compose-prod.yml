@@ -1,0 +1,43 @@
+version: "3"
+services:
+  haproxy:
+    build:
+      context: ./haproxy/
+      dockerfile: Dockerfile
+    depends_on:
+      - front
+    ports:
+      - 80:80
+      - 443:443
+    links:
+      - front
+    ports:
+      - "80:80"
+      - "443:443"
+  front:
+    build:
+      context: ./front/
+      dockerfile: Dockerfile-prod
+    volumes:
+      - ./front/:/usr/app
+    ports:
+      - "3000:3000"
+  back:
+    build:
+      context: ./back/
+      dockerfile: Dockerfile-prod
+    volumes:
+      - ./back/:/usr/app
+    ports:
+      - "3001:3001"
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: changeme
+    volumes:
+      - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
+      - "dbdata:/var/lib/postgresql/data"
+
+volumes:
+  dbdata:
