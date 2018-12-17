@@ -9,7 +9,7 @@ export default async (db, sequelize) => {
     });
     const userKevin = await db.User.create({
       nickname: 'XxX__K3v1nDu91__XxX',
-      email: 'kevin.le.desanusseur@gmail.com',
+      email: 'kevin.veryswag@gmail.com',
       biography: '',
       authLevel: 2,
     });
