@@ -13,6 +13,7 @@ export default (sequelize) => {
       },
       allowNull: false,
     },
+    // Admin:0, Modo: 1, regular user: 2
     authLevel: {
       type: DataTypes.INTEGER,
       allowNull: false,
