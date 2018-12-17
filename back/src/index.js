@@ -43,7 +43,9 @@ app.get('/', (_, res) => {
 
 app.get('/games/:id/comments', (req, res) => {
   db.Game.findOne({ where: { id: req.params.id } }).then((game) => {
-    game.getComments().then((comments) => {
+    game.getComments({
+      include: [{ model: db.User, attributes: ['nickname'] }],
+    }).then((comments) => {
       res.send(comments);
     });
   });

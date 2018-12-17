@@ -61,12 +61,12 @@ class Game extends Component {
     const { match } = this.props;
     const { gameInfo, comments } = this.state;
 
-    if (isNaN(parseInt(match.params.id))) return <Redirect to="/" />;
+    if (parseInt(match.params.id, 10) === undefined) return <Redirect to="/" />;
     return (
       <div>
         <div>
           <h1>Game Description</h1>
-          <img src={gameInfo.icon} />
+          <img src={gameInfo.icon} alt="" />
           {' '}
           {gameInfo.name}
         </div>
@@ -74,9 +74,11 @@ class Game extends Component {
         <div>
           <h1>Comments</h1>
           <hr />
-          {comments.map((comment, i) => (
-            <div key={i}>
+          {comments.map(comment => (
+            <div key={comment.id}>
               <p>{comment.body}</p>
+              <p>Sent by: </p>
+              <p>{comment.User.nickname}</p>
               <hr />
             </div>
           ))}
@@ -92,6 +94,10 @@ Game.propTypes = {
       id: PropTypes.string.isRequired,
     }),
   }),
+};
+
+Game.defaultProps = {
+  match: { params: { id: '' } },
 };
 
 export default Game;
