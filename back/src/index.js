@@ -6,8 +6,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import errorHandler from 'errorhandler';
 import morgan from 'morgan';
-import path from 'path';
-
+import cors from 'cors';
 import dbController from './models/dbController';
 import seedDb from './models/seedDb';
 
