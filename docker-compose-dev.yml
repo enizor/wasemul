@@ -1,26 +1,26 @@
 version: "3"
 services:
-  front:
-    build:
-      context: ./front/
-      dockerfile: Dockerfile-dev
-    volumes:
-      - ./front/:/usr/app
-    ports:
-      - "3000:3000"
-  back:
-    build:
-      context: ./back/
-      dockerfile: Dockerfile-dev
-    volumes:
-      - ./back/:/usr/app
-    ports:
-      - "3001:3001"
-  db:
-    image: postgres:alpine
-    environment:
-      - POSTGRES_USER=
-      - POSTGRES_PASSWORD=
-      - POSTGRES_DB=
-    ports:
-      - "5432:5432"
+    front:
+        build:
+            context: ./front/
+            dockerfile: Dockerfile-dev
+        volumes:
+            - ./front/:/usr/app
+        ports:
+            - "3000:3000"
+    back:
+        build:
+            context: ./back/
+            dockerfile: Dockerfile-dev
+        volumes:
+            - ./back/:/usr/app
+        ports:
+            - "3001:3001"
+    db:
+        image: postgres:alpine
+        environment:
+            - POSTGRES_USER=dev
+            - POSTGRES_PASSWORD=dev
+            - POSTGRES_DB=dev
+        ports:
+            - "5432:5432"
