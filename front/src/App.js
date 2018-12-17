@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Game from './Game';
+import Game from './components/Game';
 
 class App extends React.Component {
   constructor(props) {
