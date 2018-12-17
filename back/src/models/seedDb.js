@@ -30,6 +30,7 @@ export default async (db, sequelize) => {
       name: 'The Legend Of Zelda: The Minish Cap',
       platform: 'Game Boy Advance',
       description: 'Wearing a green suit apparently forces you to save the world...',
+      icon: 'minishcap.jpeg',
       releaseDate: '2004-11-04',
       publisher: 'Nintendo',
     });
