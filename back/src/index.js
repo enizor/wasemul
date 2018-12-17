@@ -52,6 +52,12 @@ app.get('/games/:id/comments', (req, res) => {
   });
 });
 
+app.get('/games/featured', (_, res) => {
+  db.Game.findAll({ limit: 10 }).then((games) => {
+    res.send(games);
+  });
+});
+
 app.get('/games/:id', (req, res) => {
   db.Game.findOne({ where: { id: req.params.id } }).then((game) => {
     res.send(game);
