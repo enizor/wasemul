@@ -11,7 +11,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3001/games')
+    fetch('http://localhost:3001/games/featured')
       .then(res => res.json())
       .then(
         (result) => {
