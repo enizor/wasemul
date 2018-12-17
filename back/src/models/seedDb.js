@@ -8,7 +8,8 @@ export default async (db, sequelize) => {
     const game = await db.Game.create({
       name: 'Pokemon Green',
       publisher: 'Some Company',
-      releaseDate: "1996-01-01",
+      releaseDate: '1996-01-01',
+      icon: 'pkmngreen.jpeg',
     });
     db.Comment.create({
       userId: user.id,

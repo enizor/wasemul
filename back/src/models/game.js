@@ -15,7 +15,7 @@ export default (sequelize) => {
     icon: {
       type: DataTypes.STRING,
       validate: {
-        isUrl: true,
+        is: ['[a-z0-9._-]+', 'i'],
       },
     },
     releaseDate: {
