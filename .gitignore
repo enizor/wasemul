@@ -9,3 +9,5 @@ front/build/
 back/src/node_modules/
 back/dist/
 *.pem
+
+.env
