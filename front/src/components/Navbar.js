@@ -1,5 +1,7 @@
 import React from 'react';
 
+import '../css/Navbar.css';
+
 function Navbar() {
   // Lossely based on https://codepen.io/jo_Geek/pen/xgbaEr for HTML and CSS code
   return (
