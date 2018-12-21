@@ -25,6 +25,7 @@
     "prettier-eslint-cli": "^4.7.1"
   },
   "dependencies": {
+    "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
