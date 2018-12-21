@@ -16,22 +16,27 @@ export default async (db, sequelize) => {
     const admin = await db.User.create({
       nickname: 'admin',
       email: 'admin@canttouchthis.com',
-      icon: 'https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjt9qKru5XfAhVoxYUKHfVnA8MQjRx6BAgBEAU&url=http%3A%2F%2Fwww.mainprofile.com%2Fadministrator-icon-5154%2F&psig=AOvVaw2kHAsAqkkBBrb5sd8Ba6r0&ust=1544538200402953',
+      icon:
+        'https://static.cuisineaz.com/400x320/i108058-kebab-sans-gluten.jpg',
       authLevel: 0,
     });
     const pkRed = await db.Game.create({
       name: 'Pokemon Green',
       platform: 'Game Boy',
-      description: 'A 10-year old is kicked out of his house, and must organize pet battles to fuel his casino addiction',
-      icon: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a6/Pok%C3%A9mon_box_art_-_Red_Version.png/220px-Pok%C3%A9mon_box_art_-_Red_Version.png',
+      description:
+        'A 10-year old is kicked out of his house, and must organize pet battles to fuel his casino addiction',
+      icon:
+        'https://upload.wikimedia.org/wikipedia/en/thumb/a/a6/Pok%C3%A9mon_box_art_-_Red_Version.png/220px-Pok%C3%A9mon_box_art_-_Red_Version.png',
       releaseDate: Date(1996, 2, 27, 0, 0, 0, 0),
       publisher: 'Nintendo',
     });
     const zelda = await db.Game.create({
       name: 'The Legend Of Zelda: The Minish Cap',
       platform: 'Game Boy Advance',
-      description: 'Wearing a green suit apparently forces you to save the world...',
-      icon: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a5/The_Legend_of_Zelda_The_Minish_Cap_Game_Cover.JPG/220px-The_Legend_of_Zelda_The_Minish_Cap_Game_Cover.JPG',
+      description:
+        'Wearing a green suit apparently forces you to save the world...',
+      icon:
+        'https://upload.wikimedia.org/wikipedia/en/thumb/a/a5/The_Legend_of_Zelda_The_Minish_Cap_Game_Cover.JPG/220px-The_Legend_of_Zelda_The_Minish_Cap_Game_Cover.JPG',
       releaseDate: Date(2004, 11, 4, 0, 0, 0, 0),
       publisher: 'Nintendo',
     });
