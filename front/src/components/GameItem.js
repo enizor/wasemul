@@ -5,7 +5,7 @@ const GameItem = (props) => {
   const {
     id, name, publisher, releaseDate, icon,
   } = props;
-  const iconPath = `http://localhost:3001/static/${icon}`;
+  const iconPath = icon;
   return (
     <a className="pure-button pure-u-3-5" href={`/games/${id}`}>
       <div className="Game">
