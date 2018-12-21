@@ -1,5 +1,5 @@
 import React from 'react';
-import Game from './Game';
+import GameItem from './GameItem';
 
 class Home extends React.Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class Home extends React.Component {
   renderGames() {
     const { games } = this.state;
     return games.map(e => (
-      <Game
+      <GameItem
         key={e.id}
         id={e.id}
         name={e.name}
