@@ -4,7 +4,7 @@ export default async (db, sequelize) => {
     const userTest = await db.User.create({
       nickname: 'test',
       email: 'test@example.com',
-      bigraphy: 'This is a sample user',
+      biography: 'This is a sample user',
       authLevel: 2,
     });
     const userKevin = await db.User.create({
