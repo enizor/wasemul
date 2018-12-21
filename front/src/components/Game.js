@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 /**
  * Fetch configuration through
@@ -69,6 +69,22 @@ class Game extends Component {
           <img src={gameInfo.icon} alt="" />
           {' '}
           {gameInfo.name}
+          <br />
+          Platform:
+          {' '}
+          { gameInfo.platform }
+          <br />
+          Description:
+          {' '}
+          { gameInfo.description }
+          <br />
+          Released:
+          {' '}
+          { gameInfo.releaseDate }
+          <br />
+          Published by:
+          {' '}
+          { gameInfo.publisher }
         </div>
         <br />
         <div>
@@ -78,7 +94,9 @@ class Game extends Component {
             <div key={comment.id}>
               <p>{comment.body}</p>
               <p>Sent by: </p>
-              <p>{comment.User.nickname}</p>
+              <Link to={`/users/${comment.userId}`}>
+                {comment.User.nickname}
+              </Link>
               <hr />
             </div>
           ))}
@@ -91,13 +109,13 @@ class Game extends Component {
 Game.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
     }),
   }),
 };
 
 Game.defaultProps = {
-  match: { params: { id: '' } },
+  match: { params: { id: 0 } },
 };
 
 export default Game;
