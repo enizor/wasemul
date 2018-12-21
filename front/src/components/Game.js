@@ -57,7 +57,6 @@ class Game extends Component {
   };
 
   render() {
-    console.log(this.state);
     const { match } = this.props;
     const { gameInfo, comments } = this.state;
 
