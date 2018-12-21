@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Game = (props) => {
+const GameItem = (props) => {
   const {
     id, name, publisher, releaseDate, icon,
   } = props;
@@ -21,7 +21,7 @@ const Game = (props) => {
   );
 };
 
-Game.propTypes = {
+GameItem.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   publisher: PropTypes.string.isRequired,
@@ -29,4 +29,4 @@ Game.propTypes = {
   icon: PropTypes.string.isRequired,
 };
 
-export default Game;
+export default GameItem;
