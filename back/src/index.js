@@ -2,10 +2,11 @@
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import errorHandler from 'errorhandler';
 import morgan from 'morgan';
-import cors from 'cors';
+import path from 'path';
 import dbController from './models/dbController';
 import seedDb from './models/seedDb';
 
@@ -16,6 +17,8 @@ app.use(cors());
 
 // Parse application/json
 app.use(bodyParser.json());
+
+app.use(cors());
 
 dotenv.load();
 
@@ -37,6 +40,8 @@ if (process.env.NODE_ENV === 'development') {
   });
 }
 
+app.use('/static', express.static(path.join(__dirname, 'public')));
+
 app.get('/', (_, res) => {
   res.send('Hello world!');
 });
@@ -48,6 +53,18 @@ app.get('/games/:id/comments', (req, res) => {
     }).then((comments) => {
       res.send(comments);
     });
+  });
+});
+
+app.get('/games/featured', (_, res) => {
+  db.Game.findAll({ limit: 10 }).then((games) => {
+    res.send(games);
+  });
+});
+
+app.get('/games/featured', (_, res) => {
+  db.Game.findAll({ limit: 10 }).then((games) => {
+    res.send(games);
   });
 });
 

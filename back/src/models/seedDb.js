@@ -4,7 +4,7 @@ export default async (db, sequelize) => {
     const userTest = await db.User.create({
       nickname: 'test',
       email: 'test@example.com',
-      bigraphy: 'This is a sample user',
+      biography: 'This is a sample user',
       authLevel: 2,
     });
     const userKevin = await db.User.create({
@@ -16,7 +16,7 @@ export default async (db, sequelize) => {
     const admin = await db.User.create({
       nickname: 'admin',
       email: 'admin@canttouchthis.com',
-      icon: 'https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjt9qKru5XfAhVoxYUKHfVnA8MQjRx6BAgBEAU&url=http%3A%2F%2Fwww.mainprofile.com%2Fadministrator-icon-5154%2F&psig=AOvVaw2kHAsAqkkBBrb5sd8Ba6r0&ust=1544538200402953',
+      icon: 'https://static.cuisineaz.com/400x320/i108058-kebab-sans-gluten.jpg',
       authLevel: 0,
     });
     const pkRed = await db.Game.create({
