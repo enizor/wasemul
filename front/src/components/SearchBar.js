@@ -12,7 +12,9 @@ export default class SearchBar extends React.Component {
   };
 
   executeSearch = () => {
-    console.log(this.state.query);
+    const { query } = this.state;
+
+    console.log(query);
   };
 
   render = () => (
@@ -22,7 +24,9 @@ export default class SearchBar extends React.Component {
         onChange={this.updateQuery}
         placeholder="Type Here..."
       />
-      <button onClick={this.executeSearch}>Search</button>
+      <button type="submit" onClick={this.executeSearch}>
+        Search
+      </button>
     </div>
   );
 }
