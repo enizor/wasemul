@@ -18,7 +18,7 @@ export default class SearchBar extends React.Component {
   };
 
   render = () => (
-    <div>
+    <div style={{ float: 'right' }}>
       <input
         type="text"
         onChange={this.updateQuery}
