@@ -6,9 +6,6 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - front
-    ports:
-      - 80:80
-      - 443:443
     links:
       - front
     ports:
@@ -34,7 +31,9 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_PASSWORD: changeme
+      - POSTGRES_DB=db
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
     volumes:
       - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
       - "dbdata:/var/lib/postgresql/data"
