@@ -118,7 +118,15 @@ app.post('/auth', (req, res) => {
   console.log(req.body);
   db.User.findOne({ where: { email: req.body.email } }).then((user) => {
     if (comparePassword(req.body.password, user.password)) {
-      jsonwebtoken.sign(user, 'privateKey', { expiresIn: '1h' },
+      const data = {
+        nickname: user.nickname,
+        email: user.email,
+        authLevel: user.authLevel,
+        biography: user.biography,
+        icon: user.icon,
+        enabled: user.enabled,
+      };
+      jsonwebtoken.sign(data, 'privateKey', { expiresIn: '1h' },
         (err, token) => {
           if (err) { console.log(err); }
           res.send(token);
