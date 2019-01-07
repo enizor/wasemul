@@ -117,7 +117,7 @@ app.get('/comments', (_, res) => {
 app.post('/auth', (req, res) => {
   console.log(req.body);
   db.User.findOne({ where: { email: req.body.email } }).then((user) => {
-    if (comparePassword(req.body.password, user.password)) {
+    if (user && comparePassword(req.body.password, user.password)) {
       const data = {
         nickname: user.nickname,
         email: user.email,
