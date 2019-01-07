@@ -9,7 +9,6 @@ class AuthForm extends React.Component {
     password: '',
   };
 
-
   handleInputChange = (event) => {
     const { target } = event;
     const { value, name } = target;
