@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import errorHandler from 'errorhandler';
 import morgan from 'morgan';
 import path from 'path';
+import jsonwebtoken from 'jsonwebtoken';
 import dbController from './models/dbController';
 import seedDb from './models/seedDb';
 import { comparePassword } from './auth';
@@ -117,9 +118,13 @@ app.post('/auth', (req, res) => {
   console.log(req.body);
   db.User.findOne({ where: { email: req.body.email } }).then((user) => {
     if (comparePassword(req.body.password, user.password)) {
-      res.send('Accepted');
+      jsonwebtoken.sign(user, 'privateKey', { expiresIn: '1h' },
+        (err, token) => {
+          if (err) { console.log(err); }
+          res.send(token);
+        });
     } else {
-      res.send('Rejected');
+      res.sendStatus(401);
     }
   });
 });
