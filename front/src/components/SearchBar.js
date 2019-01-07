@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default class SearchBar extends React.Component {
   constructor(props) {
@@ -11,22 +12,19 @@ export default class SearchBar extends React.Component {
     this.setState({ query: e.target.value });
   };
 
-  executeSearch = () => {
+  render = () => {
     const { query } = this.state;
-
-    console.log(query);
+    return (
+      <div style={{ float: 'right' }}>
+        <input
+          type="text"
+          onChange={this.updateQuery}
+          placeholder="Type Here..."
+        />
+        <Link to={`/search/${query}`}>
+          <button type="submit">Search</button>
+        </Link>
+      </div>
+    );
   };
-
-  render = () => (
-    <div style={{ float: 'right' }}>
-      <input
-        type="text"
-        onChange={this.updateQuery}
-        placeholder="Type Here..."
-      />
-      <button type="submit" onClick={this.executeSearch}>
-        Search
-      </button>
-    </div>
-  );
 }
