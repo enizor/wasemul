@@ -6,6 +6,7 @@ import User from './components/User';
 import Game from './components/Game';
 import Navbar from './components/Navbar';
 import './App.css';
+import AuthForm from './components/AuthForm';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/" exact component={Home} />
           <Route path="/users/:id" component={User} />
           <Route path="/games/:id" component={Game} />
+          <Route path="/auth" component={AuthForm} />
           {/* default route */}
           <Route component={Home} />
         </Switch>
