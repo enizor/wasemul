@@ -192,9 +192,9 @@ app.post('/auth', (req, res) => {
   console.log(req.body);
   db.User.findOne({ where: { email: req.body.email } }).then((user) => {
     if (comparePassword(req.body.password, user.password)) {
-      res.send("Accepted");
+      res.send('Accepted');
     } else {
-      res.send("Rejected");
+      res.send('Rejected');
     }
   });
 });
