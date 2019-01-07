@@ -19,10 +19,13 @@ export default () => {
     },
   );
 
+  const op = Sequelize.Op;
+
   const db = modelDefiner(sequelize, DataTypes);
 
   return {
     db,
     sequelize,
+    op,
   };
 };

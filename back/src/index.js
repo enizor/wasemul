@@ -22,7 +22,7 @@ app.use(cors());
 
 dotenv.load();
 
-const { db, sequelize } = dbController();
+const { db, sequelize, op } = dbController();
 
 sequelize.sync();
 
@@ -48,11 +48,13 @@ app.get('/', (_, res) => {
 
 app.get('/games/:id/comments', (req, res) => {
   db.Game.findOne({ where: { id: req.params.id } }).then((game) => {
-    game.getComments({
-      include: [{ model: db.User, attributes: ['nickname'] }],
-    }).then((comments) => {
-      res.send(comments);
-    });
+    game
+      .getComments({
+        include: [{ model: db.User, attributes: ['nickname'] }],
+      })
+      .then((comments) => {
+        res.send(comments);
+      });
   });
 });
 
@@ -110,6 +112,20 @@ app.get('/comments', (_, res) => {
   db.Comment.findAll().then((comments) => {
     res.send(comments);
   });
+});
+
+app.get('/search', (req, res) => {
+  if (req.query && req.query.query) {
+    db.Game.findAll({
+      where: { name: { [op.iLike]: `%${req.query.query}%` } },
+    }).then((games) => {
+      db.User.findAll({
+        where: { nickname: { [op.iLike]: `%${req.query.query}%` } },
+      }).then((users) => {
+        res.send({ games, users });
+      });
+    });
+  }
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}`));
