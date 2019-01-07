@@ -5,6 +5,7 @@ import Home from './components/Home';
 import User from './components/User';
 import Game from './components/Game';
 import Navbar from './components/Navbar';
+import SearchPage from './components/SearchPage';
 import './App.css';
 import AuthForm from './components/AuthForm';
 import SignUpForm from './components/SignUpForm';
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/games/:id" component={Game} />
           <Route path="/auth" component={AuthForm} />
           <Route path="/register" component={SignUpForm} />
+          <Route path="/search/:query" component={SearchPage} />
           {/* default route */}
           <Route component={Home} />
         </Switch>
