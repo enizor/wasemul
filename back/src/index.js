@@ -9,7 +9,7 @@ import morgan from 'morgan';
 import path from 'path';
 import dbController from './models/dbController';
 import seedDb from './models/seedDb';
-import { comparePassword } from './auth'
+import { comparePassword } from './auth';
 
 const app = express();
 const port = 3001;
@@ -117,9 +117,9 @@ app.post('/auth', (req, res) => {
   console.log(req.body);
   db.User.findOne({ where: { email: req.body.email } }).then((user) => {
     if (comparePassword(req.body.password, user.password)) {
-      res.send("Accepted");
+      res.send('Accepted');
     } else {
-      res.send("Rejected");
+      res.send('Rejected');
     }
   });
 });
