@@ -29,14 +29,14 @@ RESPONSE BODY
 ### The user wants to check out the list of all the games
 
 He clicks on the `Games` button on the navbar, and lands on a page displaying the list of all games.
-The back should expose the following route `/games` 
+The back should expose the following route `/games` with the query parameter `:page`.
 
-- `/games`
+- `/games?page=:page`
 ```JSON
 REPONSE BODY
     {
         page,
-        n_page,
+        pages,
         games: [
             {
                 id,
