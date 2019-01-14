@@ -1,6 +1,10 @@
 import React from 'react';
 import GameItem from './GameItem';
 
+const configuration = process.env.NODE_ENV === 'production'
+  ? require('../config/prod.json')
+  : require('../config/dev.json');
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -10,7 +14,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`https://${document.location.hostname}:3001/games/featured`)
+    fetch(`${configuration.API.URL}:${configuration.API.PORT}/games/featured`)
       .then(res => res.json())
       .then((result) => {
         this.setState({ games: result });

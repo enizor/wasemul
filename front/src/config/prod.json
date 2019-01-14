@@ -1,0 +1,6 @@
+{
+  "API": {
+    "PORT": 3001,
+    "URL": "https://wasemul.viarezo.fr"
+  }
+}

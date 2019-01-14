@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
 
+const configuration = process.env.NODE_ENV === 'production'
+  ? require('../config/prod.json')
+  : require('../config/dev.json');
 /**
  * Fetch configuration through
  */
@@ -36,7 +39,9 @@ class Game extends Component {
 
     // API call this.state.id
     fetch(
-      `https://${document.location.hostname}:3001/games/${match.params.id}`,
+      `${configuration.API.URL}:${configuration.API.PORT}/games/${
+        match.params.id
+      }`,
       myInit,
     )
       .then(res => res.json())
@@ -51,7 +56,7 @@ class Game extends Component {
     const { match } = this.props;
 
     fetch(
-      `https://${document.location.hostname}:3001/games/${
+      `${configuration.API.URL}:${configuration.API.PORT}/games/${
         match.params.id
       }/comments`,
       myInit,

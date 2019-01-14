@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
+const configuration = process.env.NODE_ENV === 'production'
+  ? require('../config/prod.json')
+  : require('../config/dev.json');
+
 class User extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +17,11 @@ class User extends React.Component {
 
   componentDidMount() {
     const { match } = this.props;
-    fetch(`https://${document.location.hostname}:3001/users/${match.params.id}`)
+    fetch(
+      `${configuration.API.URL}:${configuration.API.PORT}/users/${
+        match.params.id
+      }`,
+    )
       .then(res => res.json())
       .then((result) => {
         this.setState({ user: result, failed: false });
