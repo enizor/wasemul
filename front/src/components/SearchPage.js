@@ -5,8 +5,8 @@ import { Redirect } from 'react-router-dom';
 import GameItem from './GameItem';
 import UserItem from './UserItem';
 
-const defaultUserImage = 'https://www.autourdelacom.fr/wp-content/uploads/2018/03/default-user-image.png';
-const defaultGameImage = 'https://www.nationalpetregister.org/assets/img/no-photo.jpg';
+const defaultUserImage = 'https://www.autourdelacom.fr/wp-content/uploads/2018/03/default-user-image.png'; // eslint-disable-line no-console
+const defaultGameImage = 'https://www.nationalpetregister.org/assets/img/no-photo.jpg'; // eslint-disable-line no-console
 
 export default class SearchPage extends React.Component {
   constructor(props) {
