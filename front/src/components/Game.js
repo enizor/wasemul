@@ -116,7 +116,7 @@ class Game extends Component {
 Game.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.string.isRequired,
     }),
   }),
 };
