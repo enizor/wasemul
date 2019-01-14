@@ -74,7 +74,6 @@ app.get('/games', (req, res) => {
   const limit = 10;
   let offset = 0;
   db.Game.findAndCountAll().then((data) => {
-    console.log(req.query);
     const page = req.query.page || 1;
     const pages = Math.ceil(data.count / limit);
     offset = limit * (page - 1);
