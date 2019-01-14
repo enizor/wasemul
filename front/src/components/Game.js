@@ -71,19 +71,19 @@ class Game extends Component {
           <br />
           Platform:
           {' '}
-          { gameInfo.platform }
+          {gameInfo.platform}
           <br />
           Description:
           {' '}
-          { gameInfo.description }
+          {gameInfo.description}
           <br />
           Released:
           {' '}
-          { gameInfo.releaseDate }
+          {gameInfo.releaseDate}
           <br />
           Published by:
           {' '}
-          { gameInfo.publisher }
+          {gameInfo.publisher}
         </div>
         <br />
         <div>
@@ -108,7 +108,7 @@ class Game extends Component {
 Game.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.string.isRequired,
     }),
   }),
 };
