@@ -15,7 +15,7 @@ services:
   front:
     build:
       context: ./front/
-      dockerfile: Dockerfile-dev
+      dockerfile: Dockerfile-prod
     volumes:
       - ./front/:/usr/app
     ports:
