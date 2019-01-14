@@ -13,7 +13,7 @@ class User extends React.Component {
 
   componentDidMount() {
     const { match } = this.props;
-    fetch(`http://${document.location.hostname}:3001/users/${match.params.id}`)
+    fetch(`https://${document.location.hostname}:3001/users/${match.params.id}`)
       .then(res => res.json())
       .then((result) => {
         this.setState({ user: result, failed: false });

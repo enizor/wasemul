@@ -36,7 +36,7 @@ class Game extends Component {
 
     // API call this.state.id
     fetch(
-      `http://${document.location.hostname}:3001/games/${match.params.id}`,
+      `https://${document.location.hostname}:3001/games/${match.params.id}`,
       myInit,
     )
       .then(res => res.json())
@@ -51,7 +51,7 @@ class Game extends Component {
     const { match } = this.props;
 
     fetch(
-      `http://${document.location.hostname}:3001/games/${
+      `https://${document.location.hostname}:3001/games/${
         match.params.id
       }/comments`,
       myInit,
