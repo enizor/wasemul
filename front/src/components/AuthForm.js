@@ -51,7 +51,7 @@ class AuthForm extends React.Component {
               id="name"
               name="email"
               type="text"
-              placeholder="Username"
+              placeholder="E-mail"
               value={email}
               onChange={this.handleInputChange}
             />
