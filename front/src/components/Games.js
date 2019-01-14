@@ -28,9 +28,9 @@ class Games extends Component {
 
   fetchGames = () => {
     const { location } = this.props;
-    const params = new URLSearchParams(location.search);
+    const query = new URLSearchParams(location.search).get('page') || 1;
     // API call this.state.id
-    fetch(`http://localhost:3001/games?page=${params.get('page')}`)
+    fetch(`http://localhost:3001/games?page=${query}`)
       .then(res => res.json())
       .then((json) => {
         const { games, page, pages } = json;
@@ -72,8 +72,8 @@ class Games extends Component {
       <Redirect to="/" />
     ) : (
       <div>
-        <div>
-          <h1>Games</h1>
+        <div className="App pure-g center">
+          <h1 className="pure-u-3-5 text-left">Games</h1>
           {games.map(e => (
             <GameItem
               key={e.id}
