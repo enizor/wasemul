@@ -15,6 +15,8 @@ function Navbar() {
       <div className="nav-links">
         <a href="/">Home</a>
         <a href="/users/1">First user</a>
+        <a href="/auth">Log in</a>
+        <a href="/register">Sign up</a>
       </div>
     </div>
   );
