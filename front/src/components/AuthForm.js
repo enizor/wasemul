@@ -1,13 +1,15 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
 import React from 'react';
-import Auth from './AuthService';
+import AuthService from './AuthService';
 
 class AuthForm extends React.Component {
   state = {
     email: '',
     password: '',
   };
+
+  auth = new AuthService();
 
   handleInputChange = (event) => {
     const { target } = event;
@@ -22,13 +24,13 @@ class AuthForm extends React.Component {
     const { email, password } = this.state;
     (async () => {
       try {
-        await Auth.login(email, password);
+        await this.auth.login(email, password);
         const { props: { history } } = this;
         history.push('/');
-        console.log(Auth.getProfile());
+        console.log(this.auth.getProfile());
       } catch (err) {
         alert('The username and password does not match');
-        console.log(err);
+        console.log(err)
       }
     })();
     event.preventDefault();
