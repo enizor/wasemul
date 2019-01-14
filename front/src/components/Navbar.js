@@ -13,7 +13,7 @@ const NavigationBar = () => (
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav>
-        <NavItem eventKey={1} href="/games">
+        <NavItem eventKey={1} href="/games/1">
           PokemonGreenGame
         </NavItem>
         <NavItem eventKey={2} href="/users/3">
@@ -21,9 +21,7 @@ const NavigationBar = () => (
         </NavItem>
       </Nav>
       <Nav pullRight>
-        <NavItem>
-          <SearchBar />
-        </NavItem>
+        <SearchBar />
       </Nav>
     </Navbar.Collapse>
   </Navbar>
