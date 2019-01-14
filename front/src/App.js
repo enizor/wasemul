@@ -26,6 +26,7 @@ export default function App() {
           <Route path="/register" component={SignUpForm} />
           <Route path="/search/:query" component={SearchPage} />
           <Route path="/auth" component={AuthForm} />
+          <Route path="/register" component={SignUpForm} />
           {/* default route */}
           <Route component={Home} />
         </Switch>
