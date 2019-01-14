@@ -35,7 +35,10 @@ class Game extends Component {
     const { match } = this.props;
 
     // API call this.state.id
-    fetch(`http://localhost:3001/games/${match.params.id}`, myInit)
+    fetch(
+      `http://${document.location.hostname}:3001/games/${match.params.id}`,
+      myInit,
+    )
       .then(res => res.json())
       .then((json) => {
         this.setState({
@@ -47,7 +50,12 @@ class Game extends Component {
   fetchComments = () => {
     const { match } = this.props;
 
-    fetch(`http://localhost:3001/games/${match.params.id}/comments`, myInit)
+    fetch(
+      `http://${document.location.hostname}:3001/games/${
+        match.params.id
+      }/comments`,
+      myInit,
+    )
       .then(res => res.json())
       .then((json) => {
         this.setState({
@@ -71,19 +79,19 @@ class Game extends Component {
           <br />
           Platform:
           {' '}
-          { gameInfo.platform }
+          {gameInfo.platform}
           <br />
           Description:
           {' '}
-          { gameInfo.description }
+          {gameInfo.description}
           <br />
           Released:
           {' '}
-          { gameInfo.releaseDate }
+          {gameInfo.releaseDate}
           <br />
           Published by:
           {' '}
-          { gameInfo.publisher }
+          {gameInfo.publisher}
         </div>
         <br />
         <div>
