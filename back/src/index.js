@@ -129,7 +129,7 @@ app.post('/auth', (req, res) => {
       jsonwebtoken.sign(data, 'privateKey', { expiresIn: '1h' },
         (err, token) => {
           if (err) { console.log(err); }
-          res.send(token);
+          res.send({ token });
         });
     } else {
       res.sendStatus(401);

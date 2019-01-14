@@ -1,11 +1,14 @@
 /* eslint-disable jsx-a11y/label-has-for */
 import React from 'react';
+import AuthService from './AuthService';
 
 class AuthForm extends React.Component {
   state = {
     email: '',
     password: '',
   };
+
+  auth = new AuthService();
 
   handleInputChange = (event) => {
     const { target } = event;
@@ -19,18 +22,15 @@ class AuthForm extends React.Component {
   handleSubmit = (event) => {
     const { email, password } = this.state;
     (async () => {
-      await fetch('http://localhost:3001/auth', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-      // Do something with the resulting JWT
+      try {
+        await this.auth.login(email, password);
+        const { props: { history } } = this;
+        history.push('/');
+        console.log(this.auth.getProfile());
+      } catch (err) {
+        alert('The username and password does not match');
+        console.log(err)
+      }
     })();
     event.preventDefault();
   }
