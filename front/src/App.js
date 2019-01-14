@@ -7,6 +7,7 @@ import Game from './components/Game';
 import Navbar from './components/Navbar';
 import './App.css';
 import AuthForm from './components/AuthForm';
+import SignUpForm from './components/SignUpForm';
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/users/:id" component={User} />
           <Route path="/games/:id" component={Game} />
           <Route path="/auth" component={AuthForm} />
+          <Route path="/register" component={SignUpForm} />
           {/* default route */}
           <Route component={Home} />
         </Switch>
