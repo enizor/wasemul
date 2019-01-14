@@ -5,6 +5,9 @@ import { Redirect } from 'react-router-dom';
 import GameItem from './GameItem';
 import UserItem from './UserItem';
 
+const defaultUserImage = 'https://www.autourdelacom.fr/wp-content/uploads/2018/03/default-user-image.png';
+const defaultGameImage = 'https://www.nationalpetregister.org/assets/img/no-photo.jpg';
+
 export default class SearchPage extends React.Component {
   constructor(props) {
     super(props);
@@ -56,12 +59,17 @@ export default class SearchPage extends React.Component {
             name={e.name}
             publisher={e.publisher}
             releaseDate={e.releaseDate}
-            icon={e.icon}
+            icon={e.icon || defaultGameImage}
           />
         ))}
         <h1>Users</h1>
         {users.map(e => (
-          <UserItem key={e.id} id={e.id} nickname={e.nickname} icon={e.icon} />
+          <UserItem
+            key={e.id}
+            id={e.id}
+            nickname={e.nickname}
+            icon={e.icon || defaultUserImage}
+          />
         ))}
       </div>
     );
