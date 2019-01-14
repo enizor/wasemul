@@ -64,21 +64,27 @@ app.get('/games/featured', (_, res) => {
   });
 });
 
-app.get('/games/featured', (_, res) => {
-  db.Game.findAll({ limit: 10 }).then((games) => {
-    res.send(games);
-  });
-});
-
 app.get('/games/:id', (req, res) => {
   db.Game.findOne({ where: { id: req.params.id } }).then((game) => {
     res.send(game);
   });
 });
 
-app.get('/games', (_, res) => {
-  db.Game.findAll().then((games) => {
-    res.send(games);
+app.get('/games', (req, res) => {
+  const limit = 10;
+  let offset = 0;
+  db.Game.findAndCountAll().then((data) => {
+    console.log(req.query);
+    const page = req.query.page || 1;
+    const pages = Math.ceil(data.count / limit);
+    offset = limit * (page - 1);
+    db.Game.findAll({
+      limit,
+      offset,
+      order: [['name', 'DESC']],
+    }).then((games) => {
+      res.send({ page, pages, games });
+    });
   });
 });
 
