@@ -1,4 +1,5 @@
 import React from 'react';
+import Auth from './AuthService';
 
 import '../css/Navbar.css';
 
@@ -15,8 +16,9 @@ function Navbar() {
       <div className="nav-links">
         <a href="/">Home</a>
         <a href="/users/1">First user</a>
-        <a href="/auth">Log in</a>
-        <a href="/register">Sign up</a>
+        {!Auth.loggedIn() ? (<a href="/auth">Log in</a>) : null}
+        {!Auth.loggedIn() ? (<a href="/register">Sign up</a>) : null}
+        {Auth.loggedIn() ? null : (<a href="/"> Logged in</a>)}
       </div>
     </div>
   );
