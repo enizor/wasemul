@@ -1,7 +1,7 @@
 import React from 'react';
 import Auth from './AuthService';
-import SearchBar from './SearchBar';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import SearchBar from './SearchBar';
 
 const NavigationBar = () => (
   <Navbar inverse collapseOnSelect>
