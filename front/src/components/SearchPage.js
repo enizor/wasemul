@@ -5,6 +5,10 @@ import { Redirect } from 'react-router-dom';
 import GameItem from './GameItem';
 import UserItem from './UserItem';
 
+const configuration = process.env.NODE_ENV === 'production'
+  ? require('../config/prod.json')
+  : require('../config/dev.json');
+
 const defaultUserImage =  'https://www.autourdelacom.fr/wp-content/uploads/2018/03/default-user-image.png'; // eslint-disable-line
 const defaultGameImage =  'https://www.nationalpetregister.org/assets/img/no-photo.jpg'; // eslint-disable-line
 
@@ -30,7 +34,11 @@ export default class SearchPage extends React.Component {
 
   fetchQuery = () => {
     const { match } = this.props;
-    fetch(`http://localhost:3001/search?query=${match.params.query}`)
+    fetch(
+      `${configuration.API.URL}:${configuration.API.PORT}/search?query=${
+        match.params.query
+      }`,
+    )
       .then(res => res.json())
       .then((result) => {
         this.setState({
