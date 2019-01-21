@@ -10,7 +10,7 @@ import path from 'path';
 import jsonwebtoken from 'jsonwebtoken';
 import dbController from './models/dbController';
 import seedDb from './models/seedDb';
-import { comparePassword } from './auth';
+import { comparePassword, hashPassword } from './auth';
 
 const app = express();
 const port = 3001;
@@ -133,6 +133,36 @@ app.post('/auth', (req, res) => {
         });
     } else {
       res.sendStatus(401);
+    }
+  });
+});
+
+app.post('/register', (req, res) => {
+  console.log(req.body);
+  db.User.findOne({ where: { email: req.body.email } }).then((user) => {
+    if (user) {
+      res.sendStatus(500);
+    } else {
+      const newUser = db.User.create({
+        nickname: req.body.nickname,
+        email: req.body.email,
+        biography: '',
+        authLevel: 2,
+        password: hashPassword(req.body.password),
+      });
+      const data = {
+        nickname: newUser.nickname,
+        email: newUser.email,
+        authLevel: newUser.authLevel,
+        biography: newUser.biography,
+        icon: newUser.icon,
+        enabled: newUser.enabled,
+      };
+      jsonwebtoken.sign(data, 'privateKey', { expiresIn: '1h' },
+        (err, token) => {
+          if (err) { console.log(err); }
+          res.send({ token });
+        });
     }
   });
 });

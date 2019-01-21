@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
 import React from 'react';
+import Auth from './AuthService';
 
 class SignUpForm extends React.Component {
   state = {
@@ -20,17 +21,24 @@ class SignUpForm extends React.Component {
   }
 
   handleSubmit = (event) => {
-    // const { nickname, email, password } = this.state;
+    const { nickname, email, password } = this.state;
     (async () => {
-      // try {
-      //   await Auth.login(email, password);
-      //   const { props: { history } } = this;
-      //   history.push('/');
-      //   console.log(Auth.getProfile());
-      // } catch (err) {
-      //   alert('The username and password does not match');
-      //   console.log(err);
-      // }
+      try {
+        await Auth.fetch('http://localhost:3001/register', {
+          method: 'POST',
+          body: JSON.stringify({
+            nickname,
+            email,
+            password,
+          }),
+        });
+        const { props: { history } } = this;
+        history.push('/');
+        console.log(Auth.getProfile());
+      } catch (err) {
+        alert('Error registering new user');
+        console.log(err);
+      }
     })();
     event.preventDefault();
   }
@@ -63,7 +71,7 @@ class SignUpForm extends React.Component {
               E-mail address
             </label>
             <input
-              id="name"
+              id="email"
               name="email"
               type="text"
               placeholder="E-mail"
