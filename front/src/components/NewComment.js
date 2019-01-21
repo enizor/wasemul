@@ -4,6 +4,7 @@ import Auth from './AuthService';
 class NewComment extends React.Component {
   state = {
     comment: '',
+    error: false,
   };
 
   handleInputChange = (event) => {
@@ -18,15 +19,19 @@ class NewComment extends React.Component {
     const { comment } = this.state;
     (async () => {
       try {
-        const { props: { gameID } } = this;
-        await Auth.fetch(`http://localhost:3001/game/${gameID}/comments`, {
-          method: 'POST',
-          body: JSON.stringify({ comment }),
-          mode: 'cors',
-          cache: 'default',
-        });
+        const { props: { gameID, fetchComments } } = this;
+        await Auth.fetch(
+          `http://localhost:3001/games/${gameID}/comments`, {
+            method: 'POST',
+            body: JSON.stringify({ comment }),
+            mode: 'cors',
+            cache: 'default',
+          },
+        );
+        fetchComments();
+        this.state.error = false;
       } catch (err) {
-        alert(err);
+        this.state.error = true;
       }
     })();
     event.preventDefault();

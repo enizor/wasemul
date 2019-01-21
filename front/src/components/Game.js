@@ -103,7 +103,7 @@ class Game extends Component {
         <div>
           <NewComment
             gameID={match.params.id}
-            handleNewComment={this.handleNewComment}
+            handleNewComment={this.fetchComments}
           />
           <h1>Comments</h1>
           <hr />

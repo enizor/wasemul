@@ -121,20 +121,24 @@ app.get('/comments', (_, res) => {
   });
 });
 
-app.post('/game/:id/comments', (req, res) => {
+app.post('/games/:id/comments', (req, res) => {
   console.log(req.body);
   const token = jsonwebtoken.verify(req.headers.authorization, 'privateKey');
-  db.Comment.create({
-    userId: token.id,
-    gameId: req.params.id,
-    body: req.body.comment,
-  }).then((comment) => {
-    if (comment) {
-      res.send(comment);
-    } else {
-      res.sendStatus(500);
-    }
-  });
+  if (token) {
+    db.Comment.create({
+      userId: token.id,
+      gameId: req.params.id,
+      body: req.body.comment,
+    }).then((comment) => {
+      if (comment) {
+        res.send(comment);
+      } else {
+        res.sendStatus(500);
+      }
+    });
+  } else {
+    res.sendStatus(403);
+  }
 });
 
 app.post('/auth', (req, res) => {

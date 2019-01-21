@@ -6,7 +6,7 @@ The goal here is to describe the backend API through user stories.
 
 ### The user lands on the front page.
 
-A list of featured games are displayed. 
+A list of featured games are displayed.
 The back should expose the following route `/games/featured`.
 The route returns a list of featured games.
 
@@ -16,9 +16,9 @@ RESPONSE BODY
 {
     games: [
         {
-            icon, 
-            title, 
-            platform, 
+            icon,
+            title,
+            platform,
             descripton
         },
         ...
@@ -64,7 +64,7 @@ The back should expose the following routes `/games/:id`, `/games/:id/comments`,
         description,
         platform,
         rating,
-        version, 
+        version,
         year,
         developper
     }
@@ -132,9 +132,9 @@ RESPONSE BODY
         total_pages: 5,
         games: [
             {
-                icon, 
-                title, 
-                platform, 
+                icon,
+                title,
+                platform,
                 descripton,
                 saves: [
                     {
@@ -155,7 +155,7 @@ RESPONSE BODY
 
 ### The user wants to sign up
 
-The user wants to create an account. 
+The user wants to create an account.
 The back should expose the following route `/register`.
 
 - `/register` [POST]
@@ -164,7 +164,7 @@ The back should expose the following route `/register`.
 REQUEST BODY
     {
         mail,
-        pseudo, 
+        pseudo,
         password
     }
 ```
@@ -256,14 +256,13 @@ REQUEST BODY
 ### Post Comment
 
 The user wants to post a comment on a game. To do so he writes it and hist post.
-The back should expose the following route `/game/:id/comments`.
+The back should expose the following route `/games/:id/comments`.
 
-- `/game/:id/comments` [POST]
+- `/games/:id/comments` [POST]
 ```JSON
 REQUEST BODY
     {
-        body,
-        author_id 
+        comment,
     }
 ```
 
@@ -272,7 +271,7 @@ REQUEST BODY
 The user wants to upload a save.
 The back should expose the following route `/users/:id/saves`.
 
-- `/user/:id/saves` [POST]
+- `/users/:id/saves` [POST]
 ```JSON
 REQUEST BODY
     {
