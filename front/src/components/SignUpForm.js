@@ -3,6 +3,10 @@
 import React from 'react';
 import Auth from './AuthService';
 
+const configuration = process.env.NODE_ENV === 'production'
+  ? require('../config/prod.json')
+  : require('../config/dev.json');
+
 class SignUpForm extends React.Component {
   state = {
     nickname: '',
@@ -24,14 +28,16 @@ class SignUpForm extends React.Component {
     const { nickname, email, password } = this.state;
     (async () => {
       try {
-        const res = await Auth.fetch('http://localhost:3001/register', {
-          method: 'POST',
-          body: JSON.stringify({
-            nickname,
-            email,
-            password,
-          }),
-        });
+        const res = await Auth.fetch(
+          `${configuration.API.URL}:${configuration.API.PORT}/register`, {
+            method: 'POST',
+            body: JSON.stringify({
+              nickname,
+              email,
+              password,
+            }),
+          },
+        );
         Auth.setToken(res.token);
         const { props: { history } } = this;
         history.push('/');
