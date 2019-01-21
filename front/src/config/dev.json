@@ -1,0 +1,6 @@
+{
+  "API": {
+    "PORT": 3002,
+    "URL": "http://localhost"
+  }
+}

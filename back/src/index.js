@@ -13,7 +13,7 @@ import seedDb from './models/seedDb';
 import { comparePassword, hashPassword } from './auth';
 
 const app = express();
-const port = 3001;
+const port = 3002;
 
 app.use(cors());
 

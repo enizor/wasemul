@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
 
+const configuration = process.env.NODE_ENV === 'production'
+  ? require('../config/prod.json')
+  : require('../config/dev.json');
 /**
  * Fetch configuration through
  */
@@ -35,7 +38,12 @@ class Game extends Component {
     const { match } = this.props;
 
     // API call this.state.id
-    fetch(`http://localhost:3001/games/${match.params.id}`, myInit)
+    fetch(
+      `${configuration.API.URL}:${configuration.API.PORT}/games/${
+        match.params.id
+      }`,
+      myInit,
+    )
       .then(res => res.json())
       .then((json) => {
         this.setState({
@@ -47,7 +55,12 @@ class Game extends Component {
   fetchComments = () => {
     const { match } = this.props;
 
-    fetch(`http://localhost:3001/games/${match.params.id}/comments`, myInit)
+    fetch(
+      `${configuration.API.URL}:${configuration.API.PORT}/games/${
+        match.params.id
+      }/comments`,
+      myInit,
+    )
       .then(res => res.json())
       .then((json) => {
         this.setState({
