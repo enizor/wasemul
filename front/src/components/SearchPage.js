@@ -48,6 +48,7 @@ export default class SearchPage extends React.Component {
         });
       })
       .catch(() => {
+        // eslint-disable-next-line no-alert
         alert('Search Failed. Redirecting to home.');
         this.setState({ failed: true });
       });

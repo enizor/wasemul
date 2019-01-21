@@ -26,6 +26,30 @@ RESPONSE BODY
 }
 ```
 
+### The user wants to check out the list of all the games
+
+He clicks on the `Games` button on the navbar, and lands on a page displaying the list of all games.
+The back should expose the following route `/games` with the query parameter `:page`.
+
+- `/games?page=:page`
+```JSON
+REPONSE BODY
+    {
+        page,
+        pages,
+        games: [
+            {
+                id,
+                icon,
+                title,
+                developer,
+                release_date
+            }
+            ...
+        ]
+    }
+```
+
 ### The user wants to check out a game.
 
 He clicks on a game (wherever in the site) and lands on the game's page. The page shows the information about the game, the comments, the saves.
