@@ -121,6 +121,22 @@ app.get('/comments', (_, res) => {
   });
 });
 
+app.post('/game/:id/comments', (req, res) => {
+  console.log(req.body);
+  const token = jsonwebtoken.verify(req.headers.authorization, 'privateKey');
+  db.Comment.create({
+    userId: token.id,
+    gameId: req.params.id,
+    body: req.body.comment,
+  }).then((comment) => {
+    if (comment) {
+      res.send(comment);
+    } else {
+      res.sendStatus(500);
+    }
+  });
+});
+
 app.post('/auth', (req, res) => {
   db.User.findOne({ where: { email: req.body.email } }).then((user) => {
     if (user && comparePassword(req.body.password, user.password)) {
@@ -131,6 +147,7 @@ app.post('/auth', (req, res) => {
         biography: user.biography,
         icon: user.icon,
         enabled: user.enabled,
+        id: user.id,
       };
       jsonwebtoken.sign(data, 'privateKey', { expiresIn: '1h' },
         (err, token) => {

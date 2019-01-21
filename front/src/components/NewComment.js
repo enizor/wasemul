@@ -7,8 +7,7 @@ class NewComment extends React.Component {
   };
 
   handleInputChange = (event) => {
-    const { target } = event;
-    const { value, name } = target;
+    const { value, name } = event.target;
 
     this.setState({
       [name]: value,
@@ -20,7 +19,7 @@ class NewComment extends React.Component {
     (async () => {
       try {
         const { props: { gameID } } = this;
-        await Auth.fetch(`http://localhost:3001/games/${gameID}/comments`, {
+        await Auth.fetch(`http://localhost:3001/game/${gameID}/comments`, {
           method: 'POST',
           body: JSON.stringify({ comment }),
           mode: 'cors',
@@ -39,7 +38,9 @@ class NewComment extends React.Component {
         <fieldset className="pure-group">
           <textarea
             className="pure-input-1-2"
-            placeholder="Textareas work too"
+            placeholder="Type your comment here..."
+            name="comment"
+            onChange={this.handleInputChange}
           />
         </fieldset>
 
@@ -48,7 +49,7 @@ class NewComment extends React.Component {
           className="pure-button pure-button-primary"
           onClick={this.handleSubmit}
         >
-          Sign in
+          Submit
         </button>
       </form>
     );
