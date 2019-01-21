@@ -22,7 +22,13 @@ function Navbar() {
             <a href="/register">Sign up</a>
           </>
         ) : (
-          <a href="/"> Logged in</a>
+          <button
+            type="button"
+            className="pure-button pure-button-primary"
+            onClick={() => { window.location.reload(); Auth.logout(); }}
+          >
+            Log out
+          </button>
         )}
       </div>
     </div>
