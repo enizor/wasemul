@@ -1,6 +1,6 @@
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import React from 'react';
 import Auth from './AuthService';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import SearchBar from './SearchBar';
 
 const NavigationBar = () => (

@@ -1,9 +1,14 @@
 import decode from 'jwt-decode';
 
-export default class AuthService {
+const configuration = process.env.NODE_ENV === 'production'
+  ? require('../config/prod.json')
+  : require('../config/dev.json');
+
+class AuthService {
   // Initializing important variables
   constructor(domain) {
-    this.domain = domain || 'http://localhost:3001'; // API server domain
+    this.domain = domain
+      || `${configuration.API.URL}:${configuration.API.PORT}`; // API server domain
   }
 
   login = async (username, password) => {
@@ -21,8 +26,8 @@ export default class AuthService {
 
   loggedIn = () => {
     // Checks if there is a saved token and it's still valid
-    const token = this.getToken(); // GEtting token from localstorage
-    return !!token && !this.isTokenExpired(token); // handwaiving here
+    const token = this.getToken(); // Getting token from local storage
+    return !!token && !this.isTokenExpired(token); // Hand-waving here
   }
 
   isTokenExpired = (token) => {
@@ -84,3 +89,6 @@ export default class AuthService {
     throw error;
   }
 }
+
+const Auth = new AuthService();
+export default Auth;
