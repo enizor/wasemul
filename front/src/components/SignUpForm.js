@@ -24,7 +24,7 @@ class SignUpForm extends React.Component {
     const { nickname, email, password } = this.state;
     (async () => {
       try {
-        await Auth.fetch('http://localhost:3001/register', {
+        const res = await Auth.fetch('http://localhost:3001/register', {
           method: 'POST',
           body: JSON.stringify({
             nickname,
@@ -32,6 +32,7 @@ class SignUpForm extends React.Component {
             password,
           }),
         });
+        Auth.setToken(res.token);
         const { props: { history } } = this;
         history.push('/');
         console.log(Auth.getProfile());
