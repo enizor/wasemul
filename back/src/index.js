@@ -188,15 +188,4 @@ app.get('/search', (req, res) => {
   }
 });
 
-app.post('/auth', (req, res) => {
-  console.log(req.body);
-  db.User.findOne({ where: { email: req.body.email } }).then((user) => {
-    if (comparePassword(req.body.password, user.password)) {
-      res.send('Accepted');
-    } else {
-      res.send('Rejected');
-    }
-  });
-});
-
 app.listen(port, () => console.log(`Example app listening on port ${port}`));
