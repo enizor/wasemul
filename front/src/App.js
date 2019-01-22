@@ -22,8 +22,6 @@ export default function App() {
           <Route path="/users/:id" component={User} />
           <Route path="/games/:id" component={Game} />
           <Route path="/games" component={Games} />
-          <Route path="/auth" component={AuthForm} />
-          <Route path="/register" component={SignUpForm} />
           <Route path="/search/:query" component={SearchPage} />
           <Route path="/auth" component={AuthForm} />
           <Route path="/register" component={SignUpForm} />
