@@ -8,7 +8,6 @@ export default (db, sequelize) => {
       email: 'test@example.com',
       biography: 'This is a sample user',
       authLevel: 2,
-      // password: 'test',
       password: hashPassword('test'),
     });
     const userKevin = await db.User.create({
@@ -16,7 +15,6 @@ export default (db, sequelize) => {
       email: 'kevin.veryswag@gmail.com',
       biography: '',
       authLevel: 2,
-      // password: 'test',
       password: hashPassword('hunter1'),
     });
     const admin = await db.User.create({
@@ -24,7 +22,6 @@ export default (db, sequelize) => {
       email: 'admin@canttouchthis.com',
       icon: 'https://static.cuisineaz.com/400x320/i108058-kebab-sans-gluten.jpg',
       authLevel: 0,
-      // password: 'test',
       password: hashPassword('CorrectHorseBatteryStaple'),
     });
     const pkRed = await db.Game.create({
