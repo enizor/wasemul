@@ -122,7 +122,6 @@ app.get('/comments', (_, res) => {
 });
 
 app.post('/auth', (req, res) => {
-  console.log(req.body);
   db.User.findOne({ where: { email: req.body.email } }).then((user) => {
     if (user && comparePassword(req.body.password, user.password)) {
       const data = {
@@ -135,7 +134,7 @@ app.post('/auth', (req, res) => {
       };
       jsonwebtoken.sign(data, 'privateKey', { expiresIn: '1h' },
         (err, token) => {
-          if (err) { console.log(err); }
+          if (err) { console.log(err); return; }
           res.send({ token });
         });
     } else {
@@ -145,7 +144,6 @@ app.post('/auth', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-  console.log(req.body);
   db.User.findOne({ where: { email: req.body.email } }).then((user) => {
     if (user) {
       res.sendStatus(500);
@@ -167,7 +165,7 @@ app.post('/register', (req, res) => {
       };
       jsonwebtoken.sign(data, 'privateKey', { expiresIn: '1h' },
         (err, token) => {
-          if (err) { console.log(err); }
+          if (err) { console.log(err); return; }
           res.send({ token });
         });
     }
