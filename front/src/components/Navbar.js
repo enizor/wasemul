@@ -1,6 +1,6 @@
-import React from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-
+import React from 'react';
+import Auth from './AuthService';
 import SearchBar from './SearchBar';
 
 const NavigationBar = () => (
@@ -21,7 +21,29 @@ const NavigationBar = () => (
         </NavItem>
       </Nav>
       <Nav pullRight>
-        <SearchBar />
+        <NavItem>
+          <SearchBar />
+        </NavItem>
+        {!Auth.loggedIn() ? (
+          <>
+            <NavItem href="/auth">
+              Log in
+            </NavItem>
+            <NavItem href="/register">
+              Sign up
+            </NavItem>
+          </>
+        ) : (
+          <NavItem>
+            <button
+              type="button"
+              className="pure-button pure-button-primary"
+              onClick={() => { window.location.reload(); Auth.logout(); }}
+            >
+              Log out
+            </button>
+          </NavItem>
+        )}
       </Nav>
     </Navbar.Collapse>
   </Navbar>

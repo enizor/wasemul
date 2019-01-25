@@ -30,7 +30,7 @@ body {
 
 .nav > .nav-links {
   display: inline;
-  /* float: center; */
+  float: right;
   font-size: 18px;
 }
 
