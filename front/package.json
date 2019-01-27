@@ -18,6 +18,7 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "jwt-decode": "^2.2.0",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-bootstrap": "^0.32.4",

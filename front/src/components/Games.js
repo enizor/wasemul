@@ -8,6 +8,10 @@ const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
   : require('../config/dev.json');
 
+const configuration = process.env.NODE_ENV === 'production'
+  ? require('../config/prod.json')
+  : require('../config/dev.json');
+
 class Games extends Component {
   constructor(props) {
     super(props);
