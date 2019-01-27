@@ -122,8 +122,7 @@ app.get('/comments', (_, res) => {
 });
 
 app.post('/games/:id/comments', (req, res) => {
-  console.log(req.body);
-  const token = jsonwebtoken.verify(req.headers.authorization, 'privateKey');
+  const token = jsonwebtoken.verify(req.headers.authorization, process.env.JWT_KEY);
   if (token) {
     db.Comment.create({
       userId: token.id,
@@ -153,7 +152,7 @@ app.post('/auth', (req, res) => {
         enabled: user.enabled,
         id: user.id,
       };
-      jsonwebtoken.sign(data, 'privateKey', { expiresIn: '1h' },
+      jsonwebtoken.sign(data, process.env.JWT_KEY, { expiresIn: '1h' },
         (err, token) => {
           if (err) { console.log(err); return; }
           res.send({ token });
@@ -184,7 +183,7 @@ app.post('/register', (req, res) => {
         icon: newUser.icon,
         enabled: newUser.enabled,
       };
-      jsonwebtoken.sign(data, 'privateKey', { expiresIn: '1h' },
+      jsonwebtoken.sign(data, process.env.JWT_KEY, { expiresIn: '1h' },
         (err, token) => {
           if (err) { console.log(err); return; }
           res.send({ token });
