@@ -1,6 +1,10 @@
 import React from 'react';
 import Auth from './AuthService';
 
+const configuration = process.env.NODE_ENV === 'production'
+  ? require('../config/prod.json')
+  : require('../config/dev.json');
+
 class NewComment extends React.Component {
   state = {
     comment: '',
@@ -21,7 +25,7 @@ class NewComment extends React.Component {
       try {
         const { props: { gameID, fetchComments } } = this;
         await Auth.fetch(
-          `http://localhost:3001/games/${gameID}/comments`, {
+          `${configuration.API.URL}:${configuration.API.PORT}/games/${gameID}/comments`, {
             method: 'POST',
             body: JSON.stringify({ comment }),
             mode: 'cors',
