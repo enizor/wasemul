@@ -4,6 +4,9 @@ import { Redirect } from 'react-router-dom';
 import { Pagination } from 'react-bootstrap';
 
 import GameItem from './GameItem';
+const configuration = process.env.NODE_ENV === 'production'
+  ? require('../config/prod.json')
+  : require('../config/dev.json');
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
@@ -34,9 +37,8 @@ class Games extends Component {
     const { location } = this.props;
     const query = new URLSearchParams(location.search).get('page') || 1;
     // API call this.state.id
-    fetch(
-      `${configuration.API.URL}:${configuration.API.PORT}/games?page=${query}`,
-    ).then(res => res.json())
+    fetch(`${configuration.API.URL}:${configuration.API.PORT}/games?page=${query}`)
+      .then(res => res.json())
       .then((json) => {
         const { games, page, pages } = json;
         this.setState(

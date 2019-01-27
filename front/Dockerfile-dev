@@ -3,7 +3,11 @@
 FROM node:10 as react-build
 WORKDIR /usr/app
 
-EXPOSE 3000
+COPY package.json .
+
+RUN npm install
+
+COPY ./public ./public
 
 CMD ["npm", "start"]
 
