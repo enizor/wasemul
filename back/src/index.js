@@ -122,7 +122,8 @@ app.get('/comments', (_, res) => {
 });
 
 app.post('/games/:id/comments', (req, res) => {
-  const token = jsonwebtoken.verify(req.headers.authorization, process.env.JWT_KEY);
+  const token = jsonwebtoken.verify(req.headers.authorization,
+    process.env.JWT_KEY);
   if (token) {
     db.Comment.create({
       userId: token.id,

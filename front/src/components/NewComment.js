@@ -25,6 +25,7 @@ class NewComment extends React.Component {
       try {
         const { props: { gameID, fetchComments } } = this;
         await Auth.fetch(
+          // eslint-disable-next-line max-len
           `${configuration.API.URL}:${configuration.API.PORT}/games/${gameID}/comments`, {
             method: 'POST',
             body: JSON.stringify({ comment }),
