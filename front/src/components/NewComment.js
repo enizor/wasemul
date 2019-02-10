@@ -34,7 +34,10 @@ class NewComment extends React.Component {
           },
         );
         fetchComments();
-        this.state.error = false;
+        this.setState({
+          error: false,
+          comment: '',
+        });
       } catch (err) {
         this.state.error = true;
       }
@@ -43,13 +46,18 @@ class NewComment extends React.Component {
   }
 
   render() {
+    const { comment } = this.state;
     return !Auth.loggedIn() ? null : (
       <form className="pure-form">
         <fieldset className="pure-group">
+          <legend className="pure-u-1">
+            Ajouter un commentaire
+          </legend>
           <textarea
             className="pure-input-1-2"
-            placeholder="Type your comment here..."
+            placeholder="Ecrivez votre commentaire ici..."
             name="comment"
+            value={comment}
             onChange={this.handleInputChange}
           />
         </fieldset>
@@ -59,7 +67,7 @@ class NewComment extends React.Component {
           className="pure-button pure-button-primary"
           onClick={this.handleSubmit}
         >
-          Submit
+          Envoyer
         </button>
       </form>
     );
