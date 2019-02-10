@@ -88,10 +88,10 @@ class EditGame extends React.Component {
     return failed ? (
       <Redirect to="/" />
     ) : (
-      <div className="pure-g center">
+      <div className="center">
         <form
           onSubmit={this.handleSubmit}
-          className="pure-form pure-form-aligned EditUser"
+          className="pure-form pure-form-aligned EditGame"
         >
           <fieldset>
             <legend className="pure-u-1">
@@ -133,8 +133,7 @@ class EditGame extends React.Component {
               </label>
               <textarea
                 id="description"
-                cols="30"
-                rows="5"
+                className="pure-input-2-3"
                 name="description"
                 placeholder="Description"
                 value={game.description}
