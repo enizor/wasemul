@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Home from './components/Home';
 import User from './components/User';
+import EditUser from './components/EditUser';
 import Game from './components/Game';
 import Games from './components/Games';
 import Navbar from './components/Navbar';
@@ -19,6 +20,7 @@ export default function App() {
         <Navbar />
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route path="/users/:id/edit" component={EditUser} />
           <Route path="/users/:id" component={User} />
           <Route path="/games/:id" component={Game} />
           <Route path="/games" component={Games} />

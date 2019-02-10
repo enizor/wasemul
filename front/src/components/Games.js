@@ -33,6 +33,7 @@ class Games extends Component {
     const { location } = this.props;
     const query = new URLSearchParams(location.search).get('page') || 1;
     // API call this.state.id
+
     // eslint-disable-next-line max-len
     fetch(`${configuration.API.URL}:${configuration.API.PORT}/games?page=${query}`)
       .then(res => res.json())
