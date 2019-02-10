@@ -27,7 +27,7 @@ export default class SearchBar extends React.Component {
             onChange={this.updateQuery}
           />
           <Link to={`/search/${query}`}>
-            <Button type="submit" bsSize="small">
+            <Button variant="outline-success" type="submit">
               Search
             </Button>
           </Link>

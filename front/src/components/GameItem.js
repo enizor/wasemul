@@ -13,8 +13,8 @@ const GameItem = (props) => {
           <img src={iconPath} height="128" alt={name} />
         </div>
         <div className="pure-u-4-5">
-          <h3>{`${name}`}</h3>
-          <h4>{`${publisher} (${releaseDate})`}</h4>
+          <h4>{`${name}`}</h4>
+          <h5>{`${publisher} (${releaseDate})`}</h5>
         </div>
       </div>
     </a>
