@@ -29,7 +29,7 @@ class User extends React.Component {
         let editable = false;
         if (Auth.loggedIn()) {
           const profile = Auth.getProfile();
-          editable = profile.authLevel !== 0
+          editable = profile.authLevel !== 2
           || profile.id === parseInt(match.params.id, 10);
         }
         this.setState({ user: result, failed: false, editable });

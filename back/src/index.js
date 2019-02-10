@@ -105,7 +105,7 @@ app.put('/users/:id', (req, res) => {
   db.User.findOne({ where: { id: token.id } })
     .then((modifyingUser) => {
       if (modifyingUser
-        && (modifyingUser.authLevel !== 0
+        && (modifyingUser.authLevel !== 2
           || modifyingUser.id === parseInt(req.params.id, 10))) {
         db.User.findOne({ where: { id: req.params.id } })
           .then(user => user.update({
