@@ -85,7 +85,7 @@ class User extends React.Component {
                 <tr>
                   <td className="">Niveau auth</td>
                   <td className="text-left">
-                    {user.authLevel === 0 ? 'User' : 'Admin'}
+                    {user.authLevel === 0 ? 'Admin' : 'User'}
                   </td>
                 </tr>
               </tbody>
