@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import Auth from './AuthService';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
@@ -12,6 +13,7 @@ class User extends React.Component {
     this.state = {
       failed: false,
       user: {},
+      editable: false,
     };
   }
 
@@ -24,10 +26,15 @@ class User extends React.Component {
     )
       .then(res => res.json())
       .then((result) => {
-        this.setState({ user: result, failed: false });
+        let editable = false;
+        if (Auth.loggedIn()) {
+          const profile = Auth.getProfile();
+          editable = profile.authLevel !== 0
+          || profile.id === parseInt(match.params.id, 10);
+        }
+        this.setState({ user: result, failed: false, editable });
       })
       .catch(() => {
-        alert('Could not load this user. Redirecting to home.');
         this.setState({ failed: true });
       });
   }
@@ -44,7 +51,7 @@ class User extends React.Component {
   //     "updatedAt": "2018-12-10T15:03:34.773Z"
   //     }
   render() {
-    const { user, failed } = this.state;
+    const { user, failed, editable } = this.state;
     return failed ? (
       <Redirect to="/" />
     ) : (
@@ -86,13 +93,15 @@ class User extends React.Component {
           </div>
         </div>
         <br />
-        <div className="pure-g center">
-          <a className="pure-u-1-5" href={`/users/${user.id}/edit`}>
-            <div className="pure-button pure-u-1 pure-button-primary">
-              Editer
-            </div>
-          </a>
-        </div>
+        {editable && (
+          <div className="pure-g center">
+            <a className="pure-u-1-5" href={`/users/${user.id}/edit`}>
+              <div className="pure-button pure-u-1 pure-button-primary">
+                Editer
+              </div>
+            </a>
+          </div>
+        )}
       </div>
     );
   }

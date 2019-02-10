@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import Auth from './AuthService';
 import './EditUser.css';
+
+const configuration = process.env.NODE_ENV === 'production'
+  ? require('../config/prod.json')
+  : require('../config/dev.json');
 
 class EditUser extends React.Component {
   constructor(props) {
@@ -9,7 +14,7 @@ class EditUser extends React.Component {
     this.state = {
       failed: false,
       user: {
-        id: 0,
+        id: props.match.params.id,
         nickname: '',
         email: '',
         biography: '',
@@ -20,7 +25,9 @@ class EditUser extends React.Component {
 
   componentDidMount() {
     const { match } = this.props;
-    fetch(`http://localhost:3001/users/${match.params.id}`)
+    fetch(`${configuration.API.URL}:${configuration.API.PORT}/users/${
+      match.params.id
+    }`)
       .then(res => res.json())
       .then((result) => {
         this.setState({ user: result, failed: false });
@@ -42,12 +49,9 @@ class EditUser extends React.Component {
     const { user } = this.state;
     (async () => {
       try {
-        const headers = {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        };
-        await fetch(`http://localhost:3001/users/${user.id}`, {
-          headers,
+        await Auth.fetch(`${configuration.API.URL}:${
+          configuration.API.PORT
+        }/users/${user.id}`, {
           method: 'PUT',
           body: JSON.stringify({ user }),
           mode: 'cors',
@@ -83,14 +87,14 @@ class EditUser extends React.Component {
       <Redirect to="/" />
     ) : (
       <div className="pure-g center">
-        <h2 className="pure-u-1 text-center">
-          {`Edition du profil de ${user.nickname}`}
-        </h2>
         <form
           onSubmit={this.handleSubmit}
           className="pure-form pure-form-aligned EditUser"
         >
           <fieldset>
+            <legend className="pure-u-1">
+              {`Edition du profil de ${user.nickname}`}
+            </legend>
             <div className="pure-control-group">
               <label htmlFor="nickname" className="pure-u-1">
                 Surnom
