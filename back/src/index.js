@@ -121,6 +121,26 @@ app.get('/comments', (_, res) => {
   });
 });
 
+app.post('/games/:id/comments', (req, res) => {
+  const token = jsonwebtoken.verify(req.headers.authorization,
+    process.env.JWT_KEY);
+  if (token) {
+    db.Comment.create({
+      userId: token.id,
+      gameId: req.params.id,
+      body: req.body.comment,
+    }).then((comment) => {
+      if (comment) {
+        res.send(comment);
+      } else {
+        res.sendStatus(500);
+      }
+    });
+  } else {
+    res.sendStatus(403);
+  }
+});
+
 app.post('/auth', (req, res) => {
   db.User.findOne({ where: { email: req.body.email } }).then((user) => {
     if (user && comparePassword(req.body.password, user.password)) {
@@ -131,8 +151,9 @@ app.post('/auth', (req, res) => {
         biography: user.biography,
         icon: user.icon,
         enabled: user.enabled,
+        id: user.id,
       };
-      jsonwebtoken.sign(data, 'privateKey', { expiresIn: '1h' },
+      jsonwebtoken.sign(data, process.env.JWT_KEY, { expiresIn: '1h' },
         (err, token) => {
           if (err) { console.log(err); return; }
           res.send({ token });
@@ -163,7 +184,7 @@ app.post('/register', (req, res) => {
         icon: newUser.icon,
         enabled: newUser.enabled,
       };
-      jsonwebtoken.sign(data, 'privateKey', { expiresIn: '1h' },
+      jsonwebtoken.sign(data, process.env.JWT_KEY, { expiresIn: '1h' },
         (err, token) => {
           if (err) { console.log(err); return; }
           res.send({ token });

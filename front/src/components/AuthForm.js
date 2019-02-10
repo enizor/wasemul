@@ -28,7 +28,6 @@ class AuthForm extends React.Component {
         console.log(Auth.getProfile());
       } catch (err) {
         alert('The username and password does not match');
-        console.log(err);
       }
     })();
     event.preventDefault();

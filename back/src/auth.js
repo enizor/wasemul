@@ -1,10 +1,11 @@
 import bcrypt from 'bcrypt';
 
-function hashPassword(password) {
-  // TODO: in a config file. Prod should be > 1000
-  const saltRounds = 10;
+const configuration = process.env.NODE_ENV === 'production'
+  ? require('./config/prod.json')
+  : require('./config/dev.json');
 
-  return bcrypt.hashSync(password, saltRounds);
+function hashPassword(password) {
+  return bcrypt.hashSync(password, configuration.SALT_ROUNDS);
 }
 
 function comparePassword(plainPass, hashword) {

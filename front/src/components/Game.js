@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
+import NewComment from './NewComment';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
@@ -100,6 +101,10 @@ class Game extends Component {
         </div>
         <br />
         <div>
+          <NewComment
+            gameID={match.params.id}
+            fetchComments={this.fetchComments}
+          />
           <h1>Comments</h1>
           <hr />
           {comments.map(comment => (
