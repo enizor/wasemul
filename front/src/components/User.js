@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import Auth from './AuthService';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
@@ -12,6 +13,7 @@ class User extends React.Component {
     this.state = {
       failed: false,
       user: {},
+      editable: false,
     };
   }
 
@@ -24,10 +26,15 @@ class User extends React.Component {
     )
       .then(res => res.json())
       .then((result) => {
-        this.setState({ user: result, failed: false });
+        let editable = false;
+        if (Auth.loggedIn()) {
+          const profile = Auth.getProfile();
+          editable = profile.authLevel !== 2
+          || profile.id === parseInt(match.params.id, 10);
+        }
+        this.setState({ user: result, failed: false, editable });
       })
       .catch(() => {
-        alert('Could not load this user. Redirecting to home.');
         this.setState({ failed: true });
       });
   }
@@ -44,40 +51,57 @@ class User extends React.Component {
   //     "updatedAt": "2018-12-10T15:03:34.773Z"
   //     }
   render() {
-    const { user, failed } = this.state;
+    const { user, failed, editable } = this.state;
     return failed ? (
       <Redirect to="/" />
     ) : (
-      <div className="pure-g">
-        <img
-          className="pure-img"
-          src={
-            user.icon
-            // eslint-disable-next-line max-len
-            || 'http://itibalasore.org/wp-content/uploads/2018/02/default-user-male.png'
-          }
-          alt="user pic"
-        />
-        <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-          <p className="pure-u-1">
-            Surnom:
-            {user.nickname}
-          </p>
-          <p className="pure-u-1">
-            Email:
-            {user.email}
-          </p>
-          {user.biography != null && (
-            <p className="pure-u-1">
-              Biographie:
-              {user.biography}
-            </p>
-          )}
-          <p className="pure-u-1">
-            Auth:
-            {user.authLevel}
-          </p>
+      <div className="User">
+        <div className="pure-g center text-center align-items-center">
+          <h3 className="pure-u-1">{user.nickname}</h3>
+          <div className="pure-u-1-5">
+            <img
+              className="avatar"
+              src={
+                user.icon
+                // eslint-disable-next-line max-len
+                || 'http://itibalasore.org/wp-content/uploads/2018/02/default-user-male.png'
+              }
+              alt="user pic"
+            />
+          </div>
+          <div className="pure-u-3-5">
+            <table className="pure-table pure-u-1">
+              <tbody>
+                <tr>
+                  <td className="">Email</td>
+                  <td className="text-left">{user.email}</td>
+                </tr>
+                {user.biography != null && (
+                  <tr>
+                    <td className="">Biographie</td>
+                    <td className="text-left">{user.biography}</td>
+                  </tr>
+                )}
+                <tr>
+                  <td className="">Niveau auth</td>
+                  <td className="text-left">
+                    {user.authLevel === 0 ? 'Admin' : 'User'}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+        <br />
+        {editable && (
+          <div className="pure-g center">
+            <a className="pure-u-1-5" href={`/users/${user.id}/edit`}>
+              <div className="pure-button pure-u-1 pure-button-primary">
+                Editer
+              </div>
+            </a>
+          </div>
+        )}
       </div>
     );
   }
