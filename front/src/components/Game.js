@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
 import NewComment from './NewComment';
+import Auth from './AuthService';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
@@ -27,6 +28,7 @@ class Game extends Component {
     this.state = {
       gameInfo: {},
       comments: [],
+      editable: false,
     };
   }
 
@@ -47,8 +49,14 @@ class Game extends Component {
     )
       .then(res => res.json())
       .then((json) => {
+        let editable = false;
+        if (Auth.loggedIn()) {
+          const profile = Auth.getProfile();
+          editable = profile.authLevel !== 2;
+        }
         this.setState({
           gameInfo: json,
+          editable,
         });
       });
   };
@@ -72,40 +80,66 @@ class Game extends Component {
 
   render() {
     const { match } = this.props;
-    const { gameInfo, comments } = this.state;
+    const { gameInfo, comments, editable } = this.state;
 
     if (parseInt(match.params.id, 10) === undefined) return <Redirect to="/" />;
     return (
-      <div>
-        <div>
-          <h1>Game Description</h1>
-          <img src={gameInfo.icon} alt="" />
-          {' '}
-          {gameInfo.name}
-          <br />
-          Platform:
-          {' '}
-          {gameInfo.platform}
-          <br />
-          Description:
-          {' '}
-          {gameInfo.description}
-          <br />
-          Released:
-          {' '}
-          {gameInfo.releaseDate}
-          <br />
-          Published by:
-          {' '}
-          {gameInfo.publisher}
+      <div className="Game">
+        <div className="pure-g center text-center align-items-center">
+          <h3 className="pure-u-1">{gameInfo.name}</h3>
+          <div className="pure-u-1-5">
+            <img
+              className="icon"
+              src={
+                gameInfo.icon
+                // eslint-disable-next-line max-len
+                || 'http://itibalasore.org/wp-content/uploads/2018/02/default-user-male.png'
+              }
+              alt="game pic"
+            />
+          </div>
+          <div className="pure-u-3-5">
+            <table className="pure-table pure-u-1">
+              <tbody>
+                <tr>
+                  <td className="">Plateforme</td>
+                  <td className="text-left">{gameInfo.platform}</td>
+                </tr>
+                {gameInfo.description != null && (
+                  <tr>
+                    <td className="">Description</td>
+                    <td className="text-left">{gameInfo.description}</td>
+                  </tr>
+                )}
+                <tr>
+                  <td className="">Date de publication</td>
+                  <td className="text-left">{gameInfo.releaseDate}</td>
+                </tr>
+                <tr>
+                  <td className="">Editeur</td>
+                  <td className="text-left">{gameInfo.publisher}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <br />
+        <br />
+        {editable && (
+          <div className="pure-g center">
+            <a className="pure-u-1-5" href={`/games/${gameInfo.id}/edit`}>
+              <div className="pure-button pure-u-1 pure-button-primary">
+                Editer
+              </div>
+            </a>
+          </div>
+        )}
         <div>
           <NewComment
             gameID={match.params.id}
             fetchComments={this.fetchComments}
           />
-          <h1>Comments</h1>
+          <h1>Commentaires</h1>
           <hr />
           {comments.map(comment => (
             <div key={comment.id}>
