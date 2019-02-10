@@ -66,6 +66,33 @@ app.get('/games/featured', (_, res) => {
   });
 });
 
+app.put('/games/:id', (req, res) => {
+  const token = jsonwebtoken.verify(req.headers.authorization,
+    process.env.JWT_KEY);
+  db.User.findOne({ where: { id: token.id } })
+    .then((modifyingUser) => {
+      if (modifyingUser && modifyingUser.authLevel !== 2) {
+        db.Game.findOne({ where: { id: req.params.id } })
+          .then(game => game.update({
+            name: req.body.game.name,
+            platform: req.body.game.platform,
+            description: req.body.game.description,
+            publisher: req.body.game.publisher,
+          }))
+          .then((updatedGame) => {
+            if (updatedGame) {
+              res.send(updatedGame);
+            } else {
+              res.sendStatus(500);
+            }
+          });
+      } else {
+        res.sendStatus(403);
+      }
+    })
+    .catch(() => res.sendStatus(403));
+});
+
 app.get('/games/:id', (req, res) => {
   db.Game.findOne({ where: { id: req.params.id } }).then((game) => {
     res.send(game);
