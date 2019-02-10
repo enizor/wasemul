@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
 import NewComment from './NewComment';
 import Auth from './AuthService';
+import './EditGame.css';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
@@ -102,7 +103,7 @@ class Game extends Component {
             <table className="pure-table pure-u-1">
               <tbody>
                 <tr>
-                  <td className="">Plateforme</td>
+                  <td className="">Platform</td>
                   <td className="text-left">{gameInfo.platform}</td>
                 </tr>
                 {gameInfo.description != null && (
@@ -112,11 +113,11 @@ class Game extends Component {
                   </tr>
                 )}
                 <tr>
-                  <td className="">Date de publication</td>
+                  <td className="">Release date</td>
                   <td className="text-left">{gameInfo.releaseDate}</td>
                 </tr>
                 <tr>
-                  <td className="">Editeur</td>
+                  <td className="">Publisher</td>
                   <td className="text-left">{gameInfo.publisher}</td>
                 </tr>
               </tbody>
@@ -129,7 +130,7 @@ class Game extends Component {
           <div className="pure-g center">
             <a className="pure-u-1-5" href={`/games/${gameInfo.id}/edit`}>
               <div className="pure-button pure-u-1 pure-button-primary">
-                Editer
+                Edit
               </div>
             </a>
           </div>
@@ -139,7 +140,7 @@ class Game extends Component {
             gameID={match.params.id}
             fetchComments={this.fetchComments}
           />
-          <h1>Commentaires</h1>
+          <h1>Comments</h1>
           <hr />
           {comments.map(comment => (
             <div key={comment.id}>

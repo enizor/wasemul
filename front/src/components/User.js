@@ -78,12 +78,12 @@ class User extends React.Component {
                 </tr>
                 {user.biography != null && (
                   <tr>
-                    <td className="">Biographie</td>
+                    <td className="">Biography</td>
                     <td className="text-left">{user.biography}</td>
                   </tr>
                 )}
                 <tr>
-                  <td className="">Niveau auth</td>
+                  <td className="">Auth level</td>
                   <td className="text-left">
                     {user.authLevel === 0 ? 'Admin' : 'User'}
                   </td>
@@ -97,7 +97,7 @@ class User extends React.Component {
           <div className="pure-g center">
             <a className="pure-u-1-5" href={`/users/${user.id}/edit`}>
               <div className="pure-button pure-u-1 pure-button-primary">
-                Editer
+                Edit
               </div>
             </a>
           </div>

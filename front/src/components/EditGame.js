@@ -95,18 +95,18 @@ class EditGame extends React.Component {
         >
           <fieldset>
             <legend className="pure-u-1">
-              {`Edition de ${game.name}`}
+              {`Edit ${game.name} info`}
             </legend>
             <div className="pure-control-group">
               <label htmlFor="name" className="pure-u-1-3">
-                Nom
+                Name
               </label>
               <input
                 className="pure-input-2-3"
                 id="name"
                 type="text"
                 name="name"
-                placeholder="Nom"
+                placeholder="Name"
                 value={game.name}
                 onChange={this.handleInputChange}
               />
@@ -114,14 +114,14 @@ class EditGame extends React.Component {
 
             <div className="pure-control-group">
               <label htmlFor="platform" className="pure-u-1-3">
-                Plateforme
+                Platform
               </label>
               <input
                 className="pure-input-2-3"
                 id="platform"
                 type="text"
                 name="platform"
-                placeholder="Plateforme"
+                placeholder="Platform"
                 value={game.platform}
                 onChange={this.handleInputChange}
               />
@@ -143,14 +143,14 @@ class EditGame extends React.Component {
 
             <div className="pure-control-group">
               <label htmlFor="publisher" className="pure-u-1-3">
-                Editeur
+                Publisher
               </label>
               <input
                 className="pure-input-2-3"
                 id="publisher"
                 type="text"
                 name="publisher"
-                placeholder="Email"
+                placeholder="Publisher"
                 value={game.publisher}
                 onChange={this.handleInputChange}
               />
@@ -162,7 +162,7 @@ class EditGame extends React.Component {
                 className="pure-button pure-button-primary"
                 onClick={this.handleSubmit}
               >
-                Sauvegarder
+                Save
               </button>
             </div>
           </fieldset>

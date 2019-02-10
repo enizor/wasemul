@@ -93,18 +93,18 @@ class EditUser extends React.Component {
         >
           <fieldset>
             <legend className="pure-u-1">
-              {`Edition du profil de ${user.nickname}`}
+              {`Edit ${user.nickname}'s profile`}
             </legend>
             <div className="pure-control-group">
               <label htmlFor="nickname" className="pure-u-1-3">
-                Surnom
+                Nickname
               </label>
               <input
                 className="pure-input-2-3"
                 id="nickname"
                 type="text"
                 name="nickname"
-                placeholder="Surnom"
+                placeholder="Nickname"
                 value={user.nickname}
                 onChange={this.handleInputChange}
               />
@@ -127,13 +127,13 @@ class EditUser extends React.Component {
 
             <div className="pure-control-group">
               <label htmlFor="biography" className="pure-u-1-3">
-                Biographie
+                Biography
               </label>
               <textarea
                 id="biography"
                 className="pure-input-2-3"
                 name="biography"
-                placeholder="Biographie"
+                placeholder="Biography"
                 value={user.biography}
                 onChange={this.handleInputChange}
               />
@@ -145,7 +145,7 @@ class EditUser extends React.Component {
                 className="pure-button pure-button-primary"
                 onClick={this.handleSubmit}
               >
-                Sauvegarder
+                Save
               </button>
             </div>
           </fieldset>
