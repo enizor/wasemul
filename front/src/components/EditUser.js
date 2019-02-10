@@ -96,7 +96,7 @@ class EditUser extends React.Component {
               {`Edition du profil de ${user.nickname}`}
             </legend>
             <div className="pure-control-group">
-              <label htmlFor="nickname" className="pure-u-1">
+              <label htmlFor="nickname" className="pure-u-1-3">
                 Surnom
               </label>
               <input
@@ -111,7 +111,7 @@ class EditUser extends React.Component {
             </div>
 
             <div className="pure-control-group">
-              <label htmlFor="email" className="pure-u-1">
+              <label htmlFor="email" className="pure-u-1-3">
                 Email
               </label>
               <input
@@ -126,7 +126,7 @@ class EditUser extends React.Component {
             </div>
 
             <div className="pure-control-group">
-              <label htmlFor="biography" className="pure-u-1">
+              <label htmlFor="biography" className="pure-u-1-3">
                 Biographie
               </label>
               <textarea
