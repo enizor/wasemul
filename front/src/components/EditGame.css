@@ -1,0 +1,23 @@
+.EditGame {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.Game {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.icon {
+  max-width: 80%;
+  width: 200px;
+  height: auto;
+}
