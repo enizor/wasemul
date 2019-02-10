@@ -98,22 +98,33 @@ app.get('/users/:id/comments', (req, res) => {
 });
 
 app.put('/users/:id', (req, res) => {
-  console.log(req.query);
-  console.log(req.params);
-  console.log(req.body);
-  db.User.findOne({ where: { id: req.params.id } })
-    .then(user => user.update({
-      nickname: req.body.user.nickname,
-      email: req.body.user.email,
-      biography: req.body.user.biography,
-    }))
-    .then((updatedUser) => {
-      if (updatedUser) {
-        res.send(updatedUser);
+  console.log(req.headers.authorization);
+  console.log(process.env.JWT_KEY);
+  const token = jsonwebtoken.verify(req.headers.authorization,
+    process.env.JWT_KEY);
+  db.User.findOne({ where: { id: token.id } })
+    .then((modifyingUser) => {
+      if (modifyingUser
+        && (modifyingUser.authLevel !== 0
+          || modifyingUser.id === parseInt(req.params.id, 10))) {
+        db.User.findOne({ where: { id: req.params.id } })
+          .then(user => user.update({
+            nickname: req.body.user.nickname,
+            email: req.body.user.email,
+            biography: req.body.user.biography,
+          }))
+          .then((updatedUser) => {
+            if (updatedUser) {
+              res.send(updatedUser);
+            } else {
+              res.sendStatus(500);
+            }
+          });
       } else {
-        res.sendStatus(500);
+        res.sendStatus(403);
       }
-    });
+    })
+    .catch(() => res.sendStatus(403));
 });
 
 app.get('/users/:id', (req, res) => {
@@ -144,6 +155,7 @@ app.post('/auth', (req, res) => {
   db.User.findOne({ where: { email: req.body.email } }).then((user) => {
     if (user && comparePassword(req.body.password, user.password)) {
       const data = {
+        id: user.id,
         nickname: user.nickname,
         email: user.email,
         authLevel: user.authLevel,
@@ -151,7 +163,7 @@ app.post('/auth', (req, res) => {
         icon: user.icon,
         enabled: user.enabled,
       };
-      jsonwebtoken.sign(data, 'privateKey', { expiresIn: '1h' },
+      jsonwebtoken.sign(data, process.env.JWT_KEY, { expiresIn: '1h' },
         (err, token) => {
           if (err) { console.log(err); return; }
           res.send({ token });
@@ -175,6 +187,7 @@ app.post('/register', (req, res) => {
         password: hashPassword(req.body.password),
       });
       const data = {
+        id: newUser.id,
         nickname: newUser.nickname,
         email: newUser.email,
         authLevel: newUser.authLevel,
@@ -182,7 +195,7 @@ app.post('/register', (req, res) => {
         icon: newUser.icon,
         enabled: newUser.enabled,
       };
-      jsonwebtoken.sign(data, 'privateKey', { expiresIn: '1h' },
+      jsonwebtoken.sign(data, process.env.JWT_KEY, { expiresIn: '1h' },
         (err, token) => {
           if (err) { console.log(err); return; }
           res.send({ token });
