@@ -1,23 +1,28 @@
+import { hashPassword } from '../auth';
+
 /* eslint-disable max-len */
-export default async (db, sequelize) => {
+export default (db, sequelize) => {
   sequelize.sync({ force: true }).then(async () => {
     const userTest = await db.User.create({
       nickname: 'test',
       email: 'test@example.com',
       biography: 'This is a sample user',
       authLevel: 2,
+      password: hashPassword('test'),
     });
     const userKevin = await db.User.create({
       nickname: 'XxX__K3v1nDu91__XxX',
       email: 'kevin.veryswag@gmail.com',
       biography: '',
       authLevel: 2,
+      password: hashPassword('hunter1'),
     });
     const admin = await db.User.create({
       nickname: 'admin',
       email: 'admin@canttouchthis.com',
       icon: 'https://static.cuisineaz.com/400x320/i108058-kebab-sans-gluten.jpg',
       authLevel: 0,
+      password: hashPassword('CorrectHorseBatteryStaple'),
     });
     const pkRed = await db.Game.create({
       name: 'Pokemon Green',

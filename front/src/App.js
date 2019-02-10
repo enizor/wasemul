@@ -5,8 +5,12 @@ import Home from './components/Home';
 import User from './components/User';
 import EditUser from './components/EditUser';
 import Game from './components/Game';
+import Games from './components/Games';
 import Navbar from './components/Navbar';
 import SearchPage from './components/SearchPage';
+import AuthForm from './components/AuthForm';
+import SignUpForm from './components/SignUpForm';
+
 import './App.css';
 
 export default function App() {
@@ -19,7 +23,10 @@ export default function App() {
           <Route path="/users/:id/edit" component={EditUser} />
           <Route path="/users/:id" component={User} />
           <Route path="/games/:id" component={Game} />
+          <Route path="/games" component={Games} />
           <Route path="/search/:query" component={SearchPage} />
+          <Route path="/auth" component={AuthForm} />
+          <Route path="/register" component={SignUpForm} />
           {/* default route */}
           <Route component={Home} />
         </Switch>

@@ -11,22 +11,23 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "3001:3001"
   front:
     build:
       context: ./front/
       dockerfile: Dockerfile-prod
     volumes:
-      - ./front/:/usr/app
+      - ./front/src:/usr/app/src
     ports:
       - "3000:3000"
   back:
     build:
       context: ./back/
-      dockerfile: Dockerfile-prod
+      dockerfile: Dockerfile-dev
     volumes:
-      - ./back/:/usr/app
+      - ./back/src:/usr/app/src
     ports:
-      - "3001:3001"
+      - "3002:3002"
   db:
     image: postgres:alpine
     environment:
