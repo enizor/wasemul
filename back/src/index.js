@@ -90,6 +90,25 @@ app.get('/users/:id/comments', (req, res) => {
   });
 });
 
+app.put('/users/:id', (req, res) => {
+  console.log(req.query);
+  console.log(req.params);
+  console.log(req.body);
+  db.User.findOne({ where: { id: req.params.id } })
+    .then(user => user.update({
+      nickname: req.body.user.nickname,
+      email: req.body.user.email,
+      biography: req.body.user.biography,
+    }))
+    .then((updatedUser) => {
+      if (updatedUser) {
+        res.send(updatedUser);
+      } else {
+        res.sendStatus(500);
+      }
+    });
+});
+
 app.get('/users/:id', (req, res) => {
   db.User.findOne({ where: { id: req.params.id } }).then((user) => {
     res.send(user);
