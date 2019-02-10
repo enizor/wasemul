@@ -40,35 +40,50 @@ class User extends React.Component {
     return failed ? (
       <Redirect to="/" />
     ) : (
-      <div className="pure-g">
-        <img
-          className="pure-img"
-          src={
-            user.icon
-            // eslint-disable-next-line max-len
-            || 'http://itibalasore.org/wp-content/uploads/2018/02/default-user-male.png'
-          }
-          alt="user pic"
-        />
-        <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-          <p className="pure-u-1">
-            Surnom:
-            {user.nickname}
-          </p>
-          <p className="pure-u-1">
-            Email:
-            {user.email}
-          </p>
-          {user.biography != null && (
-            <p className="pure-u-1">
-              Biographie:
-              {user.biography}
-            </p>
-          )}
-          <p className="pure-u-1">
-            Auth:
-            {user.authLevel}
-          </p>
+      <div className="User">
+        <div className="pure-g center text-center align-items-center">
+          <h3 className="pure-u-1">{user.nickname}</h3>
+          <div className="pure-u-1-5">
+            <img
+              className="avatar"
+              src={
+                user.icon
+                // eslint-disable-next-line max-len
+                || 'http://itibalasore.org/wp-content/uploads/2018/02/default-user-male.png'
+              }
+              alt="user pic"
+            />
+          </div>
+          <div className="pure-u-3-5">
+            <table className="pure-table pure-u-1">
+              <tbody>
+                <tr>
+                  <td className="">Email</td>
+                  <td className="text-left">{user.email}</td>
+                </tr>
+                {user.biography != null && (
+                  <tr>
+                    <td className="">Biographie</td>
+                    <td className="text-left">{user.biography}</td>
+                  </tr>
+                )}
+                <tr>
+                  <td className="">Niveau auth</td>
+                  <td className="text-left">
+                    {user.authLevel === 0 ? 'User' : 'Admin'}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br />
+        <div className="pure-g center">
+          <a className="pure-u-1-5" href={`/users/${user.id}/edit`}>
+            <div className="pure-button pure-u-1 pure-button-primary">
+              Editer
+            </div>
+          </a>
         </div>
       </div>
     );
