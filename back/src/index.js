@@ -93,6 +93,27 @@ app.put('/games/:id', (req, res) => {
     .catch(() => res.sendStatus(403));
 });
 
+app.post('/games', async (req, res) => {
+  const token = jsonwebtoken.verify(req.headers.authorization,
+    process.env.JWT_KEY);
+  const modifyingUser = await db.User.findOne({ where: { id: token.id } });
+  if (modifyingUser && modifyingUser.authLevel !== 2) {
+    const newGame = await db.Game.create({
+      name: req.body.game.name,
+      platform: req.body.game.platform,
+      description: req.body.game.description,
+      publisher: req.body.game.publisher,
+    });
+    if (newGame) {
+      res.send(newGame);
+    } else {
+      res.sendStatus(500);
+    }
+  } else {
+    res.sendStatus(403);
+  }
+});
+
 app.get('/games/:id', (req, res) => {
   db.Game.findOne({ where: { id: req.params.id } }).then((game) => {
     res.send(game);

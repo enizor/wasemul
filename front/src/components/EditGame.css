@@ -17,6 +17,11 @@
   align-items: center;
 }
 
+.vertical-align {
+  position: relative;
+  transform: translateY(25%);
+}
+
 .icon {
   max-width: 80%;
   width: 200px;
