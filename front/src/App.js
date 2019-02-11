@@ -5,6 +5,7 @@ import Home from './components/Home';
 import EditUser from './components/EditUser';
 import User from './components/User';
 import EditGame from './components/EditGame';
+import CreateGame from './components/CreateGame';
 import Game from './components/Game';
 import Games from './components/Games';
 import Navbar from './components/Navbar';
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/" exact component={Home} />
           <Route path="/users/:id/edit" component={EditUser} />
           <Route path="/users/:id" component={User} />
+          <Route path="/games/create" component={CreateGame} />
           <Route path="/games/:id/edit" component={EditGame} />
           <Route path="/games/:id" component={Game} />
           <Route path="/games" component={Games} />
