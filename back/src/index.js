@@ -96,7 +96,7 @@ app.put('/games/:id', (req, res) => {
 app.post('/games', async (req, res) => {
   const token = jsonwebtoken.verify(req.headers.authorization,
     process.env.JWT_KEY);
-  const modifyingUser = db.User.findOne({ where: { id: token.id } });
+  const modifyingUser = await db.User.findOne({ where: { id: token.id } });
   if (modifyingUser && modifyingUser.authLevel !== 2) {
     const newGame = await db.Game.create({
       name: req.body.game.name,
