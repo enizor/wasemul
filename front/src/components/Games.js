@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Pagination } from 'react-bootstrap';
 import GameItem from './GameItem';
+import Auth from './AuthService';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
@@ -17,6 +18,7 @@ class Games extends Component {
       games: [],
       page: 1,
       pages: 1,
+      addable: false,
     };
   }
 
@@ -39,12 +41,18 @@ class Games extends Component {
       .then(res => res.json())
       .then((json) => {
         const { games, page, pages } = json;
+        let addable = false;
+        if (Auth.loggedIn()) {
+          const profile = Auth.getProfile();
+          addable = profile.authLevel !== 2;
+        }
         this.setState(
           {
             games,
             page,
             pages,
             failed: false,
+            addable,
           },
         );
       }).catch(() => {
@@ -59,6 +67,7 @@ class Games extends Component {
       games,
       page,
       pages,
+      addable,
     } = this.state;
     const items = [];
     if (pages > 1) {
@@ -77,8 +86,18 @@ class Games extends Component {
       <Redirect to="/" />
     ) : (
       <div>
-        <div className="App pure-g center">
-          <h1 className="pure-u-3-5 text-left">Games</h1>
+        <div className="pure-g center">
+          <div className="pure-u-3-5">
+            <h1 className="pure-u-2-3 text-left">Games</h1>
+            {addable && (
+              <a className="pure-u-1-3 vertical-align text-right" href="/games/create">
+                <div className="pure-button pure-button-primary">
+                  Add new game
+                </div>
+              </a>
+            )}
+          </div>
+
           {games.map(e => (
             <GameItem
               key={e.id}
