@@ -1,48 +1,41 @@
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import {
+  Navbar, Nav,
+} from 'react-bootstrap';
 import React from 'react';
 import Auth from './AuthService';
 import SearchBar from './SearchBar';
 
 const NavigationBar = () => (
-  <Navbar inverse collapseOnSelect>
-    <Navbar.Header>
-      <Navbar.Brand>
-        <a href="/">Wasemul</a>
-      </Navbar.Brand>
-      <Navbar.Toggle />
-    </Navbar.Header>
-    <Navbar.Collapse>
-      <Nav>
-        <NavItem eventKey={1} href="/games">
+  <Navbar bg="dark" variant="dark" collapseOnSelect expand="lg">
+    <Navbar.Brand href="/">Wasemul</Navbar.Brand>
+    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    <Navbar.Collapse id="basic-navbar-nav">
+      <Nav className="mr-auto">
+        <Nav.Link eventKey={1} href="/games">
           Games
-        </NavItem>
-        <NavItem eventKey={2} href="/users/3">
-          AdminUser
-        </NavItem>
+        </Nav.Link>
+        <Nav.Link eventKey={2} href="/users/3">
+          Admin Profile
+        </Nav.Link>
       </Nav>
-      <Nav pullRight>
-        <NavItem>
-          <SearchBar />
-        </NavItem>
+      <SearchBar />
+      <Nav className="ml-auto">
         {!Auth.loggedIn() ? (
           <>
-            <NavItem href="/auth">
+            <Nav.Link href="/auth">
               Log in
-            </NavItem>
-            <NavItem href="/register">
+            </Nav.Link>
+            <Nav.Link href="/register">
               Sign up
-            </NavItem>
+            </Nav.Link>
           </>
         ) : (
-          <NavItem>
-            <button
-              type="button"
-              className="pure-button pure-button-primary"
-              onClick={() => { window.location.reload(); Auth.logout(); }}
-            >
-              Log out
-            </button>
-          </NavItem>
+          <Nav.Link
+            style={{ color: 'red' }}
+            onClick={() => { window.location.reload(); Auth.logout(); }}
+          >
+            Log Out
+          </Nav.Link>
         )}
       </Nav>
     </Navbar.Collapse>
