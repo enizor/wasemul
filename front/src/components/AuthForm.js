@@ -23,6 +23,7 @@ class AuthForm extends React.Component {
     (async () => {
       try {
         await Auth.login(email, password);
+        // eslint-disable-next-line react/prop-types
         const { props: { history } } = this;
         history.push('/');
         console.log(Auth.getProfile());

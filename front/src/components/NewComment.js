@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Auth from './AuthService';
+
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
@@ -74,5 +76,9 @@ class NewComment extends React.Component {
   }
 }
 
+NewComment.propTypes = {
+  gameID: PropTypes.number.isRequired,
+  fetchComments: PropTypes.func.isRequired,
+};
 
 export default NewComment;

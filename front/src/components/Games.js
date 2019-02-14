@@ -90,7 +90,10 @@ class Games extends Component {
           <div className="pure-u-3-5">
             <h1 className="pure-u-2-3 text-left">Games</h1>
             {addable && (
-              <a className="pure-u-1-3 vertical-align text-right" href="/games/create">
+              <a
+                className="pure-u-1-3 vertical-align text-right"
+                href="/games/create"
+              >
                 <div className="pure-button pure-button-primary">
                   Add new game
                 </div>
