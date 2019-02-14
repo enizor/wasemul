@@ -247,27 +247,28 @@ app.post('/register', (req, res) => {
     if (user) {
       res.sendStatus(500);
     } else {
-      const newUser = db.User.create({
+      db.User.create({
         nickname: req.body.nickname,
         email: req.body.email,
         biography: '',
         authLevel: 2,
         password: hashPassword(req.body.password),
+      }).then((newUser) => {
+        const data = {
+          id: newUser.id,
+          nickname: newUser.nickname,
+          email: newUser.email,
+          authLevel: newUser.authLevel,
+          biography: newUser.biography,
+          icon: newUser.icon,
+          enabled: newUser.enabled,
+        };
+        jsonwebtoken.sign(data, process.env.JWT_KEY, { expiresIn: '1h' },
+          (err, token) => {
+            if (err) { console.log(err); return; }
+            res.send({ token });
+          });
       });
-      const data = {
-        id: newUser.id,
-        nickname: newUser.nickname,
-        email: newUser.email,
-        authLevel: newUser.authLevel,
-        biography: newUser.biography,
-        icon: newUser.icon,
-        enabled: newUser.enabled,
-      };
-      jsonwebtoken.sign(data, process.env.JWT_KEY, { expiresIn: '1h' },
-        (err, token) => {
-          if (err) { console.log(err); return; }
-          res.send({ token });
-        });
     }
   });
 });
