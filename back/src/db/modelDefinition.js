@@ -1,6 +1,6 @@
-import game from './game';
-import user from './user';
-import comment from './comment';
+import game from '../models/game';
+import user from '../models/user';
+import comment from '../models/comment';
 
 export default (sequelize, DataTypes) => {
   const Game = game(sequelize, DataTypes);
