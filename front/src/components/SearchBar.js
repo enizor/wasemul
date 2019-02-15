@@ -20,7 +20,7 @@ export default class SearchBar extends React.Component {
     const { query } = this.state;
     return (
       <Form inline>
-        <FormGroup bsSize="small">
+        <FormGroup bssize="small">
           <FormControl
             type="text"
             placeholder="Type here..."

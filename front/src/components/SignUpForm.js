@@ -39,6 +39,7 @@ class SignUpForm extends React.Component {
           },
         );
         Auth.setToken(res.token);
+        // eslint-disable-next-line react/prop-types
         const { props: { history } } = this;
         history.push('/');
         console.log(Auth.getProfile());
