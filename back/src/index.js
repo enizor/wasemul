@@ -243,32 +243,35 @@ app.post('/auth', (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-  const user = await db.User.findOne({ where: { email: req.body.email } });
-  if (user) {
+  try {
+    const user = await db.User.findOne({ where: { email: req.body.email } });
+    if (user) {
+      res.sendStatus(500);
+    }
+    const newUser = await db.User.create({
+      nickname: req.body.nickname,
+      email: req.body.email,
+      biography: '',
+      authLevel: 2,
+      password: hashPassword(req.body.password),
+    });
+    const data = {
+      id: newUser.id,
+      nickname: newUser.nickname,
+      email: newUser.email,
+      authLevel: newUser.authLevel,
+      biography: newUser.biography,
+      icon: newUser.icon,
+      enabled: newUser.enabled,
+    };
+    jsonwebtoken.sign(data, process.env.JWT_KEY, { expiresIn: '1h' },
+      (err, token) => {
+        if (err) { console.log(err); return; }
+        res.send({ token });
+      });
+  } catch (err) {
     res.sendStatus(500);
   }
-
-  const newUser = await db.User.create({
-    nickname: req.body.nickname,
-    email: req.body.email,
-    biography: '',
-    authLevel: 2,
-    password: hashPassword(req.body.password),
-  });
-  const data = {
-    id: newUser.id,
-    nickname: newUser.nickname,
-    email: newUser.email,
-    authLevel: newUser.authLevel,
-    biography: newUser.biography,
-    icon: newUser.icon,
-    enabled: newUser.enabled,
-  };
-  jsonwebtoken.sign(data, process.env.JWT_KEY, { expiresIn: '1h' },
-    (err, token) => {
-      if (err) { console.log(err); return; }
-      res.send({ token });
-    });
 });
 
 
