@@ -2,17 +2,14 @@ import jsonwebtoken from 'jsonwebtoken';
 import { db } from '../db/dbInit';
 import { hashPassword } from '../auth';
 
-
 const findUser = async (req, res) => {
-  db.User.findOne({ where: { id: req.params.id } }).then((user) => {
-    res.send(user);
-  });
+  const user = await db.User.findOne({ where: { id: req.params.id } });
+  res.send(user);
 };
 
 const findUsers = async (_, res) => {
-  db.User.findAll().then((users) => {
-    res.send(users);
-  });
+  const users = await db.User.findAll();
+  res.send(users);
 };
 
 const createUser = async (req, res) => {
@@ -58,35 +55,29 @@ const updateUser = async (req, res) => {
     req.headers.authorization,
     process.env.JWT_KEY,
   );
-  db.User.findOne({ where: { id: token.id } })
-    .then((modifyingUser) => {
-      if (
-        modifyingUser
-        && (modifyingUser.authLevel !== 2
-          || modifyingUser.id === parseInt(req.params.id, 10))
-      ) {
-        db.User.findOne({ where: { id: req.params.id } })
-          .then(user => user.update({
-            nickname: req.body.user.nickname,
-            email: req.body.user.email,
-            biography: req.body.user.biography,
-          }))
-          .then((updatedUser) => {
-            if (updatedUser) {
-              res.send(updatedUser);
-            } else {
-              res.sendStatus(500);
-            }
-          });
-      } else {
-        res.sendStatus(403);
-      }
-    })
-    .catch(() => res.sendStatus(403));
+  const modifyingUser = await db.User.findOne({ where: { id: token.id } });
+  if (
+    modifyingUser
+    && (modifyingUser.authLevel !== 2
+      || modifyingUser.id === parseInt(req.params.id, 10))
+  ) {
+    const user = await db.User.findOne({ where: { id: req.params.id } });
+
+    const updatedUser = await user.update({
+      nickname: req.body.user.nickname,
+      email: req.body.user.email,
+      biography: req.body.user.biography,
+    });
+    if (updatedUser) {
+      res.send(updatedUser);
+    } else {
+      res.sendStatus(500);
+    }
+  } else {
+    res.sendStatus(403);
+  }
 };
+
 export {
-  findUser,
-  findUsers,
-  createUser,
-  updateUser,
+  findUser, findUsers, createUser, updateUser,
 };

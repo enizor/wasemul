@@ -3,57 +3,50 @@ import jsonwebtoken from 'jsonwebtoken';
 import { db } from '../db/dbInit';
 
 const findCommentsOfGame = async (req, res) => {
-  db.Game.findOne({ where: { id: req.params.id } }).then((game) => {
-    game
-      .getComments({
-        include: [{ model: db.User, attributes: ['nickname'] }],
-      })
-      .then((comments) => {
-        res.send(comments);
-      });
+  const game = await db.Game.findOne({ where: { id: req.params.id } });
+  const comments = await game.getComments({
+    include: [{ model: db.User, attributes: ['nickname'] }],
   });
+  res.send(comments);
 };
 
 const findCommentsOfUser = async (req, res) => {
-  db.User.findOne({ where: { id: req.params.id } }).then((user) => {
-    user.getComments().then((comments) => {
-      res.send(comments);
-    });
-  });
+  const user = await db.User.findOne({ where: { id: req.params.id } });
+  const comments = await user.getComments();
+  res.send(comments);
 };
 
-const createComment = (req, res) => {
+const createComment = async (req, res) => {
   const token = jsonwebtoken.verify(
     req.headers.authorization,
     process.env.JWT_KEY,
   );
+
   if (token) {
-    db.Comment.create({
+    const comment = await db.Comment.create({
       userId: token.id,
       gameId: req.params.id,
       body: req.body.comment,
-    }).then((comment) => {
-      if (comment) {
-        res.send(comment);
-      } else {
-        res.sendStatus(500);
-      }
     });
+
+    if (comment) {
+      res.send(comment);
+    } else {
+      res.sendStatus(500);
+    }
   } else {
     res.sendStatus(403);
   }
 };
 
-const findComment = (req, res) => {
-  db.Comment.findAll({ where: { id: req.params.id } }).then((comment) => {
-    res.send(comment);
-  });
+const findComment = async (req, res) => {
+  const comment = await db.Comment.findAll({ where: { id: req.params.id } });
+  res.send(comment);
 };
 
-const findComments = (_, res) => {
-  db.Comment.findAll().then((comments) => {
-    res.send(comments);
-  });
+const findComments = async (_, res) => {
+  const comments = await db.Comment.findAll();
+  res.send(comments);
 };
 
 export {

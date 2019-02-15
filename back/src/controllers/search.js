@@ -2,15 +2,15 @@ import { db, op } from '../db/dbInit';
 
 const searchUserAndGames = async (req, res) => {
   if (req.query && req.query.query) {
-    db.Game.findAll({
+    const games = await db.Game.findAll({
       where: { name: { [op.iLike]: `%${req.query.query}%` } },
-    }).then((games) => {
-      db.User.findAll({
-        where: { nickname: { [op.iLike]: `%${req.query.query}%` } },
-      }).then((users) => {
-        res.send({ games, users });
-      });
     });
+
+    const users = await db.User.findAll({
+      where: { nickname: { [op.iLike]: `%${req.query.query}%` } },
+    });
+
+    res.send({ games, users });
   }
 };
 
