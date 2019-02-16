@@ -56,8 +56,23 @@ const updateGame = async (req, res) => {
 };
 
 const findFeaturedGames = async (_, res) => {
-  const games = await db.Game.findAll({ limit: 10 });
-  res.send(games);
+  const games = await db.Game.findAll();
+  const times = [];
+  const comments = [];
+  for (let i = 0; i < games.length; i += 1) {
+    times.push(Date.parse(games[i].dataValues.createdAt) / 1000);
+    comments.push(games[i].getComments({}));
+  }
+  const minTime = Math.min(...times);
+  Promise.all(comments).then((result) => {
+    for (let i = 0; i < games.length; i += 1) {
+      games[i].score = 0;
+      games[i].score += (times[i] - minTime) / 1000;
+      games[i].score += result[i].length;
+    }
+    games.sort((a, b) => b.score - a.score);
+    res.send(games);
+  });
 };
 
 const createGame = async (req, res) => {
