@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import errorHandler from 'errorhandler';
 import morgan from 'morgan';
 import path from 'path';
+import fileUpload from 'express-fileupload';
 
 import { sequelize } from './db/dbInit';
 
@@ -51,6 +52,8 @@ app.use(cors());
 
 dotenv.load();
 
+app.use(fileUpload());
+
 sequelize.sync();
 
 if (process.env.NODE_ENV === 'development') {
@@ -81,6 +84,25 @@ app.get('/games/:id', findGame);
 app.post('/games', createGame);
 
 app.get('/games', findGames);
+
+app.post('/users/:id/saves', (req, res) => {
+  console.log(req.files, req.body);
+  let uploadFile = req.files.file
+  const fileName = req.files.file.name
+  uploadFile.mv(
+    `${__dirname}/public/files/${fileName}`,
+    function (err) {
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err)
+      }
+
+      res.json({
+        file: `public/${req.files.file.name}`,
+      })
+    },
+  )
+})
 
 app.get('/users/:id/comments', findCommentsOfUser);
 

@@ -14,6 +14,8 @@ class User extends React.Component {
       failed: false,
       user: {},
       editable: false,
+      uploadable: false,
+      selectedFile: null,
     };
   }
 
@@ -27,16 +29,47 @@ class User extends React.Component {
       .then(res => res.json())
       .then((result) => {
         let editable = false;
+        let uploadable = false;
         if (Auth.loggedIn()) {
           const profile = Auth.getProfile();
           editable = profile.authLevel !== 2
           || profile.id === parseInt(match.params.id, 10);
+          uploadable = profile.id === parseInt(match.params.id, 10);
         }
-        this.setState({ user: result, failed: false, editable });
+        this.setState({ user: result, failed: false, editable, uploadable });
       })
       .catch(() => {
         this.setState({ failed: true });
       });
+  }
+
+  handleselectedFile = event => {
+    this.setState({
+      selectedFile: event.target.files[0],
+    })
+  }
+
+  handleUpload = (event) => {
+    const { match } = this.props;
+    const data = new FormData();
+    data.append('file', this.state.selectedFile, this.state.selectedFile.name);
+    (async () => {
+      try {
+        fetch(`${configuration.API.URL}:${
+          configuration.API.PORT
+        }/users/${match.params.id}/saves`, {
+          method: 'POST',
+          body: data,
+          mode: 'cors',
+          cache: 'default',
+        });
+        this.setState({ redirect: true });
+      } catch (err) {
+        this.setState({ failed: true });
+      }
+    })();
+    event.preventDefault();
+    
   }
 
   //   {
@@ -51,7 +84,7 @@ class User extends React.Component {
   //     "updatedAt": "2018-12-10T15:03:34.773Z"
   //     }
   render() {
-    const { user, failed, editable } = this.state;
+    const { user, failed, editable, uploadable } = this.state;
     return failed ? (
       <Redirect to="/" />
     ) : (
@@ -100,6 +133,13 @@ class User extends React.Component {
                 Edit
               </div>
             </a>
+          </div>
+        )}
+        <br />
+        {uploadable && (
+          <div className="center">
+            <input type="file" name="" id="" onChange={this.handleselectedFile} />
+            <button onClick={this.handleUpload}>Upload</button>
           </div>
         )}
       </div>
