@@ -1,7 +1,8 @@
 import { db, sequelize } from '../db/dbInit';
+import dbSeeds from '../seeds/dbSeeds';
 
 const seedDb = async (_, res) => {
-  await seedDb(db, sequelize);
+  await dbSeeds(db, sequelize);
   res.send('Database seeded!');
 };
 
