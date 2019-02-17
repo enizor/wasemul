@@ -24,17 +24,22 @@ class EditUser extends React.Component {
   }
 
   componentDidMount() {
+    this.fetchUserData();
+  }
+
+  fetchUserData = async () => {
     const { match } = this.props;
-    fetch(`${configuration.API.URL}:${configuration.API.PORT}/users/${
-      match.params.id
-    }`)
-      .then(res => res.json())
-      .then((result) => {
-        this.setState({ user: result, failed: false });
-      })
-      .catch(() => {
-        this.setState({ failed: true });
-      });
+    try {
+      const res = await fetch(
+        `${configuration.API.URL}:${configuration.API.PORT}/users/${
+          match.params.id
+        }`,
+      );
+      const jsonRes = await res.json();
+      this.setState({ user: jsonRes, failed: false });
+    } catch (err) {
+      this.setState({ failed: true });
+    }
   }
 
   handleInputChange = (event) => {

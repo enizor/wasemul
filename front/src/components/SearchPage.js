@@ -32,26 +32,25 @@ export default class SearchPage extends React.Component {
     if (match.params.query !== prevProps.match.params.query) this.fetchQuery();
   };
 
-  fetchQuery = () => {
+  fetchQuery = async () => {
     const { match } = this.props;
-    fetch(
-      `${configuration.API.URL}:${configuration.API.PORT}/search?query=${
-        match.params.query
-      }`,
-    )
-      .then(res => res.json())
-      .then((result) => {
-        this.setState({
-          users: result.users,
-          failed: false,
-          games: result.games,
-        });
-      })
-      .catch(() => {
-        // eslint-disable-next-line no-alert
-        alert('Search Failed. Redirecting to home.');
-        this.setState({ failed: true });
+    try {
+      const res = await fetch(
+        `${configuration.API.URL}:${configuration.API.PORT}/search?query=${
+          match.params.query
+        }`,
+      );
+      const jsonRes = res.json();
+      this.setState({
+        users: jsonRes.users,
+        failed: false,
+        games: jsonRes.games,
       });
+    } catch (err) {
+      // eslint-disable-next-line no-alert
+      alert('Search Failed. Redirecting to home.');
+      this.setState({ failed: true });
+    }
   };
 
   render = () => {

@@ -14,12 +14,16 @@ class Home extends React.Component {
     };
   }
 
-  componentDidMount() {
-    fetch(`${configuration.API.URL}:${configuration.API.PORT}/games/featured`)
-      .then(res => res.json())
-      .then((result) => {
-        this.setState({ games: result });
-      });
+  componentDidMount = () => {
+    this.fetchFeaturedGames();
+  }
+
+  fetchFeaturedGames = async () => {
+    const res = await fetch(`${configuration.API.URL}:${
+      configuration.API.PORT
+    }/games/featured`);
+    const jsonRes = await res.json();
+    this.setState({ games: jsonRes });
   }
 
   renderGames() {

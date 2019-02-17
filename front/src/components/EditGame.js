@@ -25,19 +25,24 @@ class EditGame extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const { match } = this.props;
-    fetch(`${configuration.API.URL}:${configuration.API.PORT}/games/${
-      match.params.id
-    }`)
-      .then(res => res.json())
-      .then((result) => {
-        this.setState({ game: result, failed: false });
-      })
-      .catch(() => {
-        this.setState({ failed: true });
-      });
+  componentDidMount = () => {
+    this.fetchGameData();
   }
+
+  fetchGameData = async () => {
+    const { match } = this.props;
+    try {
+      const res = await fetch(`${configuration.API.URL}:${
+        configuration.API.PORT
+      }/games/${
+        match.params.id
+      }`);
+      const jsonRes = await res.json();
+      this.setState({ game: jsonRes, failed: false });
+    } catch (err) {
+      this.setState({ failed: true });
+    }
+  };
 
   handleInputChange = (event) => {
     const { value, name } = event.target;

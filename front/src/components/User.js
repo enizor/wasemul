@@ -126,7 +126,7 @@ class User extends React.Component {
           <h3 className="pure-u-1">{user.nickname}</h3>
           <div className="pure-u-1-5">
             <img
-              className="avatar"
+              className="icon"
               src={
                 user.icon
                 // eslint-disable-next-line max-len
