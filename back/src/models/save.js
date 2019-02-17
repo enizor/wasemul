@@ -10,6 +10,8 @@ export default (sequelize) => {
     },
     enabled: {
       type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: false,
     },
   });
 
