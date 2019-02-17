@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 .center {
   justify-content: center;
 }
@@ -12,4 +8,8 @@
 
 .text-right {
   text-align: right;
+}
+
+.italic {
+  font-style: italic;
 }

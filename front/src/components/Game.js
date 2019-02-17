@@ -4,7 +4,7 @@ import { Redirect, Link } from 'react-router-dom';
 import NewSave from './NewSave';
 import NewComment from './NewComment';
 import Auth from './AuthService';
-import './EditGame.css';
+import './Game.css';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')

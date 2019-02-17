@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Auth from './AuthService';
-import './EditGame.css';
+import './Game.css';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
