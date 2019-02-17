@@ -7,7 +7,7 @@ const GameItem = (props) => {
   } = props;
   const iconPath = icon;
   return (
-    <a className="pure-button pure-u-3-5" href={`/games/${id}`}>
+    <a className="pure-button pure-u-4-5" href={`/games/${id}`}>
       <div className="Game">
         <div className="pure-u-1-5">
           <img src={iconPath} height="128" alt={name} />

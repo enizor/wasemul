@@ -76,21 +76,30 @@ class User extends React.Component {
 
   renderSaves() {
     const { saves } = this.state;
+
+    if (saves.length === 0) {
+      return <div>No saves here :(</div>;
+    }
+
     return saves.map(save => (
       <div key={save.id}>
         <p>
-          {`${save.file} for `}
-          <a href={`/games/${save.gameId}`}>{save.Game.name}</a>
+          <a
+            role="button"
+            href={`${configuration.API.URL}:${
+              configuration.API.PORT
+            }/static/saves/${save.uploadTimestamp}-${save.file}`}
+            download={`${save.file}`}
+          >
+            {save.file}
+          </a>
+          {` (uploaded ${new Date(save.createdAt).toLocaleDateString()})`}
         </p>
-        <a
-          role="button"
-          href={`${configuration.API.URL}:${
-            configuration.API.PORT
-          }/static/saves/${save.uploadTimestamp}-${save.file}`}
-          download={`${save.file}`}
-        >
-          Download
-        </a>
+
+        <div className="italic">
+          {' for '}
+          <a href={`/games/${save.gameId}`}>{save.Game.name}</a>
+        </div>
         <hr />
       </div>
     ));
@@ -159,7 +168,7 @@ class User extends React.Component {
             </a>
           </div>
         )}
-        <h1>Saves</h1>
+        <h2>Saves</h2>
         <hr />
         {this.renderSaves()}
       </div>

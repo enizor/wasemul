@@ -98,11 +98,19 @@ class Game extends Component {
 
   renderComments() {
     const { comments } = this.state;
+
+    if (comments.length === 0) {
+      return <div>No comments here :(</div>;
+    }
+
     return comments.map(comment => (
       <div key={comment.id}>
         <p>{comment.body}</p>
-        <p>Sent by: </p>
-        <Link to={`/users/${comment.userId}`}>{comment.User.nickname}</Link>
+        <div className="italic">
+          {'by '}
+          <Link to={`/users/${comment.userId}`}>{comment.User.nickname}</Link>
+          {` (${new Date(comment.createdAt).toLocaleString()})̀`}
+        </div>
         <hr />
       </div>
     ));
@@ -110,21 +118,30 @@ class Game extends Component {
 
   renderSaves() {
     const { saves } = this.state;
+
+    if (saves.length === 0) {
+      return <div>No saves here :(</div>;
+    }
+
     return saves.map(save => (
       <div key={save.id}>
         <p>
-          {`${save.file} by `}
-          <a href={`/users/${save.userId}`}>{save.User.nickname}</a>
+          <a
+            role="button"
+            href={`${configuration.API.URL}:${
+              configuration.API.PORT
+            }/static/saves/${save.uploadTimestamp}-${save.file}`}
+            download={`${save.file}`}
+          >
+            {save.file}
+          </a>
         </p>
-        <a
-          role="button"
-          href={`${configuration.API.URL}:${
-            configuration.API.PORT
-          }/static/saves/${save.uploadTimestamp}-${save.file}`}
-          download={`${save.file}`}
-        >
-          Download
-        </a>
+
+        <div className="italic">
+          {'by '}
+          <a href={`/users/${save.userId}`}>{save.User.nickname}</a>
+          {` (uploaded ${new Date(save.createdAt).toLocaleDateString()})`}
+        </div>
         <hr />
       </div>
     ));
@@ -186,21 +203,25 @@ class Game extends Component {
           </div>
         )}
 
-        <h1>Comments</h1>
-        <NewComment
-          gameID={match.params.id}
-          fetchComments={this.fetchComments}
-        />
-        <hr />
-        {this.renderComments()}
+        <div className="comment-section">
+          <h2>Comments</h2>
+          <NewComment
+            gameID={match.params.id}
+            fetchComments={this.fetchComments}
+          />
 
-        <h1>Saves</h1>
-        <NewSave
-          gameID={match.params.id}
-          fetchSaves={this.fetchSaves}
-        />
-        <hr />
-        {this.renderSaves()}
+          <legend>Last comments</legend>
+          {this.renderComments()}
+        </div>
+
+        <div className="saves-section">
+          <h2>Saves</h2>
+          <NewSave gameID={match.params.id} fetchSaves={this.fetchSaves} />
+
+          <legend>Last saves</legend>
+          {this.renderSaves()}
+        </div>
+
       </div>
     );
   }
