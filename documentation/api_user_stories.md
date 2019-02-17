@@ -4,13 +4,14 @@ The goal here is to describe the backend API through user stories.
 
 ## Non authenticated experience
 
-### The user lands on the front page.
+### The user lands on the front page
 
 A list of featured games are displayed.
 The back should expose the following route `/games/featured`.
 The route returns a list of featured games.
 
-- `/games/geatured` [GET]
+- `/games/featured` [GET]
+
 ```JSON
 RESPONSE BODY
 {
@@ -32,8 +33,9 @@ He clicks on the `Games` button on the navbar, and lands on a page displaying th
 The back should expose the following route `/games` with the query parameter `:page`.
 
 - `/games?page=:page`
+
 ```JSON
-REPONSE BODY
+RESPONSE BODY
     {
         page,
         pages,
@@ -50,12 +52,13 @@ REPONSE BODY
     }
 ```
 
-### The user wants to check out a game.
+### The user wants to check out a game
 
 He clicks on a game (wherever in the site) and lands on the game's page. The page shows the information about the game, the comments, the saves.
 The back should expose the following routes `/games/:id`, `/games/:id/comments`, `/games/:id/saves`.
 
- - `/games/:id` [GET]
+- `/games/:id` [GET]
+
  ```JSON
  RESPONSE BODY
     {
@@ -66,10 +69,12 @@ The back should expose the following routes `/games/:id`, `/games/:id/comments`,
         rating,
         version,
         year,
-        developper
+        developer
     }
  ```
- - `/games/:id/comments/:page` [GET]
+
+- `/games/:id/comments/:page` [GET]
+
  ```JSON
  RESPONSE BODY
     {
@@ -86,7 +91,9 @@ The back should expose the following routes `/games/:id`, `/games/:id/comments`,
         ]
     }
  ```
- - `/games/:id/saves/:page` [GET]
+
+- `/games/:id/saves/:page` [GET]
+
  ```JSON
 RESPONSE BODY
     {
@@ -113,7 +120,8 @@ RESPONSE BODY
 He clicks on a user (wherever in the site) and lands on the user's page. The page shows the information about the user, the games he's interested in and the corresponding saves.
 The back should expose the following routes `/users/:id`, `/users/:id/games`.
 
- - `/users/:id` [GET]
+- `/users/:id` [GET]
+
  ```JSON
  RESPONSE BODY
     {
@@ -124,7 +132,8 @@ The back should expose the following routes `/users/:id`, `/users/:id/games`.
     }
  ```
 
- - `/users/:id/games` [GET]
+- `/users/:id/games` [GET]
+
  ```JSON
 RESPONSE BODY
     {
@@ -135,7 +144,7 @@ RESPONSE BODY
                 icon,
                 title,
                 platform,
-                descripton,
+                description,
                 saves: [
                     {
                         name,
@@ -171,10 +180,11 @@ REQUEST BODY
 
 ### Forgot Password
 
-The user wants to retreive his password, or get a magic link.
+The user wants to retrieve his password, or get a magic link.
 The back should expose the following route `/auth/reset`.
 
 - `/auth/reset` [POST]
+
 ```JSON
 REQUEST BODY
     {
@@ -194,6 +204,7 @@ He fills the login form.
 The back should expose the following route `/auth`.
 
 - `/auth/` [POST]
+
 ```JSON
 REQUEST BODY
     {
@@ -215,6 +226,7 @@ Once the changes are done, he saves them.
 The back should expose the following route `/user/:id/update/profile`.
 
 - `/user/:id/update/profile` [POST]
+
 ```JSON
 REQUEST BODY
     {
@@ -230,6 +242,7 @@ The user wants to delete his account, to do so, he has to provide his mail and p
 The back should expose the following route.`/user/:id/delete`.
 
 - `/user/:id/delete` [POST]
+
 ```JSON
 REQUEST BODY
     {
@@ -244,6 +257,7 @@ The user wants to change his password.
 To do so he has to provide his mail, old password and new password. The back should expose the following route `/user/:id/update/password`.
 
 - `/user/:id/update/password` [POST]
+
 ```JSON
 REQUEST BODY
     {
@@ -259,6 +273,7 @@ The user wants to post a comment on a game. To do so he writes it and hist post.
 The back should expose the following route `/games/:id/comments`.
 
 - `/games/:id/comments` [POST]
+
 ```JSON
 REQUEST BODY
     {
@@ -272,6 +287,7 @@ The user wants to upload a save.
 The back should expose the following route `/users/:id/saves`.
 
 - `/users/:id/saves` [POST]
+
 ```JSON
 REQUEST BODY
     {
@@ -288,6 +304,7 @@ The user wants to rate a game.
 The back should expose the following route `/games/:id/ratings`.
 
 - `/games/:id/ratings` [POST]
+
 ```JSON
 REQUEST BODY
     {
@@ -302,6 +319,7 @@ The user wants to rate a save.
 The back should expose the following route `/saves/:id/ratings`.
 
 - `/saves/:id/ratings` [POST]
+
 ```JSON
 REQUEST BODY
     {
@@ -312,12 +330,10 @@ REQUEST BODY
 
 ### Delete a save
 
-
 The user wants to delete a save.
 The back should expose the following route `/saves/:id/delete`.
 
 - `/saves/:id/delete` [GET]
-
 
 ### Delete a comment
 
