@@ -15,6 +15,13 @@
   padding-bottom: 1em;
 }
 
+.NewComment {
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
 .comment-section {
   margin-left: auto;
   margin-right: auto;
@@ -27,26 +34,4 @@
   margin-right: auto;
   padding-top: 1em;
   padding-bottom: 1em;
-}
-
-.NewComment {
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 1em;
-  padding-bottom: 1em;
-}
-
-.align-items-center {
-  align-items: center;
-}
-
-.vertical-align {
-  position: relative;
-  transform: translateY(25%);
-}
-
-.icon {
-  max-width: 80%;
-  width: 200px;
-  height: auto;
 }
