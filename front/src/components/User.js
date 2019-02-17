@@ -14,8 +14,6 @@ class User extends React.Component {
       failed: false,
       user: {},
       editable: false,
-      uploadable: false,
-      selectedFile: null,
     };
   }
 
@@ -43,35 +41,6 @@ class User extends React.Component {
       });
   }
 
-  handleselectedFile = event => {
-    this.setState({
-      selectedFile: event.target.files[0],
-    })
-  }
-
-  handleUpload = (event) => {
-    const { match } = this.props;
-    const data = new FormData();
-    data.append('file', this.state.selectedFile, this.state.selectedFile.name);
-    (async () => {
-      try {
-        fetch(`${configuration.API.URL}:${
-          configuration.API.PORT
-        }/users/${match.params.id}/saves`, {
-          method: 'POST',
-          body: data,
-          mode: 'cors',
-          cache: 'default',
-        });
-        this.setState({ redirect: true });
-      } catch (err) {
-        this.setState({ failed: true });
-      }
-    })();
-    event.preventDefault();
-    
-  }
-
   //   {
   //     "id": 1,
   //     "nickname": "test",
@@ -84,7 +53,7 @@ class User extends React.Component {
   //     "updatedAt": "2018-12-10T15:03:34.773Z"
   //     }
   render() {
-    const { user, failed, editable, uploadable } = this.state;
+    const { user, failed, editable } = this.state;
     return failed ? (
       <Redirect to="/" />
     ) : (
@@ -133,13 +102,6 @@ class User extends React.Component {
                 Edit
               </div>
             </a>
-          </div>
-        )}
-        <br />
-        {uploadable && (
-          <div className="center">
-            <input type="file" name="" id="" onChange={this.handleselectedFile} />
-            <button onClick={this.handleUpload}>Upload</button>
           </div>
         )}
       </div>

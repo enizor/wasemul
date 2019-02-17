@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
+import NewSave from './NewSave';
 import NewComment from './NewComment';
 import Auth from './AuthService';
 import './EditGame.css';
@@ -29,6 +30,7 @@ class Game extends Component {
     this.state = {
       gameInfo: {},
       comments: [],
+      saves: [],
       editable: false,
     };
   }
@@ -36,6 +38,7 @@ class Game extends Component {
   componentDidMount = () => {
     this.fetchGameInfos();
     this.fetchComments();
+    this.fetchSaves();
   };
 
   fetchGameInfos = () => {
@@ -79,9 +82,60 @@ class Game extends Component {
       });
   };
 
+  fetchSaves = () => {
+    const { match } = this.props;
+
+    fetch(
+      `${configuration.API.URL}:${configuration.API.PORT}/games/${
+        match.params.id
+      }/saves`,
+      myInit,
+    )
+      .then(res => res.json())
+      .then((json) => {
+        this.setState({
+          saves: json,
+        });
+      });
+  };
+
+  renderComments() {
+    const { comments } = this.state;
+    return comments.map(comment => (
+      <div key={comment.id}>
+        <p>{comment.body}</p>
+        <p>Sent by: </p>
+        <Link to={`/users/${comment.userId}`}>{comment.User.nickname}</Link>
+        <hr />
+      </div>
+    ));
+  }
+
+  renderSaves() {
+    const { saves } = this.state;
+    return saves.map(save => (
+      <div key={save.id}>
+        <p>
+          {`${save.file} by `}
+          <a href={`/users/${save.userId}`}>{save.User.nickname}</a>
+        </p>
+        <a
+          role="button"
+          href={`${configuration.API.URL}:${
+            configuration.API.PORT
+          }/static/saves/${save.file}`}
+          download={`${save.file}`}
+        >
+          Download
+        </a>
+        <hr />
+      </div>
+    ));
+  }
+
   render() {
     const { match } = this.props;
-    const { gameInfo, comments, editable } = this.state;
+    const { gameInfo, editable } = this.state;
 
     if (parseInt(match.params.id, 10) === undefined) return <Redirect to="/" />;
     return (
@@ -125,7 +179,6 @@ class Game extends Component {
           </div>
         </div>
         <br />
-        <br />
         {editable && (
           <div className="pure-g center">
             <a className="pure-u-1-5" href={`/games/${gameInfo.id}/edit`}>
@@ -135,24 +188,19 @@ class Game extends Component {
             </a>
           </div>
         )}
-        <div>
-          <NewComment
-            gameID={match.params.id}
-            fetchComments={this.fetchComments}
-          />
-          <h1>Comments</h1>
-          <hr />
-          {comments.map(comment => (
-            <div key={comment.id}>
-              <p>{comment.body}</p>
-              <p>Sent by: </p>
-              <Link to={`/users/${comment.userId}`}>
-                {comment.User.nickname}
-              </Link>
-              <hr />
-            </div>
-          ))}
-        </div>
+        <NewComment
+          gameID={match.params.id}
+          fetchComments={this.fetchComments}
+        />
+        <h1>Comments</h1>
+        <hr />
+        {this.renderComments()}
+
+        <NewSave gameID={match.params.id} fetchSaves={this.fetchSaves} />
+
+        <h1>Saves</h1>
+        <hr />
+        {this.renderSaves()}
       </div>
     );
   }
