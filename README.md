@@ -20,6 +20,24 @@ Once the containers are running, seed the database by accessing route `/seed` of
 
 The back is run with `nodemon`, so any changes you make should be reflected in real time.
 
+### Running the test suites
+
+Test suites are run automatically when committing with `git`.
+
+To run the test suites manually :
+
+* for the back repo, go to the `back/` directory and run:
+
+  ```bash
+  npm test && npm run test-format
+  ```
+
+* for the front repo, go to the `front/` directory and run:
+
+  ```bash
+  CI=true npm test && npm run test-format
+  ```
+
 ## Production deployment
 
 The service is currently available at [wasemul.viarezo.fr](https://wasemul.viarezo.fr/).
