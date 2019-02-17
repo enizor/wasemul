@@ -7,6 +7,7 @@ const savesDir = `${__dirname}/../public/saves`;
 const findSavesOfGame = async (req, res) => {
   const game = await db.Game.findOne({ where: { id: req.params.id } });
   const saves = await game.getSaves({
+    order: [['createdAt', 'DESC']],
     include: [{ model: db.User, attributes: ['nickname'] }],
   });
   res.send(saves);
@@ -15,6 +16,7 @@ const findSavesOfGame = async (req, res) => {
 const findSavesOfUser = async (req, res) => {
   const user = await db.User.findOne({ where: { id: req.params.id } });
   const saves = await user.getSaves({
+    order: [['createdAt', 'DESC']],
     include: [{ model: db.Game, attributes: ['name'] }],
   });
   res.send(saves);

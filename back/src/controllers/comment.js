@@ -5,6 +5,7 @@ import { db } from '../db/dbInit';
 const findCommentsOfGame = async (req, res) => {
   const game = await db.Game.findOne({ where: { id: req.params.id } });
   const comments = await game.getComments({
+    order: [['createdAt', 'DESC']],
     include: [{ model: db.User, attributes: ['nickname'] }],
   });
   res.send(comments);
@@ -12,7 +13,9 @@ const findCommentsOfGame = async (req, res) => {
 
 const findCommentsOfUser = async (req, res) => {
   const user = await db.User.findOne({ where: { id: req.params.id } });
-  const comments = await user.getComments();
+  const comments = await user.getComments({
+    order: [['createdAt', 'DESC']],
+  });
   res.send(comments);
 };
 
