@@ -12,6 +12,8 @@ class SignUpForm extends React.Component {
     nickname: '',
     email: '',
     password: '',
+    failed: false,
+    message: '',
   };
 
 
@@ -39,16 +41,25 @@ class SignUpForm extends React.Component {
           },
         );
         Auth.setToken(res.token);
+
+        this.setState({ failed: false });
         // eslint-disable-next-line react/prop-types
         const { props: { history } } = this;
         history.push('/');
-        console.log(Auth.getProfile());
       } catch (err) {
-        alert('Error registering new user');
-        console.log(err);
+        this.setState({
+          failed: true,
+          message: 'Error while signing up this user.',
+        });
       }
     })();
     event.preventDefault();
+  }
+
+  renderMessage() {
+    const { failed, message } = this.state;
+
+    return failed ? <div className="text-center error">{message}</div> : <></>;
   }
 
   render() {
@@ -60,6 +71,7 @@ class SignUpForm extends React.Component {
             Authentication
           </legend>
 
+          {this.renderMessage()}
           <div className="pure-control-group center">
             <label htmlFor="name">
               Display name

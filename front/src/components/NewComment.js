@@ -47,14 +47,23 @@ class NewComment extends React.Component {
         );
         fetchComments();
         this.setState({
-          error: false,
+          failed: false,
           comment: '',
         });
       } catch (err) {
-        this.state.error = true;
+        this.setState({
+          failed: true,
+          message: 'Failed to add comment.',
+        });
       }
     })();
     event.preventDefault();
+  }
+
+  renderMessage() {
+    const { failed, message } = this.state;
+
+    return failed ? <div className="error">{message}</div> : <></>;
   }
 
   render() {
@@ -74,6 +83,7 @@ class NewComment extends React.Component {
           />
         </fieldset>
 
+        {this.renderMessage()}
         <button
           type="submit"
           className="pure-button pure-button-primary"

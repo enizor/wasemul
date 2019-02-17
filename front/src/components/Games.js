@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Pagination } from 'react-bootstrap';
 import GameItem from './GameItem';
+import Notification from './Notification';
 import Auth from './AuthService';
 
 const configuration = process.env.NODE_ENV === 'production'
@@ -15,6 +16,7 @@ class Games extends Component {
 
     this.state = {
       failed: false,
+      message: '',
       games: [],
       page: 1,
       pages: 1,
@@ -29,7 +31,7 @@ class Games extends Component {
   componentDidUpdate = (prevProps) => {
     const { location } = this.props;
     if (location.search !== prevProps.location.search) this.fetchGames();
-  }
+  };
 
   fetchGames = async () => {
     const { location } = this.props;
@@ -38,7 +40,11 @@ class Games extends Component {
 
     try {
       // eslint-disable-next-line max-len
-      const res = await fetch(`${configuration.API.URL}:${configuration.API.PORT}/games?page=${query}`);
+      const res = await fetch(
+        `${configuration.API.URL}:${
+          configuration.API.PORT
+        }/games?page=${query}`,
+      );
       const jsonRes = await res.json();
       const { games, page, pages } = jsonRes;
 
@@ -49,17 +55,18 @@ class Games extends Component {
         addable = profile.authLevel !== 2;
       }
 
-      this.setState(
-        {
-          games,
-          page,
-          pages,
-          failed: false,
-          addable,
-        },
-      );
+      this.setState({
+        games,
+        page,
+        pages,
+        failed: false,
+        addable,
+      });
     } catch (err) {
-      this.setState({ failed: true });
+      this.setState({
+        failed: true,
+        message: 'Failed to retrieve games data.',
+      });
     }
   };
 
@@ -77,14 +84,26 @@ class Games extends Component {
     ));
   }
 
+  renderNotification() {
+    const { location } = this.props;
+    if (location && location.state && location.state.message) {
+      return (
+        <Notification
+          failed={location.state.failed}
+          message={location.state.message}
+        />
+      );
+    }
+    return <></>;
+  }
+
   render() {
     const { location } = this.props;
+
     const {
-      failed,
-      page,
-      pages,
-      addable,
+      failed, message, page, pages, addable,
     } = this.state;
+
     const items = [];
     if (pages > 1) {
       for (let number = 1; number <= pages; number += 1) {
@@ -92,35 +111,45 @@ class Games extends Component {
         const active = number === parseInt(page, 10);
         items.push(
           // eslint-disable-next-line max-len
-          <Pagination.Item key={number} active={active} href={href}>{number}</Pagination.Item>,
+          <Pagination.Item key={number} active={active} href={href}>
+            {number}
+          </Pagination.Item>,
         );
       }
     }
 
     return failed ? (
-      <Redirect to="/" />
+      <Redirect
+        to={{
+          pathname: '/',
+          state: { failed, message },
+        }}
+      />
     ) : (
-      <div className="Game">
-        <div className="pure-g center">
-          <div className="pure-u-4-5">
-            <h2 className="pure-u-2-3 text-left">All games</h2>
-            {addable && (
-              <a
-                className="pure-u-1-3 vertical-align text-right"
-                href="/games/create"
-              >
-                <div className="pure-button pure-button-primary">
-                  Add new game
-                </div>
-              </a>
-            )}
+      <>
+        {this.renderNotification()}
+        <div className="Game">
+          <div className="pure-g center">
+            <div className="pure-u-4-5">
+              <h2 className="pure-u-2-3 text-left">All games</h2>
+              {addable && (
+                <a
+                  className="pure-u-1-3 vertical-align text-right"
+                  href="/games/create"
+                >
+                  <div className="pure-button pure-button-primary">
+                    Add new game
+                  </div>
+                </a>
+              )}
+            </div>
+            {this.renderGames()}
           </div>
-          {this.renderGames()}
+          <div>
+            <Pagination>{items}</Pagination>
+          </div>
         </div>
-        <div>
-          <Pagination>{items}</Pagination>
-        </div>
-      </div>
+      </>
     );
   }
 }
@@ -128,11 +157,15 @@ class Games extends Component {
 Games.propTypes = {
   location: PropTypes.shape({
     search: PropTypes.string.isRequired,
+    state: PropTypes.shape({
+      failed: PropTypes.bool,
+      message: PropTypes.string,
+    }),
   }),
 };
 
 Games.defaultProps = {
-  location: { search: '?page=1' },
+  location: { search: '?page=1', state: { failed: false, message: '' } },
 };
 
 export default Games;

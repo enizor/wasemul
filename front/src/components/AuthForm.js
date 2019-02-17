@@ -26,17 +26,31 @@ class AuthForm extends React.Component {
 
   handleSubmit = (event) => {
     const { email, password } = this.state;
+
     (async () => {
       try {
         await Auth.login(email, password);
+
         // eslint-disable-next-line react/prop-types
         const { props: { history } } = this;
+
         history.push('/');
       } catch (err) {
-        alert('The username and password does not match');
+        this.setState({
+          failed: true,
+          message: 'Username and password do not match.',
+        });
       }
     })();
     event.preventDefault();
+  }
+
+  renderMessage() {
+    const { failed, message } = this.state;
+
+    return failed
+      ? <div className="text-center error">{message}</div>
+      : <></>;
   }
 
   render() {
@@ -47,6 +61,7 @@ class AuthForm extends React.Component {
           <legend>
             Authentication
           </legend>
+
           <div className="pure-control-group center">
             <label htmlFor="email">
               Email
@@ -75,6 +90,8 @@ class AuthForm extends React.Component {
             />
           </div>
 
+          {this.renderMessage()}
+
           <div className="pure-controls">
             <button
               type="submit"
@@ -84,6 +101,7 @@ class AuthForm extends React.Component {
               Submit
             </button>
           </div>
+
         </fieldset>
       </form>
     );

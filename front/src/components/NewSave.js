@@ -51,27 +51,42 @@ class NewSave extends React.Component {
         this.setState({
           fileInputKey: (new Date()),
           file: null,
+          failed: false,
         });
         fetchSaves();
       } catch (err) {
-        console.log(err);
+        this.setState({
+          failed: true,
+          message: 'Failed to add save.',
+        });
       }
     })();
     event.preventDefault();
   };
 
+  renderMessage() {
+    const { failed, message } = this.state;
+
+    return failed ? <div className="error">{message}</div> : <></>;
+  }
+
   render() {
     const { fileInputKey, file } = this.state;
+
     return !Auth.loggedIn() ? null : (
       <form key={fileInputKey} className="pure-form NewComment">
         <fieldset className="pure-group">
           <legend className="pure-u-1">
             Add a save
           </legend>
+
           <input
             type="file"
             onChange={this.handleSelectedFile}
           />
+
+          {this.renderMessage()}
+
           <button
             className="pure-button pure-button-primary"
             type="button"
