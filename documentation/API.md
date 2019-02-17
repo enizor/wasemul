@@ -6,23 +6,113 @@ This document describes the various ressources made available by the backend API
 
 These routes are available to anyone.
 
-- `/games` [GET]: returns a JSON object containing all games (in a paginated fashion)
-  - `/games/featured` [GET]: return a JSON object containing featured games
-  - `/games/:id` [GET]: return a JSON object containing a game (based on its database `id`)
-  - `/games/:id` [GET]: return a JSON object containing the comments related to a game (based on the game's database `id`)
+### Games
+
+- `/games?page=:page` [GET]: returns a JSON object containing all games (in a paginated fashion)
+```JSON
+REPONSE BODY
+    {
+        page,
+        pages,
+        games: [
+            {
+                id,
+                icon,
+                title,
+                developer,
+                release_date
+            }
+            ...
+        ]
+    }
+```
+- `/games/featured` [GET] returns a list of featured games
+```JSON
+RESPONSE BODY
+{
+    games: [
+        {
+            icon,
+            title,
+            platform,
+            descripton
+        },
+        ...
+    ]
+}
+```
+- `/games/:id` [GET]: return a JSON object containing a game (based on its database `id`)
+ ```JSON
+ RESPONSE BODY
+    {
+        icon,
+        title,
+        description,
+        platform,
+        rating,
+        version,
+        year,
+        developper
+    }
+ ```
+- `/games/:id/comments?page=:page` [GET]: return a JSON object containing the comments related to a game (based on the game's database `id`)
+```JSON
+RESPONSE BODY
+{
+    page,
+    total_pages,
+    comments: [
+        {
+            author,
+            author_id,
+            date,
+            body
+        },
+        ...
+    ]
+}
+```
+
+- `/games/:id/saves?page=:page` [GET]: return a JSON object containing the comments related to a game (based on the game's database `id`)
+```JSON
+REQUEST BODY
+[
+      page,
+      total_pages,
+      saves: {
+        id,
+        file,
+        uploadTimestamp,
+        enabled,
+        createdAt,
+        updatedAt,
+        userId,
+        gameId,
+        User {
+          nickname
+        }
+    },
+    ...
+]
+```
+### Users
+
 - `/users` [GET]: returns a JSON object containing all users
-  - `/users/:id` [GET]: returns a JSON object containing a user (based on its database `id`)
-  - `/users/:id/comments` [GET]: returns a JSON object containing the comments posted by a user (based on the user's database `id`)
+
+- `/users/:id` [GET]: returns a JSON object containing a user (based on its database `id`)
+- `/users/:id/comments` [GET]: returns a JSON object containing the comments posted by a user (based on the user's database `id`)
 - `/comments` [GET]: returns a JSON object containing all comments
-  - `/comments/:id` [GET]: return a JSON object containing a comment (based on its database `id`)
+- `/comments/:id` [GET]: return a JSON object containing a comment (based on its database `id`)
 - `/search` [GET]: returns a JSON object containing the users and games matching the search terms
 
-- `/auth` [POST]: allows user authentification; returns a signed JSON Web Token (if successful)
-- `/register` [POST]: allows user creation,  by creating a new user (in database); returns a signed JSON Web Token (if successful)
+- `/auth` [POST]: allows user authentification, by returning a signed JSON Web Token (if successful)
+- `/register` [POST]: allows user creation,  by creating a new user (in database) and returning a signed JSON Web Token (if successful)
 
 ## Protected routes
 
-These routes require authentification. Some of these routes may require a specific privilege level (such as `admin`).
+These routes require authentification. Some of these routes may require a specific privilege level (such as `admin`). The JSON Web TOken should be placed in the "Authentication" header.
+
+
 
 - `/games` [POST]: allows game creation; returns a JSON object containing the newly created game (if successful)
   - `/games/:id` [PUT]: allows updating the data related to a game (selected by its database `id`); returns a JSON object containing the updated game (if successful)
