@@ -36,36 +36,35 @@ class Game extends Component {
   }
 
   componentDidMount = () => {
-    this.fetchGameInfos();
+    this.fetchGameData();
     this.fetchComments();
     this.fetchSaves();
   };
 
-  fetchGameInfos = () => {
+  fetchGameData = async () => {
     const { match } = this.props;
 
     // API call this.state.id
-    fetch(
+    const res = await fetch(
       `${configuration.API.URL}:${configuration.API.PORT}/games/${
         match.params.id
       }`,
       myInit,
-    )
-      .then(res => res.json())
-      .then((json) => {
-        let editable = false;
-        if (Auth.loggedIn()) {
-          const profile = Auth.getProfile();
-          editable = profile.authLevel !== 2;
-        }
-        this.setState({
-          gameInfo: json,
-          editable,
-        });
-      });
+    );
+    const jsonRes = await res.json();
+
+    let editable = false;
+    if (Auth.loggedIn()) {
+      const profile = Auth.getProfile();
+      editable = profile.authLevel !== 2;
+    }
+    this.setState({
+      gameInfo: jsonRes,
+      editable,
+    });
   };
 
-  fetchComments = () => {
+  fetchComments = async () => {
     const { match } = this.props;
 
     fetch(
@@ -82,21 +81,19 @@ class Game extends Component {
       });
   };
 
-  fetchSaves = () => {
+  fetchSaves = async () => {
     const { match } = this.props;
 
-    fetch(
+    const res = await fetch(
       `${configuration.API.URL}:${configuration.API.PORT}/games/${
         match.params.id
       }/saves`,
       myInit,
-    )
-      .then(res => res.json())
-      .then((json) => {
-        this.setState({
-          saves: json,
-        });
-      });
+    );
+    const jsonRes = await res.json();
+    this.setState({
+      saves: jsonRes,
+    });
   };
 
   renderComments() {

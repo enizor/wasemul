@@ -7,36 +7,92 @@ const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
   : require('../config/dev.json');
 
+/**
+ * Fetch configuration through
+ */
+const myHeaders = new Headers({
+  'Access-Control-Allow-Origin': '*',
+});
+
+const myInit = {
+  method: 'GET',
+  headers: myHeaders,
+  mode: 'cors',
+  cache: 'default',
+};
+
 class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       failed: false,
       user: {},
+      saves: [],
       editable: false,
     };
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
+    this.fetchUserData();
+    this.fetchSaves();
+  }
+
+  fetchUserData = async () => {
     const { match } = this.props;
-    fetch(
+    try {
+      const res = await fetch(
+        `${configuration.API.URL}:${configuration.API.PORT}/users/${
+          match.params.id
+        }`,
+      );
+      const jsonRes = await res.json();
+      let editable = false;
+      if (Auth.loggedIn()) {
+        const profile = Auth.getProfile();
+        editable = profile.authLevel !== 2
+        || profile.id === parseInt(match.params.id, 10);
+      }
+      this.setState({ user: jsonRes, failed: false, editable });
+    } catch (err) {
+      this.setState({ failed: true });
+    }
+  }
+
+  fetchSaves = async () => {
+    const { match } = this.props;
+
+    const res = await fetch(
       `${configuration.API.URL}:${configuration.API.PORT}/users/${
         match.params.id
-      }`,
-    )
-      .then(res => res.json())
-      .then((result) => {
-        let editable = false;
-        if (Auth.loggedIn()) {
-          const profile = Auth.getProfile();
-          editable = profile.authLevel !== 2
-          || profile.id === parseInt(match.params.id, 10);
-        }
-        this.setState({ user: result, failed: false, editable });
-      })
-      .catch(() => {
-        this.setState({ failed: true });
-      });
+      }/saves`,
+      myInit,
+    );
+    const jsonRes = await res.json();
+    this.setState({
+      saves: jsonRes,
+    });
+  }
+
+  renderSaves() {
+    const { saves } = this.state;
+    return saves.map(save => (
+      <div key={save.id}>
+        <p>
+          {`${save.file} for `}
+          <a href={`/games/${save.gameId}`}>{save.Game.name}</a>
+        </p>
+        <a
+          role="button"
+          href={`${configuration.API.URL}:${
+            configuration.API.PORT
+          }/static/saves/${save.uploadTimestamp}-${save.file}`}
+          download={`${save.file}`}
+        >
+          Download
+        </a>
+        <hr />
+      </div>
+    ));
   }
 
   //   {
@@ -102,6 +158,9 @@ class User extends React.Component {
             </a>
           </div>
         )}
+        <h1>Saves</h1>
+        <hr />
+        {this.renderSaves()}
       </div>
     );
   }
