@@ -21,7 +21,7 @@ const authUser = async (req, res) => {
       { expiresIn: '1h' },
       (err, token) => {
         if (err) {
-          console.log(err);
+          res.sendStatus(500);
           return;
         }
         res.send({ token });
