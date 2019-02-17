@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import Auth from './AuthService';
-import './Game.css';
+import '../css/Game.css';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
