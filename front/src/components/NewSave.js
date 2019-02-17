@@ -14,7 +14,6 @@ class NewSave extends React.Component {
   };
 
   handleSelectedFile = (event) => {
-    console.log(event.target.files[0]);
     this.setState({
       file: event.target.files[0],
     });
@@ -25,6 +24,11 @@ class NewSave extends React.Component {
     const { gameID, fetchSaves } = this.props;
     const { file } = this.state;
     const data = new FormData();
+
+    if (file === null) {
+      return;
+    }
+
     (async () => {
       try {
         data.append('file', file, file.name);
@@ -52,7 +56,7 @@ class NewSave extends React.Component {
   };
 
   render() {
-    const { fileInputKey } = this.state;
+    const { fileInputKey, file } = this.state;
     return !Auth.loggedIn() ? null : (
       <form key={fileInputKey} className="pure-form NewComment">
         <fieldset className="pure-group">
@@ -67,6 +71,7 @@ class NewSave extends React.Component {
             className="pure-button pure-button-primary"
             type="button"
             onClick={this.handleUpload}
+            disabled={file === null}
           >
             Upload
           </button>

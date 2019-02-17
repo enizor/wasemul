@@ -23,6 +23,11 @@ class NewComment extends React.Component {
 
   handleSubmit = (event) => {
     const { comment } = this.state;
+
+    if (comment === '') {
+      return;
+    }
+
     (async () => {
       try {
         const { props: { gameID, fetchComments } } = this;
@@ -68,6 +73,7 @@ class NewComment extends React.Component {
           type="submit"
           className="pure-button pure-button-primary"
           onClick={this.handleSubmit}
+          disabled={comment === ''}
         >
           Send
         </button>
