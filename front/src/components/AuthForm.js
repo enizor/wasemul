@@ -43,14 +43,14 @@ class AuthForm extends React.Component {
             Authentication
           </legend>
           <div className="pure-control-group center">
-            <label htmlFor="name">
-              E-mail
+            <label htmlFor="email">
+              Email
             </label>
             <input
-              id="name"
+              id="email"
               name="email"
               type="text"
-              placeholder="E-mail"
+              placeholder="Email"
               value={email}
               onChange={this.handleInputChange}
             />
