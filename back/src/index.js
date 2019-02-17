@@ -13,6 +13,11 @@ import { sequelize } from './db/dbInit';
 
 import seedDb from './controllers/seed';
 
+import { 
+  findSavesOfGame,
+  createSave
+} from './controllers/save';
+
 import {
   findCommentsOfGame,
   findCommentsOfUser,
@@ -77,6 +82,10 @@ app.get('/games/:id/comments', findCommentsOfGame);
 
 app.get('/games/featured', findFeaturedGames);
 
+app.post('/games/:id/saves', createSave);
+
+app.get('/games/:id/saves', findSavesOfGame);
+
 app.put('/games/:id', updateGame);
 
 app.get('/games/:id', findGame);
@@ -84,25 +93,6 @@ app.get('/games/:id', findGame);
 app.post('/games', createGame);
 
 app.get('/games', findGames);
-
-app.post('/users/:id/saves', (req, res) => {
-  console.log(req.files, req.body);
-  let uploadFile = req.files.file
-  const fileName = req.files.file.name
-  uploadFile.mv(
-    `${__dirname}/public/files/${fileName}`,
-    function (err) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send(err)
-      }
-
-      res.json({
-        file: `public/${req.files.file.name}`,
-      })
-    },
-  )
-})
 
 app.get('/users/:id/comments', findCommentsOfUser);
 
