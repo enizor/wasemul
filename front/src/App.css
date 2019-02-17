@@ -28,3 +28,20 @@
   width: 200px;
   height: auto;
 }
+
+.error {
+  color: brown;
+}
+
+.notification {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  opacity: 0.9;
+  z-index: 10;
+  width: 100%;
+  position: absolute;
+}
