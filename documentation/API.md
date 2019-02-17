@@ -111,55 +111,45 @@ These routes are available to anyone.
   ```JSON
   RESPONSE BODY
   [
-    {
-      id,
-      nickname,
-      password,
-      email,
-      authLevel,
-      biography,
-      icon,
-      enabled,
-      createdAt,
-      updatedAt
-    },
-    ...
+      {
+          id,
+          nickname,
+          email,
+          authLevel,
+          biography,
+          icon,
+      },
+      ...
   ]
   ```
 
-  - `/users/:id` [GET]: returns a JSON object containing a user (based on its database `id`)
+- `/users/:id` [GET]: returns a JSON object containing a user (based on its database `id`)
 
-    ```JSON
-    RESPONSE BODY
-    {
+  ```JSON
+  RESPONSE BODY
+  {
       id,
       nickname,
-      password,
       email,
       authLevel,
       biography,
       icon,
-      enabled,
-      createdAt,
-      updatedAt
-    }
-    ```
+  }
+  ```
 
-  - `/users/:id/comments` [GET]: returns a JSON object containing the comments posted by a user (based on the user's database `id`)
+- `/users/:id/comments` [GET]: returns a JSON object containing the comments posted by a user (based on the user's database `id`)
 
   ```JSON
   RESPONSE BODY
   [
-    {
-      id,
-      body,
-      enabled,
-      createdAt,
-      updatedAt,
-      userId,
-      gameId
-    },
-    ...
+      {
+          id,
+          nickname,
+          email,
+          authLevel,
+          biography,
+          icon,
+      }
   ]
   ```
 
@@ -183,22 +173,22 @@ These routes are available to anyone.
   ]
   ```
 
-  - `/comments/:id` [GET]: return a JSON object containing a comment (based on its database `id`)
+- `/comments/:id` [GET]: return a JSON object containing a comment (based on its database `id`)
 
-    ```JSON
-    RESPONSE BODY
-    [
-      {
-        id,
-        body,
-        enabled,
-        createdAt,
-        updatedAt,
-        userId,
-        gameId
-      }
-    ]
-    ```
+  ```JSON
+  RESPONSE BODY
+  [
+    {
+      id,
+      body,
+      enabled,
+      createdAt,
+      updatedAt,
+      userId,
+      gameId
+    }
+  ]
+  ```
 
 ### Search
 
@@ -229,21 +219,33 @@ These routes are available to anyone.
       {
         id,
         nickname,
-        password,
         email,
         authLevel,
         biography,
         icon,
-        enabled,
-        createdAt,
-        updatedAt
       },
       ...
     ]
   }
+  ```
 
 - `/auth` [POST]: allows user authentification; returns a signed JSON Web Token (if successful)
+  ```JSON
+  REQUEST BODY
+  {
+      email,
+      password,
+  }
+  ```
 - `/register` [POST]: allows user creation,  by creating a new user (in database); returns a signed JSON Web Token (if successful)
+  ```JSON
+  REQUEST BODY
+  {
+      nickname,
+      email,
+      password,
+  }
+  ```
 
 ## Protected routes
 
@@ -252,7 +254,17 @@ These routes require authentification. Some of these routes may require a specif
 ### Games
 
 - `/games` [POST]: allows game creation; returns a JSON object containing the newly created game (if successful)
-
+  ```JSON
+  REQUEST BODY
+  {
+      game: {
+          name,
+          platform,
+          description,
+          publisher,
+      }
+  }
+  ```
   ```JSON
   RESPONSE BODY
   {
@@ -270,63 +282,87 @@ These routes require authentification. Some of these routes may require a specif
   }
   ```
 
-  - `/games/:id` [PUT]: allows updating the data related to a game (selected by its database `id`); returns a JSON object containing the updated game (if successful)
-
-    ```JSON
-    RESPONSE BODY
-    {
-      id,
-      name,
-      platform,
-      description,
-      publisher,
-      updatedAt,
-      createdAt,
-      icon,
-      releaseDate,
-      version,
-      enabled
-    }
-    ```
-
-  - `/games/:id/comments` [POST]: allows creation of a new comment related to a game (selected by its database `id`); returns a JSON object containing the newly created comment (if successful)
-
-    ```JSON
-    RESPONSE BODY
-    [
-      {
-        id,
-        body,
-        enabled,
-        createdAt,
-        updatedAt,
-        userId,
-        gameId,
-        User: {
-          nickname
-        }
-      },
-      ...
-    ]
-    ```
-
-### Users
-
-- `/users/:id` [PUT]: allows updating a user (selected by its database `id`); returns a JSON object containing the updated user (if successful)
-
+- `/games/:id` [PUT]: allows updating the data related to a game (selected by its database `id`); returns a JSON object containing the updated game (if successful)
+  ```JSON
+  REQUEST BODY
+  {
+      game: {
+          name,
+          platform,
+          description,
+          publisher,
+      }
+  }
+  ```
   ```JSON
   RESPONSE BODY
   {
     id,
-    nickname,
-    password,
-    email,
-    authLevel,
-    biography,
-    icon,
-    enabled,
+    name,
+    platform,
+    description,
+    publisher,
+    updatedAt,
     createdAt,
-    updatedAt
+    icon,
+    releaseDate,
+    version,
+    enabled
+  }
+  ```
+
+- `/games/:id/comments` [POST]: allows creation of a new comment related to a game (selected by its database `id`); returns a JSON object containing the newly created comment (if successful)
+  ```JSON
+  REQUEST BODY
+  {
+      user: {
+          nickname: req.body.user.nickname,
+          email: req.body.user.email,
+          biography: req.body.user.biography,
+      }
+  }
+  ```
+  ```JSON
+  RESPONSE BODY
+  [
+    {
+      id,
+      body,
+      enabled,
+      createdAt,
+      updatedAt,
+      userId,
+      gameId,
+      User: {
+        nickname
+      }
+    },
+    ...
+  ]
+  ```
+
+### Users
+
+- `/users/:id` [PUT]: allows updating a user (selected by its database `id`); returns a JSON object containing the updated user (if successful)
+  ```JSON
+  REQUEST BODY
+  {
+      user: {
+          nickname: req.body.user.nickname,
+          email: req.body.user.email,
+          biography: req.body.user.biography,
+      }
+  }
+  ```
+  ```JSON
+  RESPONSE BODY
+  {
+      id,
+      nickname,
+      email,
+      authLevel,
+      biography,
+      icon,
   }
     ```
 
