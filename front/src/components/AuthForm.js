@@ -1,14 +1,19 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable jsx-a11y/label-has-for */
 import React from 'react';
 import Auth from './AuthService';
 import '../css/Auth.css';
 
 class AuthForm extends React.Component {
-  state = {
-    email: '',
-    password: '',
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: '',
+      password: '',
+      failed: false,
+      message: '',
+    };
+  }
+
 
   handleInputChange = (event) => {
     const { target } = event;

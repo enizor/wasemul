@@ -58,7 +58,7 @@ class AuthService {
 
   getProfile = () => decode(this.getToken());
 
-  fetch = (url, options) => {
+  fetch = async (url, options) => {
     // performs api calls sending the required authentication headers
     const headers = {
       Accept: 'application/json',
@@ -71,15 +71,15 @@ class AuthService {
       headers.Authorization = this.getToken();
     }
 
-    return fetch(url, {
+    const res = await fetch(url, {
       headers,
       ...options,
-    })
-      .then(this.checkStatus)
-      .then(response => response.json());
+    });
+    const response = await this.checkStatus(res);
+    return response.json();
   }
 
-  upload = (url, options) => {
+  upload = async (url, options) => {
     // performs api calls sending the required authentication headers
     const headers = {
       Accept: 'application/json',
@@ -91,12 +91,12 @@ class AuthService {
       headers.Authorization = this.getToken();
     }
 
-    return fetch(url, {
+    const res = await fetch(url, {
       headers,
       ...options,
-    })
-      .then(this.checkStatus)
-      .then(response => response.json());
+    });
+    const response = await this.checkStatus(res);
+    return response.json();
   }
 
   checkStatus = (response) => {

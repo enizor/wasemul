@@ -8,10 +8,16 @@ const configuration = process.env.NODE_ENV === 'production'
   : require('../config/dev.json');
 
 class NewSave extends React.Component {
-  state = {
-    file: null,
-    fileInputKey: Date.now(),
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      file: null,
+      fileInputKey: Date.now(),
+      failed: false,
+      message: '',
+    };
+  }
 
   handleSelectedFile = (event) => {
     this.setState({
@@ -20,7 +26,6 @@ class NewSave extends React.Component {
   };
 
   handleUpload = (event) => {
-    event.persist();
     const { gameID, fetchSaves } = this.props;
     const { file } = this.state;
     const data = new FormData();

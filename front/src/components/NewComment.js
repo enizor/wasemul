@@ -8,10 +8,15 @@ const configuration = process.env.NODE_ENV === 'production'
   : require('../config/dev.json');
 
 class NewComment extends React.Component {
-  state = {
-    comment: '',
-    error: false,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      comment: '',
+      failed: false,
+      message: '',
+    };
+  }
 
   handleInputChange = (event) => {
     const { value, name } = event.target;
