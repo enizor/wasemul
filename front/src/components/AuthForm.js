@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-for */
 import React from 'react';
 import Auth from './AuthService';
+import '../css/Auth.css';
 
 class AuthForm extends React.Component {
   state = {
@@ -26,7 +27,6 @@ class AuthForm extends React.Component {
         // eslint-disable-next-line react/prop-types
         const { props: { history } } = this;
         history.push('/');
-        console.log(Auth.getProfile());
       } catch (err) {
         alert('The username and password does not match');
       }
@@ -37,7 +37,7 @@ class AuthForm extends React.Component {
   render() {
     const { email, password } = this.state;
     return (
-      <form className="pure-form pure-form-aligned authForm">
+      <form className="pure-form pure-form-aligned AuthForm">
         <fieldset>
           <legend>
             Authentication
