@@ -4,6 +4,7 @@ import { db } from '../db/dbInit';
 import { comparePassword } from '../auth';
 
 const authUser = async (req, res) => {
+  // Verifies that the user is correctly authenticated and returns a corresponding token
   const user = await db.User.findOne({ where: { email: req.body.email } });
   if (user && comparePassword(req.body.password, user.password)) {
     const data = {

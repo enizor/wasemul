@@ -26,15 +26,23 @@ const myInit = {
 };
 
 class User extends React.Component {
+  // User page
+
   constructor(props) {
     super(props);
+
     this.state = {
       failed: false,
       message: '',
+
       user: {},
+
+      // Saves pagination
       saves: [],
       page: 1,
       pages: 1,
+
+      // Can the user edit this user?
       editable: false,
     };
   }
@@ -47,20 +55,26 @@ class User extends React.Component {
   fetchUserData = async () => {
     const { match } = this.props;
     try {
+      // Try to GET user data
       const res = await fetch(
         `${configuration.API.URL}:${configuration.API.PORT}/users/${
           match.params.id
         }`,
       );
+
       const jsonRes = await res.json();
+
+      // Verify if the user can edit this user
       let editable = false;
       if (Auth.loggedIn()) {
         const profile = Auth.getProfile();
         editable = profile.authLevel !== 2
           || profile.id === parseInt(match.params.id, 10);
       }
+
       this.setState({ user: jsonRes, failed: false, editable });
     } catch (err) {
+      // Show notification and go back to main page
       this.setState({ failed: true, message: 'Failed to retrieve user data' });
     }
   };
@@ -71,14 +85,17 @@ class User extends React.Component {
     const query = new URLSearchParams(location.search).get('page') || 1;
 
     try {
+      // Try to GET the user's saves
       const res = await fetch(
         `${configuration.API.URL}:${configuration.API.PORT}/users/${
           match.params.id
         }/saves?page=${query}`,
         myInit,
       );
+
       const jsonRes = await res.json();
       const { saves, page, pages } = jsonRes;
+
       this.setState({
         saves,
         page,
@@ -124,19 +141,6 @@ class User extends React.Component {
     ));
   }
 
-  renderNotification() {
-    const { location } = this.props;
-    if (location && location.state && location.state.message) {
-      return (
-        <Notification
-          failed={location.state.failed}
-          message={location.state.message}
-        />
-      );
-    }
-    return <></>;
-  }
-
   renderSavesPages() {
     const { location } = this.props;
     const { page, pages } = this.state;
@@ -154,17 +158,19 @@ class User extends React.Component {
     return items;
   }
 
-  //   {
-  //     "id": 1,
-  //     "nickname": "test",
-  //     "email": "test@example.com",
-  //     "authLevel": 0,
-  //     "biography": null,
-  //     "icon": null,
-  //     "enabled": null,
-  //     "createdAt": "2018-12-10T15:03:34.773Z",
-  //     "updatedAt": "2018-12-10T15:03:34.773Z"
-  //     }
+  renderNotification() {
+    const { location } = this.props;
+    if (location && location.state && location.state.message) {
+      return (
+        <Notification
+          failed={location.state.failed}
+          message={location.state.message}
+        />
+      );
+    }
+    return <></>;
+  }
+
   render() {
     const {
       user, failed, message, editable,

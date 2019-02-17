@@ -3,9 +3,10 @@ import { findFeaturedGames } from '../src/controllers/game';
 
 jest.mock('../src/db/dbInit');
 
+// Test of the ranking feature
 it('should rank games', async () => {
   let featured;
-  let ranks = [];
+  const ranks = [];
   const res = {
     send: value => {
       featured = value;

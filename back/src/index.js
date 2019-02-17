@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -49,15 +47,16 @@ import searchUsersAndGames from './controllers/search';
 const app = express();
 const port = 3002;
 
-app.use(cors());
-
 // Parse application/json
 app.use(bodyParser.json());
 
+// Use cors
 app.use(cors());
 
+// Load environment variables from .env file
 dotenv.load();
 
+// File upload middleware
 app.use(fileUpload());
 
 sequelize.sync();
@@ -73,7 +72,11 @@ if (process.env.NODE_ENV === 'development') {
   app.get('/seed', seedDb);
 }
 
+// Routes definition
+
 app.use('/static', express.static(path.join(__dirname, 'public')));
+
+app.post('/games/:id/comments', createComment);
 
 app.get('/games/:id/comments', findCommentsOfGame);
 
@@ -105,12 +108,10 @@ app.get('/comments/:id', findComment);
 
 app.get('/comments', findComments);
 
-app.post('/games/:id/comments', createComment);
-
 app.post('/auth', authUser);
 
 app.post('/register', createUser);
 
 app.get('/search', searchUsersAndGames);
 
-app.listen(port, () => console.log(`Example app listening on port ${port}`));
+app.listen(port);

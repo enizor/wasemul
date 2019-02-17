@@ -8,13 +8,16 @@ const configuration = process.env.NODE_ENV === 'production'
   : require('../config/dev.json');
 
 class NewComment extends React.Component {
+  // Form to add a new comment
   constructor(props) {
     super(props);
 
     this.state = {
-      comment: '',
       failed: false,
       message: '',
+
+      // Body of the comment
+      comment: '',
     };
   }
 
@@ -36,21 +39,26 @@ class NewComment extends React.Component {
     (async () => {
       try {
         const { props: { gameID, fetchComments } } = this;
+        // Try to POST new comment
         await Auth.fetch(
-          // eslint-disable-next-line max-len
-          `${configuration.API.URL}:${configuration.API.PORT}/games/${gameID}/comments`, {
+          `${configuration.API.URL}:${
+            configuration.API.PORT
+          }/games/${gameID}/comments`, {
             method: 'POST',
             body: JSON.stringify({ comment }),
             mode: 'cors',
             cache: 'default',
           },
         );
+
         fetchComments();
+
         this.setState({
           failed: false,
           comment: '',
         });
       } catch (err) {
+        // Show notification of failure
         this.setState({
           failed: true,
           message: 'Failed to add comment.',

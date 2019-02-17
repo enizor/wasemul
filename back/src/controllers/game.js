@@ -2,11 +2,13 @@ import jsonwebtoken from 'jsonwebtoken';
 import { db } from '../db/dbInit';
 
 const findGame = async (req, res) => {
+  // Get data about a particular game id
   const game = await db.Game.findOne({ where: { id: req.params.id } });
   res.send(game);
 };
 
 const findGames = async (req, res) => {
+  // Get all games in increments of 5 (for pagination)
   const limit = 5;
   const data = await db.Game.findAndCountAll();
 
@@ -24,10 +26,12 @@ const findGames = async (req, res) => {
 };
 
 const updateGame = async (req, res) => {
+  // Update a given game (if user is an admin) with the provided fields
   if (!req.headers.authorization) {
     res.sendStatus(403);
     return;
   }
+
   let token;
   try {
     token = jsonwebtoken.verify(
@@ -66,29 +70,38 @@ const updateGame = async (req, res) => {
 };
 
 const findFeaturedGames = async (_, res) => {
+  // Find featured games, ie. most active games at present time
+
   const games = await db.Game.findAll();
   const times = [];
   const comments = [];
+
   for (let i = 0; i < games.length; i += 1) {
     times.push(Date.parse(games[i].dataValues.createdAt) / 1000);
     comments.push(games[i].countComments({}));
   }
+
   const minTime = Math.min(...times);
   const result = await Promise.all(comments);
+
   for (let i = 0; i < games.length; i += 1) {
+    // A game's score is higher if it was added recently and/or has a high number of comments
     games[i].score = 0;
     games[i].score += (times[i] - minTime) / 1000;
     games[i].score += result[i];
   }
+  // Sort games according to score and return the first 5
   games.sort((a, b) => b.score - a.score);
-  res.send(games);
+  res.send(games.slice(0, 5));
 };
 
 const createGame = async (req, res) => {
+  // Create a new game (only if the user is an admin)
   if (!req.headers.authorization) {
     res.sendStatus(403);
     return;
   }
+
   let token;
   try {
     token = jsonwebtoken.verify(

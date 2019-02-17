@@ -26,19 +26,27 @@ const myInit = {
 };
 
 class Game extends Component {
+  // Game page
   constructor(props) {
     super(props);
 
     this.state = {
       failed: false,
       message: '',
+
       game: {},
+
+      // Comments pagination
       comments: [],
       commentsPage: 1,
       commentsPages: 1,
+
+      // Saves pagination
       saves: [],
       savesPage: 1,
       savesPages: 1,
+
+      // Can the user edit the game?
       editable: false,
     };
   }
@@ -53,7 +61,7 @@ class Game extends Component {
     const { match } = this.props;
 
     try {
-      // API call this.state.id
+      // Try to GET game data
       const res = await fetch(
         `${configuration.API.URL}:${configuration.API.PORT}/games/${
           match.params.id
@@ -62,17 +70,20 @@ class Game extends Component {
       );
       const jsonRes = await res.json();
 
+      // Verify if the user can edit the game data
       let editable = false;
       if (Auth.loggedIn()) {
         const profile = Auth.getProfile();
         editable = profile.authLevel !== 2;
       }
+
       this.setState({
         game: jsonRes,
         editable,
         failed: false,
       });
     } catch (err) {
+      // Game data retrieval failed ; go back to games page
       this.setState({
         failed: true,
         message: 'Failed to retreive game data.',
@@ -86,6 +97,7 @@ class Game extends Component {
     const query = new URLSearchParams(location.search).get('commentsPage') || 1;
 
     try {
+      // Try to GET the game's comments
       const res = await fetch(
         `${configuration.API.URL}:${configuration.API.PORT}/games/${
           match.params.id
@@ -113,13 +125,16 @@ class Game extends Component {
     const query = new URLSearchParams(location.search).get('savesPage') || 1;
 
     try {
+      // Try to GET the game's saves
       const res = await fetch(
         `${configuration.API.URL}:${configuration.API.PORT}/games/${
           match.params.id
         }/saves?page=${query}`,
         myInit,
       );
+
       const { saves, page, pages } = await res.json();
+
       this.setState({
         saves,
         savesPage: page,
@@ -202,19 +217,6 @@ class Game extends Component {
     ));
   }
 
-  renderNotification() {
-    const { location } = this.props;
-    if (location && location.state && location.state.message) {
-      return (
-        <Notification
-          failed={location.state.failed}
-          message={location.state.message}
-        />
-      );
-    }
-    return <></>;
-  }
-
   renderSavesPages() {
     const { location } = this.props;
     const { savesPage, savesPages } = this.state;
@@ -230,6 +232,19 @@ class Game extends Component {
       }
     }
     return items;
+  }
+
+  renderNotification() {
+    const { location } = this.props;
+    if (location && location.state && location.state.message) {
+      return (
+        <Notification
+          failed={location.state.failed}
+          message={location.state.message}
+        />
+      );
+    }
+    return <></>;
   }
 
   render() {

@@ -8,14 +8,19 @@ const configuration = process.env.NODE_ENV === 'production'
   : require('../config/dev.json');
 
 class SignUpForm extends React.Component {
-  state = {
-    nickname: '',
-    email: '',
-    password: '',
-    failed: false,
-    message: '',
-  };
+  // Form to register a new User
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      nickname: '',
+      email: '',
+      password: '',
+      failed: false,
+      message: '',
+    };
+  }
 
   handleInputChange = (event) => {
     const { target } = event;
@@ -30,6 +35,7 @@ class SignUpForm extends React.Component {
     const { nickname, email, password } = this.state;
     (async () => {
       try {
+        // Try to POST a new user
         const res = await Auth.fetch(
           `${configuration.API.URL}:${configuration.API.PORT}/register`, {
             method: 'POST',
@@ -40,13 +46,17 @@ class SignUpForm extends React.Component {
             }),
           },
         );
+        // Retrieve the token
         Auth.setToken(res.token);
 
         this.setState({ failed: false });
+
+        // Go back to home page
         // eslint-disable-next-line react/prop-types
         const { props: { history } } = this;
         history.push('/');
       } catch (err) {
+        // Show notification of failure
         this.setState({
           failed: true,
           message: 'Error while signing up this user.',

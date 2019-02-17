@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const GameItem = (props) => {
+  // Component for a game item in a games list
   const {
     id, name, publisher, releaseDate, icon,
   } = props;

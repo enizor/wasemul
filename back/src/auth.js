@@ -1,5 +1,7 @@
 import bcrypt from 'bcrypt';
 
+// Utility functions for password hashing
+
 const configuration = process.env.NODE_ENV === 'production'
   ? require('./config/prod.json')
   : require('./config/dev.json');

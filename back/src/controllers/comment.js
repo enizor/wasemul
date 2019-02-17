@@ -3,10 +3,10 @@ import jsonwebtoken from 'jsonwebtoken';
 import { db } from '../db/dbInit';
 
 const findCommentsOfGame = async (req, res) => {
+  // Get all comments of a game, but in increments of 5 games / page
   const game = await db.Game.findOne({ where: { id: req.params.id } });
-  const allComments = await game.getComments({
-    include: [{ model: db.User, attributes: ['nickname'] }],
-  });
+  const allComments = await game.getComments();
+
   const limit = 5;
   const page = req.query.page || 1;
   const pages = Math.ceil(allComments.length / limit);
@@ -22,6 +22,7 @@ const findCommentsOfGame = async (req, res) => {
 };
 
 const findCommentsOfUser = async (req, res) => {
+  // Get all comments of a user (not actually used yet)
   const user = await db.User.findOne({ where: { id: req.params.id } });
   const comments = await user.getComments({
     order: [['createdAt', 'DESC']],
@@ -30,10 +31,12 @@ const findCommentsOfUser = async (req, res) => {
 };
 
 const createComment = async (req, res) => {
+  // Create a comment belonging to the user identified by the token
   if (!req.headers.authorization) {
     res.sendStatus(403);
     return;
   }
+
   let token;
   try {
     token = jsonwebtoken.verify(
@@ -63,11 +66,13 @@ const createComment = async (req, res) => {
 };
 
 const findComment = async (req, res) => {
+  // Find a given comment
   const comment = await db.Comment.findAll({ where: { id: req.params.id } });
   res.send(comment);
 };
 
 const findComments = async (_, res) => {
+  // Get all comments
   const comments = await db.Comment.findAll();
   res.send(comments);
 };

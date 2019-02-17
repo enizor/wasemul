@@ -2,17 +2,20 @@ import jsonwebtoken from 'jsonwebtoken';
 import { db } from '../db/dbInit';
 import { hashPassword } from '../auth';
 
-// Suppress some user info
-const suppressUser = user => ({
-  id: user.id,
-  nickname: user.nickname,
-  email: user.email,
-  authLevel: user.authLevel,
-  biography: user.biography,
-  icon: user.icon,
-});
+const suppressUser = user => (
+  // Suppress some user info
+  {
+    id: user.id,
+    nickname: user.nickname,
+    email: user.email,
+    authLevel: user.authLevel,
+    biography: user.biography,
+    icon: user.icon,
+  }
+);
 
 const findUser = async (req, res) => {
+  // Find data about a user
   const user = await db.User.findOne(
     { where: { id: req.params.id, enabled: true } },
   );
@@ -20,12 +23,14 @@ const findUser = async (req, res) => {
 };
 
 const findUsers = async (_, res) => {
+  // Find data about all users
   const users = await db.User.findAll({ where: { enabled: true } });
   const data = users.map(suppressUser);
   res.send(data);
 };
 
 const createUser = async (req, res) => {
+  // Create a new user and sends it its token
   try {
     const user = await db.User.findOne({ where: { email: req.body.email } });
     if (user) {
@@ -57,10 +62,12 @@ const createUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
+  // Updates a user if the modifier is an admin or the user itself
   if (!req.headers.authorization) {
     res.sendStatus(403);
     return;
   }
+
   let token;
   try {
     token = jsonwebtoken.verify(
@@ -71,6 +78,7 @@ const updateUser = async (req, res) => {
     res.sendStatus(403);
     return;
   }
+
   const modifyingUser = await db.User.findOne({ where: { id: token.id } });
   if (
     modifyingUser

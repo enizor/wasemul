@@ -13,6 +13,7 @@ const defaultUserImage =  'https://www.autourdelacom.fr/wp-content/uploads/2018/
 const defaultGameImage =  'https://www.nationalpetregister.org/assets/img/no-photo.jpg'; // eslint-disable-line
 
 export default class SearchPage extends React.Component {
+  // Page of results of a search query
   constructor(props) {
     super(props);
 
