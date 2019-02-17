@@ -163,6 +163,8 @@ These routes are available to anyone.
   ]
   ```
 
+### Comments
+
 - `/comments` [GET]: returns a JSON object containing all comments
 
   ```JSON
@@ -197,6 +199,8 @@ These routes are available to anyone.
       }
     ]
     ```
+
+### Search
 
 - `/search` [GET]: returns a JSON object containing the users and games matching the search terms
 
@@ -243,15 +247,88 @@ These routes are available to anyone.
 
 ## Protected routes
 
-These routes require authentification. Some of these routes may require a specific privilege level (such as `admin`). The JSON Web TOken should be placed in the "Authentication" header.
+These routes require authentification. Some of these routes may require a specific privilege level (such as `admin`). The JSON Web Token should be placed in the "Authentication" header.
 
-
+### Games
 
 - `/games` [POST]: allows game creation; returns a JSON object containing the newly created game (if successful)
+
+  ```JSON
+  RESPONSE BODY
+  {
+    id,
+    name,
+    platform,
+    description,
+    publisher,
+    updatedAt,
+    createdAt,
+    icon,
+    releaseDate,
+    version,
+    enabled
+  }
+  ```
+
   - `/games/:id` [PUT]: allows updating the data related to a game (selected by its database `id`); returns a JSON object containing the updated game (if successful)
-   `/games/:id/comments` [POST]: allows creation of a new comment related to a game (selected by its database `id`); returns a JSON object containing the newly created comment (if successful)
-- `/users`
-  - `/users/:id` [PUT]: allows updating a user (selected by its database `id`); returns a JSON object containing the updated user (if successful)
+
+    ```JSON
+    RESPONSE BODY
+    {
+      id,
+      name,
+      platform,
+      description,
+      publisher,
+      updatedAt,
+      createdAt,
+      icon,
+      releaseDate,
+      version,
+      enabled
+    }
+    ```
+
+  - `/games/:id/comments` [POST]: allows creation of a new comment related to a game (selected by its database `id`); returns a JSON object containing the newly created comment (if successful)
+
+    ```JSON
+    RESPONSE BODY
+    [
+      {
+        id,
+        body,
+        enabled,
+        createdAt,
+        updatedAt,
+        userId,
+        gameId,
+        User: {
+          nickname
+        }
+      },
+      ...
+    ]
+    ```
+
+### Users
+
+- `/users/:id` [PUT]: allows updating a user (selected by its database `id`); returns a JSON object containing the updated user (if successful)
+
+  ```JSON
+  RESPONSE BODY
+  {
+    id,
+    nickname,
+    password,
+    email,
+    authLevel,
+    biography,
+    icon,
+    enabled,
+    createdAt,
+    updatedAt
+  }
+    ```
 
 ## Development-only routes
 
