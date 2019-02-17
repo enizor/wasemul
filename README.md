@@ -10,7 +10,7 @@ Don't forget to add the database name, user and password to the environment vari
 
 ```bash
 ./npm_install.sh # Installs node_modules required for development
-docker-compose -f docker-compose-dev.yml build --no-cache  # no-cache is optional, only use when you change package*.json files
+docker-compose -f docker-compose-dev.yml build
 docker-compose -f docker-compose-dev.yml up
 ```
 
