@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
+import { Pagination } from 'react-bootstrap';
 import NewSave from './NewSave';
 import NewComment from './NewComment';
 import Auth from './AuthService';
@@ -30,7 +31,11 @@ class Game extends Component {
     this.state = {
       gameInfo: {},
       comments: [],
+      comments_page: 1,
+      comments_pages: 1,
       saves: [],
+      saves_page: 1,
+      saves_pages: 1,
       editable: false,
     };
   }
@@ -66,33 +71,41 @@ class Game extends Component {
 
   fetchComments = async () => {
     const { match } = this.props;
+    const { location } = this.props;
+    const query = new URLSearchParams(location.search).get('comments_page') || 1;
 
     fetch(
       `${configuration.API.URL}:${configuration.API.PORT}/games/${
         match.params.id
-      }/comments`,
+      }/comments?page=${query}`,
       myInit,
     )
       .then(res => res.json())
       .then((json) => {
-        this.setState({
+        this.setState({ 
           comments: json.comments,
+          comments_page: json.page,
+          comments_pages: json.pages,
         });
       });
   };
 
   fetchSaves = async () => {
     const { match } = this.props;
+    const { location } = this.props;
+    const query = new URLSearchParams(location.search).get('saves_page') || 1;
 
     const res = await fetch(
       `${configuration.API.URL}:${configuration.API.PORT}/games/${
         match.params.id
-      }/saves`,
+      }/saves?page=${query}`,
       myInit,
     );
     const jsonRes = await res.json();
     this.setState({
       saves: jsonRes.saves,
+      saves_page: jsonRes.page,
+      saves_pages: jsonRes.pages,
     });
   };
 
@@ -106,6 +119,23 @@ class Game extends Component {
         <hr />
       </div>
     ));
+  }
+
+  renderCommentsPages() {
+    const { location } = this.props;
+    const { comments_page, comments_pages } = this.state;
+    const items = [];
+    if (comments_pages > 1) {
+      for (let number = 1; number <= comments_pages; number += 1) {
+        const href = `${location.pathname}?comments_page=${number}`;
+        const active = number === parseInt(comments_page, 10);
+        items.push(
+          // eslint-disable-next-line max-len
+          <Pagination.Item key={number} active={active} href={href}>{number}</Pagination.Item>,
+        );
+      }
+    }
+    return items;
   }
 
   renderSaves() {
@@ -128,6 +158,23 @@ class Game extends Component {
         <hr />
       </div>
     ));
+  }
+
+  renderSavesPages() {
+    const { location } = this.props;
+    const { saves_page, saves_pages } = this.state;
+    const items = [];
+    if (saves_pages > 1) {
+      for (let number = 1; number <= saves_pages; number += 1) {
+        const href = `${location.pathname}?saves_page=${number}`;
+        const active = number === parseInt(saves_page, 10);
+        items.push(
+          // eslint-disable-next-line max-len
+          <Pagination.Item key={number} active={active} href={href}>{number}</Pagination.Item>,
+        );
+      }
+    }
+    return items;
   }
 
   render() {
@@ -193,6 +240,9 @@ class Game extends Component {
         />
         <hr />
         {this.renderComments()}
+        <div>
+          <Pagination>{this.renderCommentsPages()}</Pagination>
+        </div>
 
         <h1>Saves</h1>
         <NewSave
@@ -201,6 +251,9 @@ class Game extends Component {
         />
         <hr />
         {this.renderSaves()}
+        <div>
+          <Pagination>{this.renderSavesPages()}</Pagination>
+        </div>
       </div>
     );
   }
