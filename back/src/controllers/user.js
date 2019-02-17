@@ -2,15 +2,17 @@ import jsonwebtoken from 'jsonwebtoken';
 import { db } from '../db/dbInit';
 import { hashPassword } from '../auth';
 
-// Suppress some user info
-const suppressUser = user => ({
-  id: user.id,
-  nickname: user.nickname,
-  email: user.email,
-  authLevel: user.authLevel,
-  biography: user.biography,
-  icon: user.icon,
-});
+const suppressUser = user => (
+  // Suppress some user info
+  {
+    id: user.id,
+    nickname: user.nickname,
+    email: user.email,
+    authLevel: user.authLevel,
+    biography: user.biography,
+    icon: user.icon,
+  }
+);
 
 const findUser = async (req, res) => {
   // Find data about a user
