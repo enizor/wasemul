@@ -2,6 +2,7 @@ import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
   const User = sequelize.define('User', {
+    // TODO: Make unique?
     nickname: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -10,6 +11,7 @@ export default (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    // TODO: Make unique?
     email: {
       type: DataTypes.STRING,
       validate: {

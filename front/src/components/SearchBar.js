@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 
 export default class SearchBar extends React.Component {
+  // Search bat inside the navigation bar
   constructor(props) {
     super(props);
 

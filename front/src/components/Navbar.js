@@ -6,6 +6,7 @@ import Auth from './AuthService';
 import SearchBar from './SearchBar';
 
 const NavigationBar = () => (
+  // The navigation bar of the app
   <Navbar bg="dark" variant="dark" collapseOnSelect expand="lg">
     <Navbar.Brand href="/">Wasemul</Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />

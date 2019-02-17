@@ -17,6 +17,7 @@ import './App.css';
 
 export default function App() {
   return (
+    // Router and routes definition
     <Router>
       <div>
         <Navbar />

@@ -3,17 +3,18 @@ import Auth from './AuthService';
 import '../css/Auth.css';
 
 class AuthForm extends React.Component {
+  // Login form
   constructor(props) {
     super(props);
 
     this.state = {
-      email: '',
-      password: '',
       failed: false,
       message: '',
+
+      email: '',
+      password: '',
     };
   }
-
 
   handleInputChange = (event) => {
     const { target } = event;
@@ -33,9 +34,10 @@ class AuthForm extends React.Component {
 
         // eslint-disable-next-line react/prop-types
         const { props: { history } } = this;
-
+        // Go to main page
         history.push('/');
       } catch (err) {
+        // Failure: show notification
         this.setState({
           failed: true,
           message: 'Username and password do not match.',
@@ -46,6 +48,7 @@ class AuthForm extends React.Component {
   }
 
   renderMessage() {
+    // Render a notification
     const { failed, message } = this.state;
 
     return failed

@@ -8,11 +8,16 @@ const configuration = process.env.NODE_ENV === 'production'
   : require('../config/dev.json');
 
 class CreateGame extends React.Component {
+  // Form to create a new game
+
   constructor(props) {
     super(props);
+
     this.state = {
       failed: false,
+      redirect: false,
       message: '',
+
       game: {
         id: undefined,
         name: '',
@@ -21,7 +26,6 @@ class CreateGame extends React.Component {
         releaseDate: '',
         publisher: '',
       },
-      redirect: false,
     };
   }
 
@@ -37,6 +41,7 @@ class CreateGame extends React.Component {
     const { game } = this.state;
     (async () => {
       try {
+        // Try to POST the new game
         const newGame = await Auth.fetch(
           `${configuration.API.URL}:${configuration.API.PORT}/games`,
           {
@@ -46,35 +51,26 @@ class CreateGame extends React.Component {
             cache: 'default',
           },
         );
+        // Creation successful, go to the game's page
         this.setState({
           game: { id: newGame.id },
           redirect: true,
           message: 'Game successfully created!',
         });
       } catch (err) {
+        // Creation failed, show notification and go back to games page
         this.setState({ failed: true, message: 'Failed to create game.' });
       }
     })();
     event.preventDefault();
   };
 
-  //   {
-  //     "id": 1,
-  //     "nickname": "test",
-  //     "email": "test@example.com",
-  //     "authLevel": 0,
-  //     "biography": null,
-  //     "icon": null,
-  //     "enabled": null,
-  //     "createdAt": "2018-12-10T15:03:34.773Z",
-  //     "updatedAt": "2018-12-10T15:03:34.773Z"
-  //     }
   render() {
     const {
       game, failed, message, redirect,
     } = this.state;
 
-    if (redirect === true) {
+    if (redirect) {
       return (
         <Redirect
           to={{

@@ -3,16 +3,19 @@ import { db } from '../db/dbInit';
 import { hashPassword } from '../auth';
 
 const findUser = async (req, res) => {
+  // Find data about a user
   const user = await db.User.findOne({ where: { id: req.params.id } });
   res.send(user);
 };
 
 const findUsers = async (_, res) => {
+  // Find data about all users
   const users = await db.User.findAll();
   res.send(users);
 };
 
 const createUser = async (req, res) => {
+  // Create a new user and sends it its token
   try {
     const user = await db.User.findOne({ where: { email: req.body.email } });
     if (user) {
@@ -51,6 +54,7 @@ const createUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
+  // Updates a user if the modifier is an admin or the user itself
   const token = jsonwebtoken.verify(
     req.headers.authorization,
     process.env.JWT_KEY,

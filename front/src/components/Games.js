@@ -11,15 +11,20 @@ const configuration = process.env.NODE_ENV === 'production'
   : require('../config/dev.json');
 
 class Games extends Component {
+  // List of games page
   constructor(props) {
     super(props);
 
     this.state = {
       failed: false,
       message: '',
+
+      // Games pagination
       games: [],
       page: 1,
       pages: 1,
+
+      // Can the user add a game?
       addable: false,
     };
   }
@@ -36,10 +41,9 @@ class Games extends Component {
   fetchGames = async () => {
     const { location } = this.props;
     const query = new URLSearchParams(location.search).get('page') || 1;
-    // API call this.state.id
 
     try {
-      // eslint-disable-next-line max-len
+      // Try to GET games data
       const res = await fetch(
         `${configuration.API.URL}:${
           configuration.API.PORT
@@ -48,6 +52,7 @@ class Games extends Component {
       const jsonRes = await res.json();
       const { games, page, pages } = jsonRes;
 
+      // Verify if user can add a game
       let addable = false;
 
       if (Auth.loggedIn()) {
@@ -63,6 +68,7 @@ class Games extends Component {
         addable,
       });
     } catch (err) {
+      // Games list retrieval failed ; go back to main page
       this.setState({
         failed: true,
         message: 'Failed to retrieve games data.',

@@ -9,11 +9,16 @@ const configuration = process.env.NODE_ENV === 'production'
   : require('../config/dev.json');
 
 class EditGame extends React.Component {
+  // Form to edit an existing game
+
   constructor(props) {
     super(props);
+
     this.state = {
       failed: false,
+      redirect: false,
       message: '',
+
       game: {
         id: props.match.params.id,
         name: '',
@@ -22,7 +27,6 @@ class EditGame extends React.Component {
         releaseDate: '',
         publisher: '',
       },
-      redirect: false,
     };
   }
 
@@ -33,6 +37,7 @@ class EditGame extends React.Component {
   fetchGameData = async () => {
     const { match } = this.props;
     try {
+      // Try to GET current game data
       const res = await fetch(
         `${configuration.API.URL}:${configuration.API.PORT}/games/${
           match.params.id
@@ -41,6 +46,7 @@ class EditGame extends React.Component {
       const jsonRes = await res.json();
       this.setState({ game: jsonRes, failed: false });
     } catch (err) {
+      // Failure: show notification and go back to game page
       this.setState({
         failed: true,
         message: 'Failed to retrieve game data.',
@@ -60,6 +66,7 @@ class EditGame extends React.Component {
     const { game } = this.state;
     (async () => {
       try {
+        // Try to PUT game data
         await Auth.fetch(
           `${configuration.API.URL}:${configuration.API.PORT}/games/${game.id}`,
           {
@@ -69,11 +76,13 @@ class EditGame extends React.Component {
             cache: 'default',
           },
         );
+        // Game updated ; go back to the game's page
         this.setState({
           redirect: true,
-          message: 'User successfully updated!',
+          message: 'Game successfully updated!',
         });
       } catch (err) {
+        // Update failed ; go back to the game's page
         this.setState({
           failed: true,
           message: 'Failed to update game data.',
@@ -83,17 +92,6 @@ class EditGame extends React.Component {
     event.preventDefault();
   };
 
-  //   {
-  //     "id": 1,
-  //     "nickname": "test",
-  //     "email": "test@example.com",
-  //     "authLevel": 0,
-  //     "biography": null,
-  //     "icon": null,
-  //     "enabled": null,
-  //     "createdAt": "2018-12-10T15:03:34.773Z",
-  //     "updatedAt": "2018-12-10T15:03:34.773Z"
-  //     }
   render() {
     const {
       game, failed, message, redirect,

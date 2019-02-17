@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class Notification extends React.Component {
+  // Component to show a notification at the top of the page
   constructor(props) {
     super(props);
 

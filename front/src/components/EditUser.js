@@ -9,8 +9,10 @@ const configuration = process.env.NODE_ENV === 'production'
   : require('../config/dev.json');
 
 class EditUser extends React.Component {
+  // Form to edit an existing user
   constructor(props) {
     super(props);
+
     this.state = {
       failed: false,
       message: '',
@@ -31,14 +33,18 @@ class EditUser extends React.Component {
   fetchUserData = async () => {
     const { match } = this.props;
     try {
+      // Try to GET current user data
       const res = await fetch(
         `${configuration.API.URL}:${configuration.API.PORT}/users/${
           match.params.id
         }`,
       );
+
       const jsonRes = await res.json();
+
       this.setState({ user: jsonRes, failed: false });
     } catch (err) {
+      // Failure: show notification and go back to game page
       this.setState({ failed: true, message: 'Failed to retieve user data.' });
     }
   };
@@ -55,6 +61,7 @@ class EditUser extends React.Component {
     const { user } = this.state;
     (async () => {
       try {
+        // Try to PUT user data
         await Auth.fetch(
           `${configuration.API.URL}:${configuration.API.PORT}/users/${user.id}`,
           {
@@ -64,28 +71,19 @@ class EditUser extends React.Component {
             cache: 'default',
           },
         );
+        // User updated ; go back to the user's page
         this.setState({
           redirect: true,
           message: 'Successfully updated user!',
         });
       } catch (err) {
+        // Update failed ; go back to the game's page
         this.setState({ failed: true, message: 'Failed to update user data.' });
       }
     })();
     event.preventDefault();
   };
 
-  //   {
-  //     "id": 1,
-  //     "nickname": "test",
-  //     "email": "test@example.com",
-  //     "authLevel": 0,
-  //     "biography": null,
-  //     "icon": null,
-  //     "enabled": null,
-  //     "createdAt": "2018-12-10T15:03:34.773Z",
-  //     "updatedAt": "2018-12-10T15:03:34.773Z"
-  //     }
   render() {
     const {
       user,

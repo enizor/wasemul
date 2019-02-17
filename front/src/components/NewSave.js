@@ -37,6 +37,7 @@ class NewSave extends React.Component {
     (async () => {
       try {
         data.append('file', file, file.name);
+        // Upload the file
         await Auth.upload(
           `${configuration.API.URL}:${
             configuration.API.PORT
@@ -48,13 +49,17 @@ class NewSave extends React.Component {
             cache: 'default',
           },
         );
+
         this.setState({
+          // Regenerate an input key so that the input field is cleared of the previous file
           fileInputKey: (new Date()),
           file: null,
           failed: false,
         });
+
         fetchSaves();
       } catch (err) {
+        // Show notification of failure
         this.setState({
           failed: true,
           message: 'Failed to add save.',

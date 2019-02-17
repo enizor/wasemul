@@ -9,8 +9,10 @@ const configuration = process.env.NODE_ENV === 'production'
   : require('../config/dev.json');
 
 class Home extends React.Component {
+  // Main page of the app
   constructor(props) {
     super(props);
+
     this.state = {
       games: [],
     };
@@ -22,12 +24,14 @@ class Home extends React.Component {
 
   fetchFeaturedGames = async () => {
     try {
+      // Try to GET featured games
       const res = await fetch(
         `${configuration.API.URL}:${configuration.API.PORT}/games/featured`,
       );
       const jsonRes = await res.json();
       this.setState({ failed: false, games: jsonRes });
     } catch (err) {
+      // Show notification of failure
       this.setState({
         failed: true,
         message: 'Failed to retrieve games data.',
