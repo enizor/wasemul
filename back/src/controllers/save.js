@@ -12,6 +12,14 @@ const findSavesOfGame = async (req, res) => {
   res.send(saves);
 };
 
+const findSavesOfUser = async (req, res) => {
+  const user = await db.User.findOne({ where: { id: req.params.id } });
+  const saves = await user.getSaves({
+    include: [{ model: db.Game, attributes: ['name'] }],
+  });
+  res.send(saves);
+};
+
 const createSave = (req, res) => {
   const uploadFile = req.files.file;
   const fileName = req.files.file.name;
@@ -48,4 +56,4 @@ const createSave = (req, res) => {
   }
 };
 
-export { findSavesOfGame, createSave };
+export { findSavesOfGame, findSavesOfUser, createSave };

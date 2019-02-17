@@ -15,6 +15,7 @@ import seedDb from './controllers/seed';
 
 import {
   findSavesOfGame,
+  findSavesOfUser,
   createSave,
 } from './controllers/save';
 
@@ -93,6 +94,8 @@ app.get('/games/:id', findGame);
 app.post('/games', createGame);
 
 app.get('/games', findGames);
+
+app.get('/users/:id/saves', findSavesOfUser);
 
 app.get('/users/:id/comments', findCommentsOfUser);
 
