@@ -65,7 +65,7 @@ class SignUpForm extends React.Component {
   render() {
     const { nickname, email, password } = this.state;
     return (
-      <form className="pure-form pure-form-aligned authForm">
+      <form className="pure-form pure-form-aligned AuthForm">
         <fieldset>
           <legend>
             Authentication
