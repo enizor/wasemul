@@ -3,6 +3,7 @@ import fs from 'fs';
 import { db } from '../db/dbInit';
 
 const savesDir = `${__dirname}/../public/saves`;
+
 const findSavesOfGame = async (req, res) => {
   const game = await db.Game.findOne({ where: { id: req.params.id } });
   const saves = await game.getSaves({
@@ -20,19 +21,21 @@ const createSave = (req, res) => {
     process.env.JWT_KEY,
   );
 
+  const uploadTimestamp = Date.now().toString();
+
   if (token) {
     if (!fs.existsSync(savesDir)) {
       fs.mkdirSync(savesDir);
     }
-    uploadFile.mv(`${savesDir}/${fileName}`, async (err) => {
+    uploadFile.mv(`${savesDir}/${uploadTimestamp}-${fileName}`, async (err) => {
       if (err) {
-        console.log(err);
         res.status(500).send(err);
       } else {
         const save = await db.Save.create({
           userId: token.id,
           gameId: req.params.id,
           file: fileName,
+          uploadTimestamp,
         });
 
         if (save) {

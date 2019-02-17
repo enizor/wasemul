@@ -123,7 +123,7 @@ class Game extends Component {
           role="button"
           href={`${configuration.API.URL}:${
             configuration.API.PORT
-          }/static/saves/${save.file}`}
+          }/static/saves/${save.uploadTimestamp}-${save.file}`}
           download={`${save.file}`}
         >
           Download

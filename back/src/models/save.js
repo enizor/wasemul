@@ -5,6 +5,9 @@ export default (sequelize) => {
     file: {
       type: DataTypes.TEXT,
     },
+    uploadTimestamp: {
+      type: DataTypes.TEXT,
+    },
     enabled: {
       type: DataTypes.BOOLEAN,
     },
