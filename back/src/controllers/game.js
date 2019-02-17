@@ -61,14 +61,14 @@ const findFeaturedGames = async (_, res) => {
   const comments = [];
   for (let i = 0; i < games.length; i += 1) {
     times.push(Date.parse(games[i].dataValues.createdAt) / 1000);
-    comments.push(games[i].getComments({}));
+    comments.push(games[i].countComments({}));
   }
   const minTime = Math.min(...times);
   const result = await Promise.all(comments);
   for (let i = 0; i < games.length; i += 1) {
     games[i].score = 0;
     games[i].score += (times[i] - minTime) / 1000;
-    games[i].score += result[i].length;
+    games[i].score += result[i];
   }
   games.sort((a, b) => b.score - a.score);
   res.send(games);

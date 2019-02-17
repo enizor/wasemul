@@ -14,21 +14,21 @@ db.Game.findAll = async () => {
     platform: 'a',
     description: 'a',
     publisher: 'a',
-    getComments: () => [null],
+    countComments: () => 1,
   });
   const b = await db.Game.create({
     name: 'b',
     platform: 'b',
     description: 'b',
     publisher: 'b',
-    getComments: () => [null, null],
+    countComments: () => 2,
   });
   const c = await db.Game.create({
     name: 'c',
     platform: 'c',
     description: 'c',
     publisher: 'c',
-    getComments: () => [],
+    countComments: () => 0,
   });
   return [a, b, c];
 };
