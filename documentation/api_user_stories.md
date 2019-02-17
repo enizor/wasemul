@@ -20,7 +20,7 @@ RESPONSE BODY
             icon,
             title,
             platform,
-            descripton
+            description
         },
         ...
     ]
@@ -283,20 +283,24 @@ REQUEST BODY
 
 ### Upload a save
 
-The user wants to upload a save.
-The back should expose the following route `/users/:id/saves`.
+The user wants to upload a save for a game.
+The back should expose the following route `/games/:id/saves`.
 
 - `/users/:id/saves` [POST]
 
 ```JSON
 REQUEST BODY
     {
-        game,
-        description,
-        completion,
         data (base64)
     }
 ```
+
+### Download a save
+
+The user wants to download a save.
+The back should expose the following route `/games/:id/saves`.
+
+- `/games/:id/saves` [GET]
 
 ### Rate a game
 

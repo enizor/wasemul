@@ -79,6 +79,26 @@ class AuthService {
       .then(response => response.json());
   }
 
+  upload = (url, options) => {
+    // performs api calls sending the required authentication headers
+    const headers = {
+      Accept: 'application/json',
+    };
+
+    // Setting Authorization header
+    // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
+    if (this.loggedIn()) {
+      headers.Authorization = this.getToken();
+    }
+
+    return fetch(url, {
+      headers,
+      ...options,
+    })
+      .then(this.checkStatus)
+      .then(response => response.json());
+  }
+
   checkStatus = (response) => {
     // raises an error in case response status is not a success
     if (response.status >= 200 && response.status < 300) { // Success status lies between 200 to 300

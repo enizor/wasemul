@@ -7,10 +7,17 @@ import dotenv from 'dotenv';
 import errorHandler from 'errorhandler';
 import morgan from 'morgan';
 import path from 'path';
+import fileUpload from 'express-fileupload';
 
 import { sequelize } from './db/dbInit';
 
 import seedDb from './controllers/seed';
+
+import {
+  findSavesOfGame,
+  findSavesOfUser,
+  createSave,
+} from './controllers/save';
 
 import {
   findCommentsOfGame,
@@ -51,6 +58,8 @@ app.use(cors());
 
 dotenv.load();
 
+app.use(fileUpload());
+
 sequelize.sync();
 
 if (process.env.NODE_ENV === 'development') {
@@ -70,6 +79,10 @@ app.get('/games/:id/comments', findCommentsOfGame);
 
 app.get('/games/featured', findFeaturedGames);
 
+app.post('/games/:id/saves', createSave);
+
+app.get('/games/:id/saves', findSavesOfGame);
+
 app.put('/games/:id', updateGame);
 
 app.get('/games/:id', findGame);
@@ -77,6 +90,8 @@ app.get('/games/:id', findGame);
 app.post('/games', createGame);
 
 app.get('/games', findGames);
+
+app.get('/users/:id/saves', findSavesOfUser);
 
 app.get('/users/:id/comments', findCommentsOfUser);
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
+import NewSave from './NewSave';
 import NewComment from './NewComment';
 import Auth from './AuthService';
 import './EditGame.css';
@@ -29,40 +30,41 @@ class Game extends Component {
     this.state = {
       gameInfo: {},
       comments: [],
+      saves: [],
       editable: false,
     };
   }
 
   componentDidMount = () => {
-    this.fetchGameInfos();
+    this.fetchGameData();
     this.fetchComments();
+    this.fetchSaves();
   };
 
-  fetchGameInfos = () => {
+  fetchGameData = async () => {
     const { match } = this.props;
 
     // API call this.state.id
-    fetch(
+    const res = await fetch(
       `${configuration.API.URL}:${configuration.API.PORT}/games/${
         match.params.id
       }`,
       myInit,
-    )
-      .then(res => res.json())
-      .then((json) => {
-        let editable = false;
-        if (Auth.loggedIn()) {
-          const profile = Auth.getProfile();
-          editable = profile.authLevel !== 2;
-        }
-        this.setState({
-          gameInfo: json,
-          editable,
-        });
-      });
+    );
+    const jsonRes = await res.json();
+
+    let editable = false;
+    if (Auth.loggedIn()) {
+      const profile = Auth.getProfile();
+      editable = profile.authLevel !== 2;
+    }
+    this.setState({
+      gameInfo: jsonRes,
+      editable,
+    });
   };
 
-  fetchComments = () => {
+  fetchComments = async () => {
     const { match } = this.props;
 
     fetch(
@@ -79,9 +81,58 @@ class Game extends Component {
       });
   };
 
+  fetchSaves = async () => {
+    const { match } = this.props;
+
+    const res = await fetch(
+      `${configuration.API.URL}:${configuration.API.PORT}/games/${
+        match.params.id
+      }/saves`,
+      myInit,
+    );
+    const jsonRes = await res.json();
+    this.setState({
+      saves: jsonRes,
+    });
+  };
+
+  renderComments() {
+    const { comments } = this.state;
+    return comments.map(comment => (
+      <div key={comment.id}>
+        <p>{comment.body}</p>
+        <p>Sent by: </p>
+        <Link to={`/users/${comment.userId}`}>{comment.User.nickname}</Link>
+        <hr />
+      </div>
+    ));
+  }
+
+  renderSaves() {
+    const { saves } = this.state;
+    return saves.map(save => (
+      <div key={save.id}>
+        <p>
+          {`${save.file} by `}
+          <a href={`/users/${save.userId}`}>{save.User.nickname}</a>
+        </p>
+        <a
+          role="button"
+          href={`${configuration.API.URL}:${
+            configuration.API.PORT
+          }/static/saves/${save.uploadTimestamp}-${save.file}`}
+          download={`${save.file}`}
+        >
+          Download
+        </a>
+        <hr />
+      </div>
+    ));
+  }
+
   render() {
     const { match } = this.props;
-    const { gameInfo, comments, editable } = this.state;
+    const { gameInfo, editable } = this.state;
 
     if (parseInt(match.params.id, 10) === undefined) return <Redirect to="/" />;
     return (
@@ -125,7 +176,6 @@ class Game extends Component {
           </div>
         </div>
         <br />
-        <br />
         {editable && (
           <div className="pure-g center">
             <a className="pure-u-1-5" href={`/games/${gameInfo.id}/edit`}>
@@ -135,24 +185,22 @@ class Game extends Component {
             </a>
           </div>
         )}
-        <div>
-          <NewComment
-            gameID={match.params.id}
-            fetchComments={this.fetchComments}
-          />
-          <h1>Comments</h1>
-          <hr />
-          {comments.map(comment => (
-            <div key={comment.id}>
-              <p>{comment.body}</p>
-              <p>Sent by: </p>
-              <Link to={`/users/${comment.userId}`}>
-                {comment.User.nickname}
-              </Link>
-              <hr />
-            </div>
-          ))}
-        </div>
+
+        <h1>Comments</h1>
+        <NewComment
+          gameID={match.params.id}
+          fetchComments={this.fetchComments}
+        />
+        <hr />
+        {this.renderComments()}
+
+        <h1>Saves</h1>
+        <NewSave
+          gameID={match.params.id}
+          fetchSaves={this.fetchSaves}
+        />
+        <hr />
+        {this.renderSaves()}
       </div>
     );
   }
