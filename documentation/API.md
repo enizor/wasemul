@@ -17,12 +17,19 @@ These routes are available to anyone.
   * `/comments/:id` (GET): return a JSON object containing a comment (based on its database `id`)
 * `/search` (GET): returns a JSON object containing the users and games matching the search terms
 
-* `/auth` (POST): allows user authentification, by returning a signed JSON Web Token (if successful)
-* `/register` (POST): allows user creation,  by creating a new user (in database) and returning a signed JSON Web Token (if successful)
+* `/auth` (POST): allows user authentification; returns a signed JSON Web Token (if successful)
+* `/register` (POST): allows user creation,  by creating a new user (in database); returns a signed JSON Web Token (if successful)
 
 ## Protected routes
 
 These routes require authentification. Some of these routes may require a specific privilege level (such as `admin`).
+
+* `/games` (POST): allows game creation; returns a JSON object containing the newly created game (if successful)
+  * `/games/:id` (PUT): allows updating the data related to a game (selected by its database `id`); returns a JSON object containing the updated game (if successful)
+   `/games/:id/comments` (POST): allows creation of a new comment related to a game (selected by its database `id`); returns a JSON object containing the newly created comment (if successful)
+* `/users`
+  * `/users/:id` (PUT): allows updating a user (selected by its database `id`); returns a JSON object containing the updated user (if successful)
+
 
 ## Development-only routes
 
