@@ -18,6 +18,7 @@ export default class SearchPage extends React.Component {
 
     this.state = {
       failed: false,
+      message: '',
       users: [],
       games: [],
     };
@@ -40,7 +41,7 @@ export default class SearchPage extends React.Component {
           match.params.query
         }`,
       );
-      const jsonRes = res.json();
+      const jsonRes = await res.json();
       this.setState({
         users: jsonRes.users,
         failed: false,
@@ -48,18 +49,28 @@ export default class SearchPage extends React.Component {
       });
     } catch (err) {
       // eslint-disable-next-line no-alert
-      alert('Search Failed. Redirecting to home.');
-      this.setState({ failed: true });
+      this.setState({ failed: true, message: 'Search failed.' });
     }
   };
 
   render = () => {
-    const { failed, games, users } = this.state;
+    const {
+      failed,
+      message,
+      games,
+      users,
+    } = this.state;
+
     return failed ? (
-      <Redirect to="/" />
+      <Redirect
+        to={{
+          pathname: '/',
+          state: { failed, message },
+        }}
+      />
     ) : (
       <div>
-        <h1>Games</h1>
+        <h2>Games</h2>
         {games.map(e => (
           <GameItem
             key={e.id}
@@ -70,7 +81,7 @@ export default class SearchPage extends React.Component {
             icon={e.icon || defaultGameImage}
           />
         ))}
-        <h1>Users</h1>
+        <h2>Users</h2>
         {users.map(e => (
           <UserItem
             key={e.id}
