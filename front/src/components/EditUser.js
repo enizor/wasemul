@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Auth from './AuthService';
-import './EditUser.css';
+import '../css/User.css';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
@@ -13,6 +13,7 @@ class EditUser extends React.Component {
     super(props);
     this.state = {
       failed: false,
+      message: '',
       user: {
         id: props.match.params.id,
         nickname: '',
@@ -24,18 +25,23 @@ class EditUser extends React.Component {
   }
 
   componentDidMount() {
-    const { match } = this.props;
-    fetch(`${configuration.API.URL}:${configuration.API.PORT}/users/${
-      match.params.id
-    }`)
-      .then(res => res.json())
-      .then((result) => {
-        this.setState({ user: result, failed: false });
-      })
-      .catch(() => {
-        this.setState({ failed: true });
-      });
+    this.fetchUserData();
   }
+
+  fetchUserData = async () => {
+    const { match } = this.props;
+    try {
+      const res = await fetch(
+        `${configuration.API.URL}:${configuration.API.PORT}/users/${
+          match.params.id
+        }`,
+      );
+      const jsonRes = await res.json();
+      this.setState({ user: jsonRes, failed: false });
+    } catch (err) {
+      this.setState({ failed: true, message: 'Failed to retieve user data.' });
+    }
+  };
 
   handleInputChange = (event) => {
     const { value, name } = event.target;
@@ -49,17 +55,21 @@ class EditUser extends React.Component {
     const { user } = this.state;
     (async () => {
       try {
-        await Auth.fetch(`${configuration.API.URL}:${
-          configuration.API.PORT
-        }/users/${user.id}`, {
-          method: 'PUT',
-          body: JSON.stringify({ user }),
-          mode: 'cors',
-          cache: 'default',
+        await Auth.fetch(
+          `${configuration.API.URL}:${configuration.API.PORT}/users/${user.id}`,
+          {
+            method: 'PUT',
+            body: JSON.stringify({ user }),
+            mode: 'cors',
+            cache: 'default',
+          },
+        );
+        this.setState({
+          redirect: true,
+          message: 'Successfully updated user!',
         });
-        this.setState({ redirect: true });
       } catch (err) {
-        this.setState({ failed: true });
+        this.setState({ failed: true, message: 'Failed to update user data.' });
       }
     })();
     event.preventDefault();
@@ -77,15 +87,25 @@ class EditUser extends React.Component {
   //     "updatedAt": "2018-12-10T15:03:34.773Z"
   //     }
   render() {
-    const { user, failed, redirect } = this.state;
+    const {
+      user,
+      failed,
+      message,
+      redirect,
+    } = this.state;
 
-    if (redirect === true) {
-      return <Redirect to={`/users/${user.id}`} />;
+    if (redirect || failed) {
+      return (
+        <Redirect
+          to={{
+            pathname: `/users/${user.id}`,
+            state: { failed, message },
+          }}
+        />
+      );
     }
 
-    return failed ? (
-      <Redirect to="/" />
-    ) : (
+    return (
       <div className="center">
         <form
           onSubmit={this.handleSubmit}
@@ -118,7 +138,7 @@ class EditUser extends React.Component {
                 className="pure-input-2-3"
                 id="email"
                 type="text"
-                name="nickname"
+                name="email"
                 placeholder="Email"
                 value={user.email}
                 onChange={this.handleInputChange}

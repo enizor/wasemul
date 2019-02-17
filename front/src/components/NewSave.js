@@ -8,10 +8,16 @@ const configuration = process.env.NODE_ENV === 'production'
   : require('../config/dev.json');
 
 class NewSave extends React.Component {
-  state = {
-    file: null,
-    fileInputKey: Date.now(),
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      file: null,
+      fileInputKey: Date.now(),
+      failed: false,
+      message: '',
+    };
+  }
 
   handleSelectedFile = (event) => {
     this.setState({
@@ -20,7 +26,6 @@ class NewSave extends React.Component {
   };
 
   handleUpload = (event) => {
-    event.persist();
     const { gameID, fetchSaves } = this.props;
     const { file } = this.state;
     const data = new FormData();
@@ -46,27 +51,42 @@ class NewSave extends React.Component {
         this.setState({
           fileInputKey: (new Date()),
           file: null,
+          failed: false,
         });
         fetchSaves();
       } catch (err) {
-        console.log(err);
+        this.setState({
+          failed: true,
+          message: 'Failed to add save.',
+        });
       }
     })();
     event.preventDefault();
   };
 
+  renderMessage() {
+    const { failed, message } = this.state;
+
+    return failed ? <div className="error">{message}</div> : <></>;
+  }
+
   render() {
     const { fileInputKey, file } = this.state;
+
     return !Auth.loggedIn() ? null : (
       <form key={fileInputKey} className="pure-form NewComment">
         <fieldset className="pure-group">
           <legend className="pure-u-1">
             Add a save
           </legend>
+
           <input
             type="file"
             onChange={this.handleSelectedFile}
           />
+
+          {this.renderMessage()}
+
           <button
             className="pure-button pure-button-primary"
             type="button"

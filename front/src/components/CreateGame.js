@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import Auth from './AuthService';
-import './EditGame.css';
+import '../css/Game.css';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
@@ -12,6 +12,7 @@ class CreateGame extends React.Component {
     super(props);
     this.state = {
       failed: false,
+      message: '',
       game: {
         id: undefined,
         name: '',
@@ -36,17 +37,22 @@ class CreateGame extends React.Component {
     const { game } = this.state;
     (async () => {
       try {
-        const newGame = await Auth.fetch(`${configuration.API.URL}:${
-          configuration.API.PORT
-        }/games`, {
-          method: 'POST',
-          body: JSON.stringify({ game }),
-          mode: 'cors',
-          cache: 'default',
+        const newGame = await Auth.fetch(
+          `${configuration.API.URL}:${configuration.API.PORT}/games`,
+          {
+            method: 'POST',
+            body: JSON.stringify({ game }),
+            mode: 'cors',
+            cache: 'default',
+          },
+        );
+        this.setState({
+          game: { id: newGame.id },
+          redirect: true,
+          message: 'Game successfully created!',
         });
-        this.setState({ game: { id: newGame.id }, redirect: true });
       } catch (err) {
-        this.setState({ failed: true });
+        this.setState({ failed: true, message: 'Failed to create game.' });
       }
     })();
     event.preventDefault();
@@ -64,14 +70,28 @@ class CreateGame extends React.Component {
   //     "updatedAt": "2018-12-10T15:03:34.773Z"
   //     }
   render() {
-    const { game, failed, redirect } = this.state;
+    const {
+      game, failed, message, redirect,
+    } = this.state;
 
     if (redirect === true) {
-      return <Redirect to={`/games/${game.id}`} />;
+      return (
+        <Redirect
+          to={{
+            pathname: `/games/${game.id}`,
+            state: { failed, message },
+          }}
+        />
+      );
     }
 
     return failed ? (
-      <Redirect to="/" />
+      <Redirect
+        to={{
+          pathname: '/games',
+          state: { failed, message },
+        }}
+      />
     ) : (
       <div className="center">
         <form
@@ -79,9 +99,7 @@ class CreateGame extends React.Component {
           className="pure-form pure-form-aligned EditGame"
         >
           <fieldset>
-            <legend className="pure-u-1">
-              Add a new game
-            </legend>
+            <legend className="pure-u-1">Add a new game</legend>
             <div className="pure-control-group">
               <label htmlFor="name" className="pure-u-1-3">
                 Name
@@ -156,6 +174,5 @@ class CreateGame extends React.Component {
     );
   }
 }
-
 
 export default CreateGame;

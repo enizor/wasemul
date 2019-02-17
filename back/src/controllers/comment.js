@@ -8,12 +8,12 @@ const findCommentsOfGame = async (req, res) => {
     include: [{ model: db.User, attributes: ['nickname'] }],
   });
   const limit = 5;
-  console.log(req.query);
   const page = req.query.page || 1;
   const pages = Math.ceil(allComments.length / limit);
   const offset = limit * (page - 1);
 
   const comments = await game.getComments({
+    order: [['createdAt', 'DESC']],
     limit,
     offset,
     include: [{ model: db.User, attributes: ['nickname'] }],
@@ -23,15 +23,27 @@ const findCommentsOfGame = async (req, res) => {
 
 const findCommentsOfUser = async (req, res) => {
   const user = await db.User.findOne({ where: { id: req.params.id } });
-  const comments = await user.getComments();
+  const comments = await user.getComments({
+    order: [['createdAt', 'DESC']],
+  });
   res.send(comments);
 };
 
 const createComment = async (req, res) => {
-  const token = jsonwebtoken.verify(
-    req.headers.authorization,
-    process.env.JWT_KEY,
-  );
+  if (!req.headers.authorization) {
+    res.sendStatus(403);
+    return;
+  }
+  let token;
+  try {
+    token = jsonwebtoken.verify(
+      req.headers.authorization,
+      process.env.JWT_KEY,
+    );
+  } catch (err) {
+    res.sendStatus(403);
+    return;
+  }
 
   if (token) {
     const comment = await db.Comment.create({

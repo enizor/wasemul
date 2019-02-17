@@ -45,6 +45,7 @@ const createUser = async (req, res) => {
       { expiresIn: '1h' },
       (err, token) => {
         if (err) {
+          res.sendStatus(500);
           return;
         }
         res.send({ token });
@@ -56,10 +57,20 @@ const createUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const token = jsonwebtoken.verify(
-    req.headers.authorization,
-    process.env.JWT_KEY,
-  );
+  if (!req.headers.authorization) {
+    res.sendStatus(403);
+    return;
+  }
+  let token;
+  try {
+    token = jsonwebtoken.verify(
+      req.headers.authorization,
+      process.env.JWT_KEY,
+    );
+  } catch (err) {
+    res.sendStatus(403);
+    return;
+  }
   const modifyingUser = await db.User.findOne({ where: { id: token.id } });
   if (
     modifyingUser

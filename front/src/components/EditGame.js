@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Auth from './AuthService';
-import './EditGame.css';
+import '../css/Game.css';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
@@ -13,6 +13,7 @@ class EditGame extends React.Component {
     super(props);
     this.state = {
       failed: false,
+      message: '',
       game: {
         id: props.match.params.id,
         name: '',
@@ -25,19 +26,27 @@ class EditGame extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
+    this.fetchGameData();
+  };
+
+  fetchGameData = async () => {
     const { match } = this.props;
-    fetch(`${configuration.API.URL}:${configuration.API.PORT}/games/${
-      match.params.id
-    }`)
-      .then(res => res.json())
-      .then((result) => {
-        this.setState({ game: result, failed: false });
-      })
-      .catch(() => {
-        this.setState({ failed: true });
+    try {
+      const res = await fetch(
+        `${configuration.API.URL}:${configuration.API.PORT}/games/${
+          match.params.id
+        }`,
+      );
+      const jsonRes = await res.json();
+      this.setState({ game: jsonRes, failed: false });
+    } catch (err) {
+      this.setState({
+        failed: true,
+        message: 'Failed to retrieve game data.',
       });
-  }
+    }
+  };
 
   handleInputChange = (event) => {
     const { value, name } = event.target;
@@ -51,17 +60,24 @@ class EditGame extends React.Component {
     const { game } = this.state;
     (async () => {
       try {
-        await Auth.fetch(`${configuration.API.URL}:${
-          configuration.API.PORT
-        }/games/${game.id}`, {
-          method: 'PUT',
-          body: JSON.stringify({ game }),
-          mode: 'cors',
-          cache: 'default',
+        await Auth.fetch(
+          `${configuration.API.URL}:${configuration.API.PORT}/games/${game.id}`,
+          {
+            method: 'PUT',
+            body: JSON.stringify({ game }),
+            mode: 'cors',
+            cache: 'default',
+          },
+        );
+        this.setState({
+          redirect: true,
+          message: 'Game successfully updated!',
         });
-        this.setState({ redirect: true });
       } catch (err) {
-        this.setState({ failed: true });
+        this.setState({
+          failed: true,
+          message: 'Failed to update game data.',
+        });
       }
     })();
     event.preventDefault();
@@ -79,24 +95,29 @@ class EditGame extends React.Component {
   //     "updatedAt": "2018-12-10T15:03:34.773Z"
   //     }
   render() {
-    const { game, failed, redirect } = this.state;
+    const {
+      game, failed, message, redirect,
+    } = this.state;
 
-    if (redirect === true) {
-      return <Redirect to={`/games/${game.id}`} />;
+    if (redirect || failed) {
+      return (
+        <Redirect
+          to={{
+            pathname: `/games/${game.id}`,
+            state: { failed, message },
+          }}
+        />
+      );
     }
 
-    return failed ? (
-      <Redirect to="/" />
-    ) : (
+    return (
       <div className="center">
         <form
           onSubmit={this.handleSubmit}
           className="pure-form pure-form-aligned EditGame"
         >
           <fieldset>
-            <legend className="pure-u-1">
-              {`Edit ${game.name} info`}
-            </legend>
+            <legend className="pure-u-1">{`Edit ${game.name} info`}</legend>
             <div className="pure-control-group">
               <label htmlFor="name" className="pure-u-1-3">
                 Name

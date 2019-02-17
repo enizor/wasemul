@@ -1,13 +1,19 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable jsx-a11y/label-has-for */
 import React from 'react';
 import Auth from './AuthService';
+import '../css/Auth.css';
 
 class AuthForm extends React.Component {
-  state = {
-    email: '',
-    password: '',
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: '',
+      password: '',
+      failed: false,
+      message: '',
+    };
+  }
+
 
   handleInputChange = (event) => {
     const { target } = event;
@@ -20,37 +26,51 @@ class AuthForm extends React.Component {
 
   handleSubmit = (event) => {
     const { email, password } = this.state;
+
     (async () => {
       try {
         await Auth.login(email, password);
+
         // eslint-disable-next-line react/prop-types
         const { props: { history } } = this;
+
         history.push('/');
-        console.log(Auth.getProfile());
       } catch (err) {
-        alert('The username and password does not match');
+        this.setState({
+          failed: true,
+          message: 'Username and password do not match.',
+        });
       }
     })();
     event.preventDefault();
   }
 
+  renderMessage() {
+    const { failed, message } = this.state;
+
+    return failed
+      ? <div className="text-center error">{message}</div>
+      : <></>;
+  }
+
   render() {
     const { email, password } = this.state;
     return (
-      <form className="pure-form pure-form-aligned authForm">
+      <form className="pure-form pure-form-aligned AuthForm">
         <fieldset>
           <legend>
             Authentication
           </legend>
+
           <div className="pure-control-group center">
-            <label htmlFor="name">
-              E-mail
+            <label htmlFor="email">
+              Email
             </label>
             <input
-              id="name"
+              id="email"
               name="email"
               type="text"
-              placeholder="E-mail"
+              placeholder="Email"
               value={email}
               onChange={this.handleInputChange}
             />
@@ -70,6 +90,8 @@ class AuthForm extends React.Component {
             />
           </div>
 
+          {this.renderMessage()}
+
           <div className="pure-controls">
             <button
               type="submit"
@@ -79,6 +101,7 @@ class AuthForm extends React.Component {
               Submit
             </button>
           </div>
+
         </fieldset>
       </form>
     );

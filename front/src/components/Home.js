@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import GameItem from './GameItem';
+import Notification from './Notification';
+import '../css/Home.css';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
@@ -13,13 +16,24 @@ class Home extends React.Component {
     };
   }
 
-  componentDidMount() {
-    fetch(`${configuration.API.URL}:${configuration.API.PORT}/games/featured`)
-      .then(res => res.json())
-      .then((result) => {
-        this.setState({ games: result });
+  componentDidMount = () => {
+    this.fetchFeaturedGames();
+  };
+
+  fetchFeaturedGames = async () => {
+    try {
+      const res = await fetch(
+        `${configuration.API.URL}:${configuration.API.PORT}/games/featured`,
+      );
+      const jsonRes = await res.json();
+      this.setState({ failed: false, games: jsonRes });
+    } catch (err) {
+      this.setState({
+        failed: true,
+        message: 'Failed to retrieve games data.',
       });
-  }
+    }
+  };
 
   renderGames() {
     const { games } = this.state;
@@ -35,14 +49,50 @@ class Home extends React.Component {
     ));
   }
 
+  renderNotification() {
+    const { location } = this.props;
+    if (location && location.state && location.state.message) {
+      return (
+        <Notification
+          failed={location.state.failed}
+          message={location.state.message}
+        />
+      );
+    }
+    return <></>;
+  }
+
+  renderMessage() {
+    const { failed, message } = this.state;
+
+    return failed ? <div className="text-center error">{message}</div> : <></>;
+  }
+
   render() {
     return (
-      <div className="App pure-g center">
-        <h2 className="pure-u-3-5 text-left">Featured Games</h2>
-        {this.renderGames()}
-      </div>
+      <>
+        {this.renderNotification()}
+        {this.renderMessage()}
+        <div className="Home pure-g center">
+          <h2 className="pure-u-4-5 text-left">Featured Games</h2>
+          {this.renderGames()}
+        </div>
+      </>
     );
   }
 }
+
+Home.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      failed: PropTypes.bool,
+      message: PropTypes.string,
+    }),
+  }),
+};
+
+Home.defaultProps = {
+  location: { state: { failed: false, message: '' } },
+};
 
 export default Home;

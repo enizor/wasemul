@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { Pagination } from 'react-bootstrap';
 import Auth from './AuthService';
+import Notification from './Notification';
+
+import '../css/User.css';
 
 const configuration = process.env.NODE_ENV === 'production'
   ? require('../config/prod.json')
@@ -27,6 +30,7 @@ class User extends React.Component {
     super(props);
     this.state = {
       failed: false,
+      message: '',
       user: {},
       saves: [],
       page: 1,
@@ -38,7 +42,7 @@ class User extends React.Component {
   componentDidMount = () => {
     this.fetchUserData();
     this.fetchSaves();
-  }
+  };
 
   fetchUserData = async () => {
     const { match } = this.props;
@@ -53,54 +57,84 @@ class User extends React.Component {
       if (Auth.loggedIn()) {
         const profile = Auth.getProfile();
         editable = profile.authLevel !== 2
-        || profile.id === parseInt(match.params.id, 10);
+          || profile.id === parseInt(match.params.id, 10);
       }
       this.setState({ user: jsonRes, failed: false, editable });
     } catch (err) {
-      this.setState({ failed: true });
+      this.setState({ failed: true, message: 'Failed to retrieve user data' });
     }
-  }
+  };
 
   fetchSaves = async () => {
     const { match } = this.props;
     const { location } = this.props;
     const query = new URLSearchParams(location.search).get('page') || 1;
 
-    const res = await fetch(
-      `${configuration.API.URL}:${configuration.API.PORT}/users/${
-        match.params.id
-      }/saves?page=${query}`,
-      myInit,
-    );
-    const jsonRes = await res.json();
-    const { saves, page, pages } = jsonRes;
-    this.setState({
-      saves,
-      page,
-      pages,
-    });
-  }
+    try {
+      const res = await fetch(
+        `${configuration.API.URL}:${configuration.API.PORT}/users/${
+          match.params.id
+        }/saves?page=${query}`,
+        myInit,
+      );
+      const jsonRes = await res.json();
+      const { saves, page, pages } = jsonRes;
+      this.setState({
+        saves,
+        page,
+        pages,
+      });
+    } catch (err) {
+      this.setState({
+        saves: [],
+        page: 1,
+        pages: 1,
+      });
+    }
+  };
 
   renderSaves() {
     const { saves } = this.state;
+
+    if (saves.length === 0) {
+      return <div>No saves here :(</div>;
+    }
+
     return saves.map(save => (
       <div key={save.id}>
         <p>
-          {`${save.file} for `}
-          <a href={`/games/${save.gameId}`}>{save.Game.name}</a>
+          <a
+            role="button"
+            href={`${configuration.API.URL}:${
+              configuration.API.PORT
+            }/static/saves/${save.uploadTimestamp}-${save.file}`}
+            download={`${save.file}`}
+          >
+            {save.file}
+          </a>
+          {` (uploaded ${new Date(save.createdAt).toLocaleDateString()})`}
         </p>
-        <a
-          role="button"
-          href={`${configuration.API.URL}:${
-            configuration.API.PORT
-          }/static/saves/${save.uploadTimestamp}-${save.file}`}
-          download={`${save.file}`}
-        >
-          Download
-        </a>
+
+        <div className="italic">
+          {' for '}
+          <a href={`/games/${save.gameId}`}>{save.Game.name}</a>
+        </div>
         <hr />
       </div>
     ));
+  }
+
+  renderNotification() {
+    const { location } = this.props;
+    if (location && location.state && location.state.message) {
+      return (
+        <Notification
+          failed={location.state.failed}
+          message={location.state.message}
+        />
+      );
+    }
+    return <></>;
   }
 
   renderSavesPages() {
@@ -132,64 +166,75 @@ class User extends React.Component {
   //     "updatedAt": "2018-12-10T15:03:34.773Z"
   //     }
   render() {
-    const { user, failed, editable } = this.state;
+    const {
+      user, failed, message, editable,
+    } = this.state;
+
     return failed ? (
-      <Redirect to="/" />
+      <Redirect
+        to={{
+          pathname: '/',
+          state: { failed, message },
+        }}
+      />
     ) : (
-      <div className="User">
-        <div className="pure-g center text-center align-items-center">
-          <h3 className="pure-u-1">{user.nickname}</h3>
-          <div className="pure-u-1-5">
-            <img
-              className="avatar"
-              src={
-                user.icon
-                // eslint-disable-next-line max-len
-                || 'http://itibalasore.org/wp-content/uploads/2018/02/default-user-male.png'
-              }
-              alt="user pic"
-            />
-          </div>
-          <div className="pure-u-3-5">
-            <table className="pure-table pure-u-1">
-              <tbody>
-                <tr>
-                  <td className="">Email</td>
-                  <td className="text-left">{user.email}</td>
-                </tr>
-                {user.biography != null && (
+      <>
+        {this.renderNotification()}
+        <div className="User">
+          <div className="pure-g center text-center align-items-center">
+            <h3 className="pure-u-1">{user.nickname}</h3>
+            <div className="pure-u-1-5">
+              <img
+                className="icon"
+                src={
+                  user.icon
+                  // eslint-disable-next-line max-len
+                  || 'http://itibalasore.org/wp-content/uploads/2018/02/default-user-male.png'
+                }
+                alt="user pic"
+              />
+            </div>
+            <div className="pure-u-3-5">
+              <table className="pure-table pure-u-1">
+                <tbody>
                   <tr>
-                    <td className="">Biography</td>
-                    <td className="text-left">{user.biography}</td>
+                    <td className="">Email</td>
+                    <td className="text-left">{user.email}</td>
                   </tr>
-                )}
-                <tr>
-                  <td className="">Auth level</td>
-                  <td className="text-left">
-                    {user.authLevel === 0 ? 'Admin' : 'User'}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  {user.biography != null && (
+                    <tr>
+                      <td className="">Biography</td>
+                      <td className="text-left">{user.biography}</td>
+                    </tr>
+                  )}
+                  <tr>
+                    <td className="">Auth level</td>
+                    <td className="text-left">
+                      {user.authLevel === 0 ? 'Admin' : 'User'}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <br />
+          {editable && (
+            <div className="pure-g center">
+              <a className="pure-u-1-5" href={`/users/${user.id}/edit`}>
+                <div className="pure-button pure-u-1 pure-button-primary">
+                  Edit
+                </div>
+              </a>
+            </div>
+          )}
+          <h2>Saves</h2>
+          <hr />
+          {this.renderSaves()}
+          <div>
+            <Pagination>{this.renderSavesPages()}</Pagination>
           </div>
         </div>
-        <br />
-        {editable && (
-          <div className="pure-g center">
-            <a className="pure-u-1-5" href={`/users/${user.id}/edit`}>
-              <div className="pure-button pure-u-1 pure-button-primary">
-                Edit
-              </div>
-            </a>
-          </div>
-        )}
-        <h1>Saves</h1>
-        <hr />
-        {this.renderSaves()}
-        <div>
-          <Pagination>{this.renderSavesPages()}</Pagination>
-        </div>
-      </div>
+      </>
     );
   }
 }
@@ -201,13 +246,18 @@ User.propTypes = {
     }),
   }),
   location: PropTypes.shape({
+    state: PropTypes.shape({
+      failed: PropTypes.bool,
+      message: PropTypes.string,
+    }),
     search: PropTypes.string.isRequired,
     pathname: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
 };
 
 User.defaultProps = {
   match: { params: { id: 0 } },
+  location: { state: { failed: false, message: '' } },
 };
 
 export default User;

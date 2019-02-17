@@ -11,16 +11,6 @@
   margin-right: auto;
   padding-left: 1em;
   padding-right: 1em;
-  padding-top: 1em;
+  padding-top: 4em;
   padding-bottom: 1em;
-}
-
-.align-items-center {
-  align-items: center;
-}
-
-.avatar {
-  max-width: 80%;
-  width: 200px;
-  height: auto;
 }
