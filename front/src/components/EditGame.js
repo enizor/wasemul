@@ -71,7 +71,7 @@ class EditGame extends React.Component {
         );
         this.setState({
           redirect: true,
-          message: 'User successfully updated!',
+          message: 'Game successfully updated!',
         });
       } catch (err) {
         this.setState({
