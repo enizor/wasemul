@@ -4,13 +4,13 @@ import { db } from '../db/dbInit';
 
 const findCommentsOfGame = async (req, res) => {
   const game = await db.Game.findOne({ where: { id: req.params.id } });
-  const all_comments = await game.getComments({
+  const allComments = await game.getComments({
     include: [{ model: db.User, attributes: ['nickname'] }],
   });
   const limit = 5;
   console.log(req.query);
   const page = req.query.page || 1;
-  const pages = Math.ceil(all_comments.length / limit);
+  const pages = Math.ceil(allComments.length / limit);
   const offset = limit * (page - 1);
 
   const comments = await game.getComments({
@@ -18,7 +18,7 @@ const findCommentsOfGame = async (req, res) => {
     offset,
     include: [{ model: db.User, attributes: ['nickname'] }],
   });
-  res.send({page, pages, comments});
+  res.send({ page, pages, comments });
 };
 
 const findCommentsOfUser = async (req, res) => {

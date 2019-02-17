@@ -200,6 +200,10 @@ User.propTypes = {
       id: PropTypes.string.isRequired,
     }),
   }),
+  location: PropTypes.shape({
+    search: PropTypes.string.isRequired,
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 User.defaultProps = {

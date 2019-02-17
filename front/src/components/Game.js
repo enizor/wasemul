@@ -31,11 +31,11 @@ class Game extends Component {
     this.state = {
       gameInfo: {},
       comments: [],
-      comments_page: 1,
-      comments_pages: 1,
+      commentsPage: 1,
+      commentsPages: 1,
       saves: [],
-      saves_page: 1,
-      saves_pages: 1,
+      savesPage: 1,
+      savesPages: 1,
       editable: false,
     };
   }
@@ -72,7 +72,7 @@ class Game extends Component {
   fetchComments = async () => {
     const { match } = this.props;
     const { location } = this.props;
-    const query = new URLSearchParams(location.search).get('comments_page') || 1;
+    const query = new URLSearchParams(location.search).get('commentsPage') || 1;
 
     fetch(
       `${configuration.API.URL}:${configuration.API.PORT}/games/${
@@ -82,10 +82,10 @@ class Game extends Component {
     )
       .then(res => res.json())
       .then((json) => {
-        this.setState({ 
+        this.setState({
           comments: json.comments,
-          comments_page: json.page,
-          comments_pages: json.pages,
+          commentsPage: json.page,
+          commentsPages: json.pages,
         });
       });
   };
@@ -93,7 +93,7 @@ class Game extends Component {
   fetchSaves = async () => {
     const { match } = this.props;
     const { location } = this.props;
-    const query = new URLSearchParams(location.search).get('saves_page') || 1;
+    const query = new URLSearchParams(location.search).get('savesPage') || 1;
 
     const res = await fetch(
       `${configuration.API.URL}:${configuration.API.PORT}/games/${
@@ -104,8 +104,8 @@ class Game extends Component {
     const jsonRes = await res.json();
     this.setState({
       saves: jsonRes.saves,
-      saves_page: jsonRes.page,
-      saves_pages: jsonRes.pages,
+      savesPage: jsonRes.page,
+      savesPages: jsonRes.pages,
     });
   };
 
@@ -123,12 +123,12 @@ class Game extends Component {
 
   renderCommentsPages() {
     const { location } = this.props;
-    const { comments_page, comments_pages } = this.state;
+    const { commentsPage, commentsPages } = this.state;
     const items = [];
-    if (comments_pages > 1) {
-      for (let number = 1; number <= comments_pages; number += 1) {
-        const href = `${location.pathname}?comments_page=${number}`;
-        const active = number === parseInt(comments_page, 10);
+    if (commentsPages > 1) {
+      for (let number = 1; number <= commentsPages; number += 1) {
+        const href = `${location.pathname}?commentsPage=${number}`;
+        const active = number === parseInt(commentsPage, 10);
         items.push(
           // eslint-disable-next-line max-len
           <Pagination.Item key={number} active={active} href={href}>{number}</Pagination.Item>,
@@ -162,12 +162,12 @@ class Game extends Component {
 
   renderSavesPages() {
     const { location } = this.props;
-    const { saves_page, saves_pages } = this.state;
+    const { savesPage, savesPages } = this.state;
     const items = [];
-    if (saves_pages > 1) {
-      for (let number = 1; number <= saves_pages; number += 1) {
-        const href = `${location.pathname}?saves_page=${number}`;
-        const active = number === parseInt(saves_page, 10);
+    if (savesPages > 1) {
+      for (let number = 1; number <= savesPages; number += 1) {
+        const href = `${location.pathname}?savesPage=${number}`;
+        const active = number === parseInt(savesPage, 10);
         items.push(
           // eslint-disable-next-line max-len
           <Pagination.Item key={number} active={active} href={href}>{number}</Pagination.Item>,
@@ -265,6 +265,10 @@ Game.propTypes = {
       id: PropTypes.string.isRequired,
     }),
   }),
+  location: PropTypes.shape({
+    search: PropTypes.string.isRequired,
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 Game.defaultProps = {

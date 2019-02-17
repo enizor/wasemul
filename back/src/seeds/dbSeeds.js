@@ -1,5 +1,5 @@
+import moment from 'moment';
 import { hashPassword } from '../auth';
-import moment from "moment";
 
 /* eslint-disable max-len */
 export default (db, sequelize) => {
@@ -30,7 +30,7 @@ export default (db, sequelize) => {
       platform: 'Game Boy',
       description: 'A 10-year old is kicked out of his house, and must organize pet battles to fuel his casino addiction',
       icon: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a6/Pok%C3%A9mon_box_art_-_Red_Version.png/220px-Pok%C3%A9mon_box_art_-_Red_Version.png',
-      releaseDate: moment("1996-02-27T00:00:00.000Z"),
+      releaseDate: moment('1996-02-27T00:00:00.000Z'),
       publisher: 'Nintendo',
     });
     const zelda = await db.Game.create({
@@ -38,7 +38,7 @@ export default (db, sequelize) => {
       platform: 'Game Boy Advance',
       description: 'Wearing a green suit apparently forces you to save the world...',
       icon: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a5/The_Legend_of_Zelda_The_Minish_Cap_Game_Cover.JPG/220px-The_Legend_of_Zelda_The_Minish_Cap_Game_Cover.JPG',
-      releaseDate: moment("2004-11-04T00:00:00.000Z"),
+      releaseDate: moment('2004-11-04T00:00:00.000Z'),
       publisher: 'Nintendo',
     });
     db.Comment.create({
