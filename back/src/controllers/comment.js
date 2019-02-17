@@ -32,10 +32,21 @@ const findCommentsOfUser = async (req, res) => {
 
 const createComment = async (req, res) => {
   // Create a comment belonging to the user identified by the token
-  const token = jsonwebtoken.verify(
-    req.headers.authorization,
-    process.env.JWT_KEY,
-  );
+  if (!req.headers.authorization) {
+    res.sendStatus(403);
+    return;
+  }
+
+  let token;
+  try {
+    token = jsonwebtoken.verify(
+      req.headers.authorization,
+      process.env.JWT_KEY,
+    );
+  } catch (err) {
+    res.sendStatus(403);
+    return;
+  }
 
   if (token) {
     const comment = await db.Comment.create({

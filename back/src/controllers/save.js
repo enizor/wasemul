@@ -47,10 +47,20 @@ const createSave = (req, res) => {
   const uploadFile = req.files.file;
   const fileName = req.files.file.name;
 
-  const token = jsonwebtoken.verify(
-    req.headers.authorization,
-    process.env.JWT_KEY,
-  );
+  if (!req.headers.authorization) {
+    res.sendStatus(403);
+    return;
+  }
+  let token;
+  try {
+    token = jsonwebtoken.verify(
+      req.headers.authorization,
+      process.env.JWT_KEY,
+    );
+  } catch (err) {
+    res.sendStatus(403);
+    return;
+  }
 
   const uploadTimestamp = Date.now().toString();
 

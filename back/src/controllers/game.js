@@ -27,10 +27,21 @@ const findGames = async (req, res) => {
 
 const updateGame = async (req, res) => {
   // Update a given game (if user is an admin) with the provided fields
-  const token = jsonwebtoken.verify(
-    req.headers.authorization,
-    process.env.JWT_KEY,
-  );
+  if (!req.headers.authorization) {
+    res.sendStatus(403);
+    return;
+  }
+
+  let token;
+  try {
+    token = jsonwebtoken.verify(
+      req.headers.authorization,
+      process.env.JWT_KEY,
+    );
+  } catch (err) {
+    res.sendStatus(403);
+    return;
+  }
 
   const modifyingUser = await db.User.findOne({ where: { id: token.id } });
 
@@ -86,10 +97,21 @@ const findFeaturedGames = async (_, res) => {
 
 const createGame = async (req, res) => {
   // Create a new game (only if the user is an admin)
-  const token = jsonwebtoken.verify(
-    req.headers.authorization,
-    process.env.JWT_KEY,
-  );
+  if (!req.headers.authorization) {
+    res.sendStatus(403);
+    return;
+  }
+
+  let token;
+  try {
+    token = jsonwebtoken.verify(
+      req.headers.authorization,
+      process.env.JWT_KEY,
+    );
+  } catch (err) {
+    res.sendStatus(403);
+    return;
+  }
 
   const modifyingUser = await db.User.findOne({ where: { id: token.id } });
 

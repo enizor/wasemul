@@ -236,24 +236,9 @@ class User extends React.Component {
           <h2>Saves</h2>
           <hr />
           {this.renderSaves()}
-        </div>
-
-        <br />
-        {editable && (
-          <div className="pure-g center">
-            <a className="pure-u-1-5" href={`/users/${user.id}/edit`}>
-              <div className="pure-button pure-u-1 pure-button-primary">
-                Edit
-              </div>
-            </a>
+          <div>
+            <Pagination>{this.renderSavesPages()}</Pagination>
           </div>
-        )}
-
-        <h1>Saves</h1>
-        <hr />
-        {this.renderSaves()}
-        <div>
-          <Pagination>{this.renderSavesPages()}</Pagination>
         </div>
       </>
     );
