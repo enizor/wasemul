@@ -103,9 +103,8 @@ class Game extends Component {
         comments: [],
         commentsPage: 1,
         commentsPages: 1,
-      })
+      });
     }
-
   };
 
   fetchSaves = async () => {
@@ -133,7 +132,6 @@ class Game extends Component {
         savesPages: 1,
       });
     }
-
   };
 
   renderComments() {
@@ -216,6 +214,7 @@ class Game extends Component {
     }
     return <></>;
   }
+
   renderSavesPages() {
     const { location } = this.props;
     const { savesPage, savesPages } = this.state;
