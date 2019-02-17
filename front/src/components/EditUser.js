@@ -138,7 +138,7 @@ class EditUser extends React.Component {
                 className="pure-input-2-3"
                 id="email"
                 type="text"
-                name="nickname"
+                name="email"
                 placeholder="Email"
                 value={user.email}
                 onChange={this.handleInputChange}
