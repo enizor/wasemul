@@ -14,9 +14,12 @@ const NavigationBar = () => (
         <Nav.Link eventKey={1} href="/games">
           Games
         </Nav.Link>
-        <Nav.Link eventKey={2} href="/users/3">
-          Admin Profile
-        </Nav.Link>
+        { Auth.loggedIn() ? (
+          <Nav.Link eventKey={2} href={`/users/${Auth.getProfile().id}`}>
+            My Profile
+          </Nav.Link>
+        ) : null
+        }
       </Nav>
       <SearchBar />
       <Nav className="ml-auto">
