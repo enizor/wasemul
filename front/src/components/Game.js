@@ -67,18 +67,16 @@ class Game extends Component {
   fetchComments = async () => {
     const { match } = this.props;
 
-    fetch(
+    const res = await fetch(
       `${configuration.API.URL}:${configuration.API.PORT}/games/${
         match.params.id
       }/comments`,
       myInit,
-    )
-      .then(res => res.json())
-      .then((json) => {
-        this.setState({
-          comments: json,
-        });
-      });
+    );
+    const jsonRes = await res.json();
+    this.setState({
+      comments: jsonRes,
+    });
   };
 
   fetchSaves = async () => {

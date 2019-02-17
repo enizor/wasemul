@@ -31,40 +31,56 @@ class Games extends Component {
     if (location.search !== prevProps.location.search) this.fetchGames();
   }
 
-  fetchGames = () => {
+  fetchGames = async () => {
     const { location } = this.props;
     const query = new URLSearchParams(location.search).get('page') || 1;
     // API call this.state.id
 
-    // eslint-disable-next-line max-len
-    fetch(`${configuration.API.URL}:${configuration.API.PORT}/games?page=${query}`)
-      .then(res => res.json())
-      .then((json) => {
-        const { games, page, pages } = json;
-        let addable = false;
-        if (Auth.loggedIn()) {
-          const profile = Auth.getProfile();
-          addable = profile.authLevel !== 2;
-        }
-        this.setState(
-          {
-            games,
-            page,
-            pages,
-            failed: false,
-            addable,
-          },
-        );
-      }).catch(() => {
-        this.setState({ failed: true });
-      });
+    try {
+      // eslint-disable-next-line max-len
+      const res = await fetch(`${configuration.API.URL}:${configuration.API.PORT}/games?page=${query}`);
+      const jsonRes = await res.json();
+      const { games, page, pages } = jsonRes;
+
+      let addable = false;
+
+      if (Auth.loggedIn()) {
+        const profile = Auth.getProfile();
+        addable = profile.authLevel !== 2;
+      }
+
+      this.setState(
+        {
+          games,
+          page,
+          pages,
+          failed: false,
+          addable,
+        },
+      );
+    } catch (err) {
+      this.setState({ failed: true });
+    }
   };
+
+  renderGames() {
+    const { games } = this.state;
+    return games.map(e => (
+      <GameItem
+        key={e.id}
+        id={e.id}
+        name={e.name}
+        publisher={e.publisher}
+        releaseDate={e.releaseDate}
+        icon={e.icon}
+      />
+    ));
+  }
 
   render() {
     const { location } = this.props;
     const {
       failed,
-      games,
       page,
       pages,
       addable,
@@ -81,14 +97,13 @@ class Games extends Component {
       }
     }
 
-
     return failed ? (
       <Redirect to="/" />
     ) : (
-      <div>
+      <div className="Game">
         <div className="pure-g center">
-          <div className="pure-u-3-5">
-            <h1 className="pure-u-2-3 text-left">Games</h1>
+          <div className="pure-u-4-5">
+            <h2 className="pure-u-2-3 text-left">All games</h2>
             {addable && (
               <a
                 className="pure-u-1-3 vertical-align text-right"
@@ -100,17 +115,7 @@ class Games extends Component {
               </a>
             )}
           </div>
-
-          {games.map(e => (
-            <GameItem
-              key={e.id}
-              id={e.id}
-              name={e.name}
-              publisher={e.publisher}
-              releaseDate={e.releaseDate}
-              icon={e.icon}
-            />
-          ))}
+          {this.renderGames()}
         </div>
         <div>
           <Pagination>{items}</Pagination>

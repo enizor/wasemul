@@ -38,8 +38,8 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className="App pure-g center">
-        <h2 className="pure-u-3-5 text-left">Featured Games</h2>
+      <div className="Home pure-g center">
+        <h2 className="pure-u-4-5 text-left">Featured Games</h2>
         {this.renderGames()}
       </div>
     );
