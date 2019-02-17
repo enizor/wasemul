@@ -27,14 +27,12 @@ class User extends React.Component {
       .then(res => res.json())
       .then((result) => {
         let editable = false;
-        let uploadable = false;
         if (Auth.loggedIn()) {
           const profile = Auth.getProfile();
           editable = profile.authLevel !== 2
           || profile.id === parseInt(match.params.id, 10);
-          uploadable = profile.id === parseInt(match.params.id, 10);
         }
-        this.setState({ user: result, failed: false, editable, uploadable });
+        this.setState({ user: result, failed: false, editable });
       })
       .catch(() => {
         this.setState({ failed: true });

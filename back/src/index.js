@@ -13,9 +13,9 @@ import { sequelize } from './db/dbInit';
 
 import seedDb from './controllers/seed';
 
-import { 
+import {
   findSavesOfGame,
-  createSave
+  createSave,
 } from './controllers/save';
 
 import {

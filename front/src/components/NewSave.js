@@ -11,7 +11,6 @@ class NewSave extends React.Component {
   state = {
     file: null,
     fileInputKey: Date.now(),
-    error: false,
   };
 
   handleSelectedFile = (event) => {
@@ -47,7 +46,6 @@ class NewSave extends React.Component {
         fetchSaves();
       } catch (err) {
         console.log(err);
-        this.setState({ error: true });
       }
     })();
     event.preventDefault();
