@@ -75,10 +75,6 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
-app.get('/', (_, res) => {
-  res.send('Hello world!');
-});
-
 app.get('/games/:id/comments', findCommentsOfGame);
 
 app.get('/games/featured', findFeaturedGames);

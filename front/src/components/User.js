@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import Notification from './Notification';
+import { Pagination } from 'react-bootstrap';
 import Auth from './AuthService';
+import Notification from './Notification';
+
 import '../css/User.css';
 
 const configuration = process.env.NODE_ENV === 'production'
@@ -31,6 +33,8 @@ class User extends React.Component {
       message: '',
       user: {},
       saves: [],
+      page: 1,
+      pages: 1,
       editable: false,
     };
   }
@@ -63,21 +67,28 @@ class User extends React.Component {
 
   fetchSaves = async () => {
     const { match } = this.props;
+    const { location } = this.props;
+    const query = new URLSearchParams(location.search).get('page') || 1;
 
     try {
       const res = await fetch(
         `${configuration.API.URL}:${configuration.API.PORT}/users/${
           match.params.id
-        }/saves`,
+        }/saves?page=${query}`,
         myInit,
       );
       const jsonRes = await res.json();
+      const { saves, page, pages } = jsonRes;
       this.setState({
-        saves: jsonRes,
+        saves,
+        page,
+        pages,
       });
     } catch (err) {
       this.setState({
         saves: [],
+        page: 1,
+        pages: 1,
       });
     }
   };
@@ -124,6 +135,23 @@ class User extends React.Component {
       );
     }
     return <></>;
+  }
+
+  renderSavesPages() {
+    const { location } = this.props;
+    const { page, pages } = this.state;
+    const items = [];
+    if (pages > 1) {
+      for (let number = 1; number <= pages; number += 1) {
+        const href = `${location.pathname}?page=${number}`;
+        const active = number === parseInt(page, 10);
+        items.push(
+          // eslint-disable-next-line max-len
+          <Pagination.Item key={number} active={active} href={href}>{number}</Pagination.Item>,
+        );
+      }
+    }
+    return items;
   }
 
   //   {
@@ -203,6 +231,24 @@ class User extends React.Component {
           <hr />
           {this.renderSaves()}
         </div>
+
+        <br />
+        {editable && (
+          <div className="pure-g center">
+            <a className="pure-u-1-5" href={`/users/${user.id}/edit`}>
+              <div className="pure-button pure-u-1 pure-button-primary">
+                Edit
+              </div>
+            </a>
+          </div>
+        )}
+
+        <h1>Saves</h1>
+        <hr />
+        {this.renderSaves()}
+        <div>
+          <Pagination>{this.renderSavesPages()}</Pagination>
+        </div>
       </>
     );
   }
@@ -219,6 +265,8 @@ User.propTypes = {
       failed: PropTypes.bool,
       message: PropTypes.string,
     }),
+    search: PropTypes.string.isRequired,
+    pathname: PropTypes.string.isRequired,
   }),
 };
 
