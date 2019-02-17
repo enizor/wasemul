@@ -56,18 +56,30 @@ class NewSave extends React.Component {
   render() {
     const { fileInputKey } = this.state;
     return !Auth.loggedIn() ? null : (
-      <div key={fileInputKey} className="center">
-        <input type="file" name="" id="fileinput" onChange={this.handleSelectedFile} />
-        <button type="button" onClick={this.handleUpload}>
-          Upload
-        </button>
-      </div>
+      <form key={fileInputKey} className="pure-form NewComment">
+        <fieldset className="pure-group">
+          <legend className="pure-u-1">
+            Add a save
+          </legend>
+          <input
+            type="file"
+            onChange={this.handleSelectedFile}
+          />
+          <button
+            className="pure-button pure-button-primary"
+            type="button"
+            onClick={this.handleUpload}
+          >
+            Upload
+          </button>
+        </fieldset>
+      </form>
     );
   }
 }
 
 NewSave.propTypes = {
-  gameID: PropTypes.number.isRequired,
+  gameID: PropTypes.string.isRequired,
   fetchSaves: PropTypes.func.isRequired,
 };
 

@@ -188,17 +188,20 @@ class Game extends Component {
             </a>
           </div>
         )}
+
+        <h1>Comments</h1>
         <NewComment
           gameID={match.params.id}
           fetchComments={this.fetchComments}
         />
-        <h1>Comments</h1>
         <hr />
         {this.renderComments()}
 
-        <NewSave gameID={match.params.id} fetchSaves={this.fetchSaves} />
-
         <h1>Saves</h1>
+        <NewSave
+          gameID={match.params.id}
+          fetchSaves={this.fetchSaves}
+        />
         <hr />
         {this.renderSaves()}
       </div>

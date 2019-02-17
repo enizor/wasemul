@@ -77,7 +77,7 @@ class NewComment extends React.Component {
 }
 
 NewComment.propTypes = {
-  gameID: PropTypes.number.isRequired,
+  gameID: PropTypes.string.isRequired,
   fetchComments: PropTypes.func.isRequired,
 };
 
