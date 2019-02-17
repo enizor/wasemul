@@ -85,7 +85,7 @@ const findFeaturedGames = async (_, res) => {
   const result = await Promise.all(comments);
 
   for (let i = 0; i < games.length; i += 1) {
-    // The more recent a comment is, the more worth it has
+    // A game's score is higher if it was added recently and/or has a high number of comments
     games[i].score = 0;
     games[i].score += (times[i] - minTime) / 1000;
     games[i].score += result[i];
