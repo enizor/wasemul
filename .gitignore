@@ -8,6 +8,7 @@ front/build/
 # Back-end
 back/src/node_modules/
 back/dist/
+back/src/public/saves
 *.pem
 
 .env
