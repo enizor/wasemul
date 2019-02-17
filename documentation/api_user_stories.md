@@ -180,6 +180,7 @@ REQUEST BODY
 
 ### Forgot Password
 
+(Not implemented)
 The user wants to retrieve his password, or get a magic link.
 The back should expose the following route `/auth/reset`.
 
@@ -238,6 +239,7 @@ REQUEST BODY
 
 ### Delete account
 
+(Not implemented)
 The user wants to delete his account, to do so, he has to provide his mail and password.
 The back should expose the following route.`/user/:id/delete`.
 
@@ -253,6 +255,7 @@ REQUEST BODY
 
 ### Update Password
 
+(Not implemented)
 The user wants to change his password.
 To do so he has to provide his mail, old password and new password. The back should expose the following route `/user/:id/update/password`.
 
@@ -269,7 +272,7 @@ REQUEST BODY
 
 ### Post Comment
 
-The user wants to post a comment on a game. To do so he writes it and hist post.
+The user wants to post a comment on a game. To do so he writes it and posts.
 The back should expose the following route `/games/:id/comments`.
 
 - `/games/:id/comments` [POST]
@@ -304,6 +307,7 @@ The back should expose the following route `/games/:id/saves`.
 
 ### Rate a game
 
+(Not implemented)
 The user wants to rate a game.
 The back should expose the following route `/games/:id/ratings`.
 
@@ -319,6 +323,7 @@ REQUEST BODY
 
 ### Rate a save
 
+(Not implemented)
 The user wants to rate a save.
 The back should expose the following route `/saves/:id/ratings`.
 
@@ -334,6 +339,7 @@ REQUEST BODY
 
 ### Delete a save
 
+(Not implemented)
 The user wants to delete a save.
 The back should expose the following route `/saves/:id/delete`.
 
@@ -341,6 +347,7 @@ The back should expose the following route `/saves/:id/delete`.
 
 ### Delete a comment
 
+(Not implemented)
 The user wants to delete a save.
 The back should expose the following route `/comments/:id/delete`.
 
