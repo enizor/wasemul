@@ -76,7 +76,7 @@ class Game extends Component {
       .then(res => res.json())
       .then((json) => {
         this.setState({
-          comments: json,
+          comments: json.comments,
         });
       });
   };
@@ -92,7 +92,7 @@ class Game extends Component {
     );
     const jsonRes = await res.json();
     this.setState({
-      saves: jsonRes,
+      saves: jsonRes.saves,
     });
   };
 

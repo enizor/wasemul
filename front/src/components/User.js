@@ -69,7 +69,7 @@ class User extends React.Component {
     );
     const jsonRes = await res.json();
     this.setState({
-      saves: jsonRes,
+      saves: jsonRes.saves,
     });
   }
 

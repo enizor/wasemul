@@ -7,7 +7,7 @@ const findGame = async (req, res) => {
 };
 
 const findGames = async (req, res) => {
-  const limit = 10;
+  const limit = 5;
   const data = await db.Game.findAndCountAll();
 
   const page = req.query.page || 1;

@@ -6,18 +6,38 @@ const savesDir = `${__dirname}/../public/saves`;
 
 const findSavesOfGame = async (req, res) => {
   const game = await db.Game.findOne({ where: { id: req.params.id } });
+  const n_saves = await game.getSaves({
+    include: [{ model: db.User, attributes: ['nickname'] }],
+  }).count;
+  const limit = 5;
+  const page = req.query.page || 1;
+  const pages = Math.ceil(n_saves / limit);
+  const offset = limit * (page - 1);
+
   const saves = await game.getSaves({
+    limit,
+    offset,
     include: [{ model: db.User, attributes: ['nickname'] }],
   });
-  res.send(saves);
+  res.send({page, pages, saves});
 };
 
 const findSavesOfUser = async (req, res) => {
   const user = await db.User.findOne({ where: { id: req.params.id } });
+  const n_saves = await user.getSaves({
+    include: [{ model: db.Game, attributes: ['name'] }],
+  }).count;
+  const limit = 5;
+  const page = req.query.page || 1;
+  const pages = Math.ceil(n_saves / limit);
+  const offset = limit * (page - 1);
+
   const saves = await user.getSaves({
+    limit,
+    offset,
     include: [{ model: db.Game, attributes: ['name'] }],
   });
-  res.send(saves);
+  res.send({page, pages, saves});
 };
 
 const createSave = (req, res) => {
